@@ -5,9 +5,7 @@ const PostPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Addit for Football</title>
-        <meta name="description" content="Addit for Football" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Addit for Football : post</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
