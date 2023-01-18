@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { NextPage } from 'next/types'
 
-const HomePage: NextPage = () => {
+const PostPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -11,10 +11,10 @@ const HomePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>this is homepage.</h1>
+        <h1>this is PostPage.</h1>
       </main>
     </>
   )
 }
 
-export default HomePage
+export default PostPage

@@ -8,9 +8,9 @@ const Editor = dynamic(() => import('@/components/editor/editor'), {
   ssr: false,
 })
 
-const Home: NextPage = () => {
+const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>()
   return <Editor data={data} onChange={setData} holder="editorjs-container" />
 }
-export default Home
+export default WritePage
