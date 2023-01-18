@@ -1,6 +1,25 @@
-// import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import React from 'react'
+import AppLayout from '@/layout/appLayout'
+import Head from 'next/head'
+import '@/styles/globals.css'
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+type AppProps = {
+  Component: React.ElementType
 }
+
+function App({ Component }: AppProps) {
+  return (
+    <>
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="description" content="축구 전문 에디터" />
+        <title>ADDIT for Football</title>
+      </Head>
+      <AppLayout>
+        <Component />
+      </AppLayout>
+    </>
+  )
+}
+
+export default App
