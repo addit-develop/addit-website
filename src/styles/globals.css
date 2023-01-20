@@ -53,3 +53,7 @@ input {
 input:focus {
   outline: none;
 }
+
+#addit-modal path {
+  stroke: none !important;
+}

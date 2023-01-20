@@ -91,7 +91,6 @@ export const SearchMenuContainer = styled.div`
   display: flex;
   width: 100%;
   height: 44px;
-  border: 0 0 1px 0 solid #c4c4c4;
   background-color: #fff;
   flex-direction: row;
   align-items: center;
@@ -99,14 +98,11 @@ export const SearchMenuContainer = styled.div`
   gap: 24px;
   overflow: scroll;
   padding: 8px 0 8px 16px;
-  border-bottom: 1px solid #c4c4c4;
   &::-webkit-scrollbar {
     display: none;
   }
   @media only screen and (max-width: 600px) {
     order: 4;
-    border-top: 1px solid #c4c4c4;
-    border-bottom: 1px solid #f2f2f2;
   }
 `
 
@@ -117,7 +113,7 @@ export const SearchMenu = styled.div`
   line-height: 28px;
   font-size: 14px;
   color: ${(props) => (props.selected ? '#3981bf' : '#8a8a8a')};
-  border-bottom: ${(props) => (props.selected ? '1px solid #3981bf' : 'none')};
+  border-bottom: ${(props) => (props.selected ? '2px solid #3981bf' : 'none')};
   font-weight: 500;
   cursor: pointer;
 `
@@ -150,7 +146,6 @@ export const ModalMenuContainer = styled.div`
   justify-content: start;
   gap: 8px;
   padding: 12px 8px 16px 16px;
-  border-top: 1px solid #c4c4c4;
   @media only screen and (max-width: 600px) {
     padding: 0px 16px 16px 12px;
     border: none;

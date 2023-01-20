@@ -1,6 +1,6 @@
 import { default as React } from 'react'
 import ReactDOM from 'react-dom'
-import SearchModal from './searchModal'
+import SearchModal from './searchModal/index'
 import SearchBlock from './searchBlock'
 
 export default class Timeline {
