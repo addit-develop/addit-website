@@ -6,10 +6,15 @@ import { useCallback, useState } from 'react'
 
 const Header: NextComponentType = () => {
   const [menuState, setMenuState] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
+
+  const signIn = useCallback(() => {
+    setLoggedIn(!loggedIn)
+  }, [loggedIn])
 
   return (
     <div className={styles.header}>
@@ -48,7 +53,15 @@ const Header: NextComponentType = () => {
       >
         <div className={styles.header__navigation__menu}>Contact</div>
         <div className={styles.header__navigation__menu}>About</div>
-        <div className={styles.header__navigation__menu}>Signout</div>
+        {loggedIn ? (
+          <div className={styles.header__navigation__menu} onClick={signIn}>
+            Signout
+          </div>
+        ) : (
+          <div className={styles.header__navigation__signup} onClick={signIn}>
+            Signup
+          </div>
+        )}
       </div>
     </div>
   )
