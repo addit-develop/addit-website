@@ -1,9 +1,9 @@
 import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
-import MatchHome from '../matchHome/matchHome'
+import MatchHome from '../match/matchHome'
 
 const SearchModal = () => {
-  const [modalClosed, setModalClosed] = useState(false)
+  const [modalClosed, setModalClosed] = useState<boolean>(false)
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
