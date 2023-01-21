@@ -8,6 +8,22 @@
   margin: 0;
 }
 
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #8a8a8a;
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 3px solid transparent;
+}
+
+*::-webkit-scrollbar-track {
+  width: 8px;
+  background-color: transparent;
+}
+
 html,
 body {
   max-width: 100vw;
@@ -18,4 +34,26 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  cursor: pointer;
+}
+
+input {
+  border: none;
+  background-color: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+#addit-modal path {
+  stroke: none !important;
 }
