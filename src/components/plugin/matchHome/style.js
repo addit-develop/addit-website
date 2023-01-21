@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import * as colors from '../colors'
 
 export const Container = styled.div`
   width: 100%;
@@ -7,8 +8,11 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   gap: 2px;
-  background-color: #f2f2f2;
+  background-color: ${colors.lightgray};
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const Header = styled.div`
@@ -18,7 +22,7 @@ export const Header = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: #fff;
+  background-color: ${colors.white};
 `
 
 export const DatePicker = styled.div`
@@ -29,7 +33,7 @@ export const DatePicker = styled.div`
   align-items: center;
   padding: 2px;
   border-radius: 20px;
-  background-color: #f2f2f2;
+  background-color: ${colors.lightgray};
 `
 
 export const DateContainer = styled.div`
@@ -38,10 +42,7 @@ export const DateContainer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  overflow: hidden;
 `
 
 export const Date = styled.button`
@@ -50,11 +51,11 @@ export const Date = styled.button`
   height: 32px;
   text-align: center;
   line-height: 32px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   border-radius: 16px;
-  color: ${(props) => (props.selected ? '#3981BF' : '#8a8a8a')};
-  background-color: ${(props) => (props.selected ? '#fff' : 'none')};
+  color: ${(props) => (props.selected ? colors.blue : colors.darkgray)};
+  background-color: ${(props) => (props.selected ? colors.white : 'none')};
   box-shadow: ${(props) => (props.selected ? '1px 1px 2px 0px rgba(0, 0, 0, 0.25)' : 'none')};
 `
 
@@ -64,4 +65,25 @@ export const ArrowButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const LeaguesContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: start;
+  align-items: center;
+`
+
+export const CountryName = styled.div`
+  width: 100%;
+  height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: ${colors.lightblack};
+  cursor: pointer;
 `

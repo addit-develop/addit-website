@@ -3,15 +3,18 @@ import axios from 'axios'
 import * as Styles from './style'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import * as colors from '../colors'
+import LeagueFixtures from './leagueFixtures'
+import Countries from '../data/countriesData.json'
+import MajorLeagues from '../data/majorLeaguesData.json'
 
 dayjs.extend(relativeTime)
 
-const LEAGUE_API = 'https://v3.football.api-sports.io/leagues'
-const FIXTURE_API = 'https://api-football-v1.p.rapidapi.com/v3/fixtures'
+const FIXTURE_API = process.env.NEXT_PUBLIC_FIXTURE_API
 
 const headers = {
-  'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
-  'X-RapidAPI-Key': 'e1793446ebmsha8d1dabebc58f53p11a789jsnebca74dcc5bd',
+  'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
+  'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
 }
 
 const MatchHome = () => {
@@ -19,6 +22,7 @@ const MatchHome = () => {
 
   const [date, setDate] = useState(TodayDate.format('YYYY-MM-DD'))
   const [fixtureData, setFixtureData] = useState(null)
+  const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
   useEffect(() => {
     axios
@@ -29,7 +33,8 @@ const MatchHome = () => {
         headers,
       })
       .then((response) => {
-        setFixtureData(response)
+        console.log(response)
+        setFixtureData(response.data.response)
         console.log(fixtureData)
       })
       .catch((err) => {
@@ -46,19 +51,28 @@ const MatchHome = () => {
     setDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day').format('YYYY-MM-DD'))
   }, [date])
 
+  const twoNextDate = useCallback(() => {
+    setDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day').format('YYYY-MM-DD'))
+  }, [date])
+
   const convertDate = useCallback((date) => {
-    if (date === TodayDate.subtract(1, 'day')) {
+    const formatDate = date.format('YYYY-MM-DD')
+    if (formatDate === TodayDate.subtract(1, 'day').format('YYYY-MM-DD')) {
       return 'Yesterday'
-    } else if (date === TodayDate) {
+    } else if (formatDate === TodayDate.format('YYYY-MM-DD')) {
       return 'Today'
-    } else if (date === TodayDate.add(1, 'day')) {
+    } else if (formatDate === TodayDate.add(1, 'day').format('YYYY-MM-DD')) {
       return 'Tomorrow'
-    } else if (date.year() === '2023') {
+    } else if (date.year() === 2023) {
       return date.format('D MMM')
     } else {
       return date.format('D MMM YY')
     }
   }, [])
+
+  const openMajorLeagues = useCallback(() => {
+    setMajorLeaguesOpen(!majorLeaguesOpen)
+  }, [majorLeaguesOpen])
 
   return (
     <React.Fragment>
@@ -67,22 +81,49 @@ const MatchHome = () => {
           <Styles.DatePicker>
             <Styles.ArrowButton onClick={prevDate}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill="#8A8A8A" />
+                <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill={colors.darkgray} />
               </svg>
             </Styles.ArrowButton>
             <Styles.DateContainer>
-              <Styles.Date>{convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}</Styles.Date>
+              <Styles.Date onClick={prevDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}
+              </Styles.Date>
               <Styles.Date selected>{convertDate(dayjs(date, 'YYYY-MM-DD'))}</Styles.Date>
-              <Styles.Date>{convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}</Styles.Date>
-              <Styles.Date>{convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}</Styles.Date>
+              <Styles.Date onClick={nextDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}
+              </Styles.Date>
+              <Styles.Date onClick={twoNextDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}
+              </Styles.Date>
             </Styles.DateContainer>
             <Styles.ArrowButton onClick={nextDate}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill="#8A8A8A" />
+                <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={colors.darkgray} />
               </svg>
             </Styles.ArrowButton>
           </Styles.DatePicker>
         </Styles.Header>
+        <Styles.LeaguesContainer>
+          <Styles.CountryName onClick={openMajorLeagues}>
+            Major Leagues
+            {majorLeaguesOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <path d="M5 13v-2h14v2Z" fill={colors.lightblack} />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <path d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6Z" fill={colors.lightblack} />
+              </svg>
+            )}
+          </Styles.CountryName>
+          {majorLeaguesOpen && fixtureData !== null
+            ? MajorLeagues.map((league) => {
+                const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
+                if (fixtures.length > 0) return <LeagueFixtures data={fixtures} league={league} />
+                else return null
+              })
+            : null}
+        </Styles.LeaguesContainer>
       </Styles.Container>
     </React.Fragment>
   )

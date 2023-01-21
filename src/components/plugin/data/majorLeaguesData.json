@@ -1,0 +1,122 @@
+[
+  {
+    "id": 2,
+    "name": "UEFA Champions League",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/2.png"
+  },
+  {
+    "id": 3,
+    "name": "UEFA Europa League",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/3.png"
+  },
+  {
+    "id": 39,
+    "name": "Premier League",
+    "type": "League",
+    "logo": "https://media-3.api-sports.io/football/leagues/39.png"
+  },
+  {
+    "id": 45,
+    "name": "FA Cup",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/45.png"
+  },
+  {
+    "id": 48,
+    "name": "League Cup",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/48.png"
+  },
+  {
+    "id": 140,
+    "name": "La Liga",
+    "type": "League",
+    "logo": "https://media-3.api-sports.io/football/leagues/140.png"
+  },
+  {
+    "id": 143,
+    "name": "Copa del Rey",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/143.png"
+  },
+  {
+    "id": 78,
+    "name": "Bundesliga",
+    "type": "League",
+    "logo": "https://media-3.api-sports.io/football/leagues/78.png"
+  },
+  {
+    "id": 81,
+    "name": "DFB Pokal",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/81.png"
+  },
+  {
+    "id": 135,
+    "name": "Serie A",
+    "type": "League",
+    "logo": "https://media-3.api-sports.io/football/leagues/135.png"
+  },
+  {
+    "id": 137,
+    "name": "Coppa Italia",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/137.png"
+  },
+  {
+    "id": 61,
+    "name": "Ligue 1",
+    "type": "League",
+    "logo": "https://media-3.api-sports.io/football/leagues/61.png"
+  },
+  {
+    "id": 66,
+    "name": "Coupe de France",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/66.png"
+  },
+  {
+    "id": 4,
+    "name": "Euro Championship",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/4.png"
+  },
+  {
+    "id": 17,
+    "name": "AFC Champions League",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/17.png"
+  },
+  {
+    "id": 1,
+    "name": "World Cup",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/1.png"
+  },
+  {
+    "id": 10,
+    "name": "Friendlies",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/10.png"
+  },
+  {
+    "id": 5,
+    "name": "UEFA Nations League",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/5.png"
+  },
+  {
+    "id": 7,
+    "name": "Asian Cup",
+    "type": "Cup",
+    "logo": "https://media.api-sports.io/football/leagues/7.png"
+  },
+  {
+    "id": 9,
+    "name": "Copa America",
+    "type": "Cup",
+    "logo": "https://media-3.api-sports.io/football/leagues/9.png"
+  }
+]
