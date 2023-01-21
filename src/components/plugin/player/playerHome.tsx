@@ -25,7 +25,7 @@ const PlayerHome = () => {
       .catch((err) => {
         console.error(err)
       })
-  }, [playerList])
+  }, [])
 
   return (
     <React.Fragment>
