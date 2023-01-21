@@ -1,6 +1,6 @@
 import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import * as colors from '../colors'
+import { COLORS } from '@/constants/constants'
 import FixtureTable from '../fixtureTable'
 
 const FixturesContainer = styled.div`
@@ -9,7 +9,7 @@ const FixturesContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 10px;
-  background-color: ${colors.white};
+  background-color: ${COLORS.white};
   border-radius: 10px;
 `
 
@@ -20,7 +20,7 @@ const LeagueTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 15px;
-  color: ${colors.black};
+  color: ${COLORS.black};
   cursor: pointer;
 `
 
@@ -36,7 +36,7 @@ const Flag = styled.img`
   height: 24px;
   border-radius: 12px;
   object-fit: contain;
-  border: 1px solid ${colors.gray};
+  border: 1px solid ${COLORS.gray};
 `
 
 const LeagueFixtures = (props) => {
@@ -56,15 +56,15 @@ const LeagueFixtures = (props) => {
           </LeagueName>
           {menuState ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={colors.darkgray} />
+              <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
             </svg>
           ) : (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={colors.darkgray} />
+              <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={COLORS.darkgray} />
             </svg>
           )}
         </LeagueTitle>
-        {menuState ? props.data.map((fixture) => <FixtureTable data={fixture} />) : null}
+        {menuState ? props.data.map((fixture, i) => <FixtureTable data={fixture} key={i} />) : null}
       </FixturesContainer>
     </React.Fragment>
   )

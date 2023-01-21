@@ -1,6 +1,6 @@
-import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
+import { default as React } from 'react'
 import styled from 'styled-components'
-import * as colors from './colors'
+import { COLORS } from '@/constants/constants'
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -30,14 +30,14 @@ const Flag = styled.img`
   height: 24px;
   border-radius: 12px;
   object-fit: contain;
-  border: 1px solid ${colors.gray};
+  border: 1px solid ${COLORS.gray};
 `
 
 const Time = styled.div`
   width: 47px;
   height: 100%;
   font-size: 15px;
-  color: ${colors.darkgray};
+  color: ${COLORS.darkgray};
   font-weight: 500;
   text-align: center;
   line-height: 60px;
@@ -52,14 +52,14 @@ const Score = styled.div`
   align-items: center;
   gap: 4px;
   font-size: 16px;
-  color: ${colors.black};
+  color: ${COLORS.black};
   font-weight: 500;
   text-align: center;
 `
 
 const MatchTime = styled.div`
   font-size: 14px;
-  color: ${colors.blue};
+  color: ${COLORS.blue};
 `
 
 const FixtureTable = (props) => {
@@ -73,7 +73,7 @@ const FixtureTable = (props) => {
         ) : (
           <Score>
             {props.data.goals.home}:{props.data.goals.home}
-            <MatchTime>{props.data.fixture.status.elapsed}'</MatchTime>
+            <MatchTime>{props.data.fixture.status.elapsed}</MatchTime>
           </Score>
         )}
         <Flag src={props.data.teams.away.logo} />

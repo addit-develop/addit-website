@@ -20,6 +20,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/plugin/tool.js", "src/components/plugin/matchHome/matchHome.js", "src/components/plugin/searchBlock.js"],
   "exclude": ["node_modules"]
 }

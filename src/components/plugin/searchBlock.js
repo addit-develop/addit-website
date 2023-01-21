@@ -1,14 +1,15 @@
+import { COLORS } from '@/constants/constants'
 import { default as React } from 'react'
 import styled from 'styled-components'
 
 const BlockContainer = styled.div`
   width: 100%;
   height: 40px;
-  background-color: #f2f2f2;
+  background-color: ${COLORS.lightgray};
   border-radius: 5px;
   font-size: 16px;
   font-weight: bold;
-  color: #3981bf;
+  color: ${COLORS.blue};
   text-align: center;
   line-height: 40px;
 `
