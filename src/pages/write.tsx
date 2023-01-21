@@ -6,7 +6,7 @@ import styles from '@/styles/write.module.css'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
-const Editor = dynamic(() => import('@/components/editor/editor'), {
+const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 

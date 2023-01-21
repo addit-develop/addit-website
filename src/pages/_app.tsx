@@ -2,6 +2,7 @@ import React from 'react'
 import AppLayout from '@/layout/appLayout'
 import Head from 'next/head'
 import '@/styles/globals.css'
+import wrapper from '../store/configureStore'
 
 interface AppProps {
   Component: React.ElementType
@@ -22,4 +23,4 @@ const App = ({ Component }: AppProps) => {
   )
 }
 
-export default App
+export default wrapper.withRedux(App)
