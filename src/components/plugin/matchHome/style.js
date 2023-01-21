@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import * as colors from '../colors'
+import { COLORS } from '@/constants/constants'
 
 export const Container = styled.div`
   width: 100%;
@@ -8,7 +8,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   gap: 2px;
-  background-color: ${colors.lightgray};
+  background-color: ${COLORS.lightgray};
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -22,7 +22,7 @@ export const Header = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: ${colors.white};
+  background-color: ${COLORS.white};
 `
 
 export const DatePicker = styled.div`
@@ -33,7 +33,7 @@ export const DatePicker = styled.div`
   align-items: center;
   padding: 2px;
   border-radius: 20px;
-  background-color: ${colors.lightgray};
+  background-color: ${COLORS.lightgray};
 `
 
 export const DateContainer = styled.div`
@@ -54,8 +54,8 @@ export const Date = styled.button`
   font-size: 15px;
   font-weight: 500;
   border-radius: 16px;
-  color: ${(props) => (props.selected ? colors.blue : colors.darkgray)};
-  background-color: ${(props) => (props.selected ? colors.white : 'none')};
+  color: ${(props) => (props.selected ? COLORS.blue : COLORS.darkgray)};
+  background-color: ${(props) => (props.selected ? COLORS.white : 'none')};
   box-shadow: ${(props) => (props.selected ? '1px 1px 2px 0px rgba(0, 0, 0, 0.25)' : 'none')};
 `
 
@@ -84,6 +84,6 @@ export const CountryName = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  color: ${colors.lightblack};
+  color: ${COLORS.lightblack};
   cursor: pointer;
 `

@@ -1,11 +1,11 @@
 import React from 'react'
 import Header from '@/components/header/header'
 
-type AppLayoutProps = {
+interface AppLayoutProps {
   children: React.ReactNode
 }
 
-function AppLayout({ children }: AppLayoutProps) {
+const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <div className="container">
       <Header />

@@ -3,7 +3,7 @@ import axios from 'axios'
 import * as Styles from './style'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import * as colors from '../colors'
+import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
 import Countries from '../data/countriesData.json'
 import MajorLeagues from '../data/majorLeaguesData.json'
@@ -81,24 +81,18 @@ const MatchHome = () => {
           <Styles.DatePicker>
             <Styles.ArrowButton onClick={prevDate}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill={colors.darkgray} />
+                <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill={COLORS.darkgray} />
               </svg>
             </Styles.ArrowButton>
             <Styles.DateContainer>
-              <Styles.Date onClick={prevDate}>
-                {convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}
-              </Styles.Date>
+              <Styles.Date onClick={prevDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}</Styles.Date>
               <Styles.Date selected>{convertDate(dayjs(date, 'YYYY-MM-DD'))}</Styles.Date>
-              <Styles.Date onClick={nextDate}>
-                {convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}
-              </Styles.Date>
-              <Styles.Date onClick={twoNextDate}>
-                {convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}
-              </Styles.Date>
+              <Styles.Date onClick={nextDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}</Styles.Date>
+              <Styles.Date onClick={twoNextDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}</Styles.Date>
             </Styles.DateContainer>
             <Styles.ArrowButton onClick={nextDate}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={colors.darkgray} />
+                <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={COLORS.darkgray} />
               </svg>
             </Styles.ArrowButton>
           </Styles.DatePicker>
@@ -108,11 +102,11 @@ const MatchHome = () => {
             Major Leagues
             {majorLeaguesOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M5 13v-2h14v2Z" fill={colors.lightblack} />
+                <path d="M5 13v-2h14v2Z" fill={COLORS.lightblack} />
               </svg>
             ) : (
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6Z" fill={colors.lightblack} />
+                <path d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6Z" fill={COLORS.lightblack} />
               </svg>
             )}
           </Styles.CountryName>

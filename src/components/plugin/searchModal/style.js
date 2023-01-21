@@ -1,3 +1,4 @@
+import { COLORS } from '@/constants/constants'
 import styled from 'styled-components'
 
 export const Modal = styled.div`
@@ -12,19 +13,18 @@ export const Modal = styled.div`
   flex-direction: column;
   align-items: stretch;
   justify-content: start;
-  background: #fff;
+  background: ${COLORS.white};
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05),
-    0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05), 0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
   @media only screen and (max-width: 600px) {
     width: 100%;
     height: 100%;
     right: 0;
     bottom: 0;
     border-radius: 10px 10px 0 0;
-    border-top: 1px solid #c4c4c4;
-    background: #fff;
+    border-top: 1px solid ${COLORS.gray};
+    background: ${COLORS.white};
     overflow: hidden;
   }
 `
@@ -36,7 +36,7 @@ export const DragLine = styled.div`
   height: 4px;
   border-radius: 2px;
   margin: 10px auto 0;
-  background-color: #c4c4c4;
+  background-color: ${COLORS.gray};
   @media only screen and (max-width: 600px) {
     display: flex;
   }
@@ -48,7 +48,7 @@ export const SearchContainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: 48px;
-  background: #ffffff;
+  background: ${COLORS.white};
   align-items: center;
   justify-content: start;
   padding: 0 8px 0 16px;
@@ -67,7 +67,7 @@ export const SearchInput = styled.input`
   line-height: 24px;
   font-size: 16px;
   &::placeholder {
-    color: #c4c4c4;
+    color: ${COLORS.gray};
   }
 `
 
@@ -91,7 +91,7 @@ export const SearchMenuContainer = styled.div`
   display: flex;
   width: 100%;
   height: 44px;
-  background-color: #fff;
+  background-color: ${COLORS.white};
   flex-direction: row;
   align-items: center;
   justify-content: start;
@@ -112,8 +112,8 @@ export const SearchMenu = styled.div`
   height: 28px;
   line-height: 28px;
   font-size: 14px;
-  color: ${(props) => (props.selected ? '#3981bf' : '#8a8a8a')};
-  border-bottom: ${(props) => (props.selected ? '2px solid #3981bf' : 'none')};
+  color: ${(props) => (props.selected ? COLORS.blue : '#8a8a8a')};
+  border-bottom: ${(props) => (props.selected ? `2px solid ${COLORS.blue}` : 'none')};
   font-weight: 500;
   cursor: pointer;
 `
@@ -127,7 +127,7 @@ export const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 8px 0;
-  background-color: #f2f2f2;
+  background-color: ${COLORS.lightgray};
   overflow: hidden;
   @media only screen and (max-width: 600px) {
     padding: 0;
@@ -141,7 +141,7 @@ export const ModalMenuContainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: fit-content;
-  background: #ffffff;
+  background: ${COLORS.white}fff;
   align-items: center;
   justify-content: start;
   gap: 8px;
@@ -159,10 +159,10 @@ export const AddButton = styled.button`
   width: 100%;
   height: 40px;
   border-radius: 20px;
-  background-color: ${(props) => (props.disabled ? '#c4c4c4' : '#3981bf')};
+  background-color: ${(props) => (props.disabled ? '${COLORS.gray}' : '#3981bf')};
   padding: 2px 0;
   font-size: 16px;
-  color: #f2f2f2;
+  color: ${COLORS.lightgray};
   font-weight: bold;
   @media only screen and (max-height: 720px) {
     height: 36px;

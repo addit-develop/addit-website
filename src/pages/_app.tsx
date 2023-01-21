@@ -3,11 +3,11 @@ import AppLayout from '@/layout/appLayout'
 import Head from 'next/head'
 import '@/styles/globals.css'
 
-type AppProps = {
+interface AppProps {
   Component: React.ElementType
 }
 
-function App({ Component }: AppProps) {
+const App = ({ Component }: AppProps) => {
   return (
     <>
       <Head>
