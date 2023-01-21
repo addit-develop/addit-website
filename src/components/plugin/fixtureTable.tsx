@@ -35,6 +35,7 @@ const Flag = styled.img`
 `
 
 const Time = styled.div`
+  flex-shrink: 0;
   width: 47px;
   height: 100%;
   font-size: 15px;
@@ -45,6 +46,7 @@ const Time = styled.div`
 `
 
 const Score = styled.div`
+  flex-shrink: 0;
   width: 47px;
   height: 100%;
   display: flex;

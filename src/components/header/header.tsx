@@ -2,14 +2,34 @@ import { NextComponentType } from 'next'
 import Image from 'next/image'
 import logo from '@/assets/logo_long.svg'
 import styles from './header.module.css'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { loginRequestAction } from '../../reducers/user'
+import rootReducer from '../../reducers/index'
+
+type IRootState = ReturnType<typeof rootReducer>
 
 const Header: NextComponentType = () => {
+  const dispatch = useDispatch()
+  const { logInLoading, logInError } = useSelector((state: IRootState) => state.user)
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError)
+    }
+  }, [logInError])
+
   const [menuState, setMenuState] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
+
+  const signIn = useCallback(() => {
+    setLoggedIn(!loggedIn)
+    dispatch(loginRequestAction())
+  }, [loggedIn])
 
   return (
     <div className={styles.header}>
@@ -48,7 +68,15 @@ const Header: NextComponentType = () => {
       >
         <div className={styles.header__navigation__menu}>Contact</div>
         <div className={styles.header__navigation__menu}>About</div>
-        <div className={styles.header__navigation__menu}>Signout</div>
+        {loggedIn ? (
+          <div className={styles.header__navigation__menu} onClick={signIn}>
+            Signout
+          </div>
+        ) : (
+          <div className={styles.header__navigation__signup} onClick={signIn}>
+            Signup
+          </div>
+        )}
       </div>
     </div>
   )
