@@ -11,6 +11,7 @@
     "typeRoots": ["./@types/@editorjs", "./node_modules/@types"],
     "module": "esnext",
     "moduleResolution": "node",
+    "strictFunctionTypes": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -20,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/plugin/tool.js", "src/components/plugin/matchHome/matchHome.js", "src/components/plugin/searchBlock.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/plugin/footballTool.js"],
   "exclude": ["node_modules"]
 }

@@ -2,7 +2,7 @@ import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
 import MatchHome from '../matchHome/matchHome'
 
-const SearchModal = (props) => {
+const SearchModal = () => {
   const [modalClosed, setModalClosed] = useState(false)
 
   const closeModal = useCallback(() => {
@@ -47,7 +47,10 @@ const SearchModal = (props) => {
           <Styles.AddButton disabled={false}>Select</Styles.AddButton>
           <Styles.CloseButton onClick={closeModal}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6Z" fill="#8C7B72" />
+              <path
+                d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6Z"
+                fill="#8C7B72"
+              />
             </svg>
           </Styles.CloseButton>
         </Styles.ModalMenuContainer>

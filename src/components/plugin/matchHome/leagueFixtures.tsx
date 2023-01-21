@@ -1,6 +1,7 @@
 import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
+import { fixtureType, leagueType } from '@/types'
 import FixtureTable from '../fixtureTable'
 
 const FixturesContainer = styled.div`
@@ -39,8 +40,13 @@ const Flag = styled.img`
   border: 1px solid ${COLORS.gray};
 `
 
-const LeagueFixtures = (props) => {
-  const [menuState, setMenuState] = useState(true)
+interface PropType {
+  fixtures: fixtureType[]
+  league: leagueType
+}
+
+const LeagueFixtures = ({ fixtures, league }: PropType) => {
+  const [menuState, setMenuState] = useState<boolean>(true)
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
@@ -51,8 +57,8 @@ const LeagueFixtures = (props) => {
       <FixturesContainer>
         <LeagueTitle onClick={openMenu}>
           <LeagueName>
-            <Flag src={props.league.logo} />
-            {props.league.name}
+            <Flag src={league.logo} />
+            {league.name}
           </LeagueName>
           {menuState ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -64,7 +70,9 @@ const LeagueFixtures = (props) => {
             </svg>
           )}
         </LeagueTitle>
-        {menuState ? props.data.map((fixture, i) => <FixtureTable data={fixture} key={i} />) : null}
+        {menuState
+          ? fixtures.map((fixture, i) => <FixtureTable fixture={fixture} key={i} />)
+          : null}
       </FixturesContainer>
     </React.Fragment>
   )

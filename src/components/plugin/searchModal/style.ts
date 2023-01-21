@@ -1,7 +1,7 @@
 import { COLORS } from '@/constants/constants'
 import styled from 'styled-components'
 
-export const Modal = styled.div`
+export const Modal = styled.div<{ closed: boolean }>`
   z-index: 9999999;
   width: 49vh;
   height: 98vh;
@@ -16,7 +16,8 @@ export const Modal = styled.div`
   background: ${COLORS.white};
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05), 0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05),
+    0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
   @media only screen and (max-width: 600px) {
     width: 100%;
     height: 100%;
@@ -106,7 +107,7 @@ export const SearchMenuContainer = styled.div`
   }
 `
 
-export const SearchMenu = styled.div`
+export const SearchMenu = styled.div<{ selected?: boolean }>`
   display: flex;
   width: fit-content;
   height: 28px;

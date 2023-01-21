@@ -1,6 +1,7 @@
 import { default as React } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
+import { fixtureType } from '@/types'
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -61,23 +62,25 @@ const MatchTime = styled.div`
   font-size: 14px;
   color: ${COLORS.blue};
 `
-
-const FixtureTable = (props) => {
+interface PropType {
+  fixture: fixtureType
+}
+const FixtureTable = ({ fixture }: PropType) => {
   return (
     <React.Fragment>
       <FixtureContainer>
-        <Home>{props.data.teams.home.name}</Home>
-        <Flag src={props.data.teams.home.logo} />
-        {props.data.fixture.status.short === 'NS' ? (
-          <Time>{props.data.fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)[0]}</Time>
+        <Home>{fixture.teams.home.name}</Home>
+        <Flag src={fixture.teams.home.logo} />
+        {fixture.fixture.status.short === 'NS' ? (
+          <Time>{fixture.fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)[0]}</Time>
         ) : (
           <Score>
-            {props.data.goals.home}:{props.data.goals.home}
-            <MatchTime>{props.data.fixture.status.elapsed}</MatchTime>
+            {fixture.goals.home}:{fixture.goals.away}
+            <MatchTime>{fixture.fixture.status.elapsed}</MatchTime>
           </Score>
         )}
-        <Flag src={props.data.teams.away.logo} />
-        <Away>{props.data.teams.away.name}</Away>
+        <Flag src={fixture.teams.away.logo} />
+        <Away>{fixture.teams.away.name}</Away>
       </FixtureContainer>
     </React.Fragment>
   )
