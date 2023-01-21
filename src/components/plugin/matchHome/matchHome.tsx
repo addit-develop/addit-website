@@ -1,12 +1,13 @@
 import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
 import axios from 'axios'
 import * as Styles from './style'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
-import Countries from '../data/countriesData.json'
-import MajorLeagues from '../data/majorLeaguesData.json'
+import Countries from '@/data/countriesData.json'
+import MajorLeagues from '@/data/majorLeaguesData.json'
+import { fixtureType } from '@/types'
 
 dayjs.extend(relativeTime)
 
@@ -20,8 +21,8 @@ const headers = {
 const MatchHome = () => {
   const TodayDate = useMemo(() => dayjs(), [])
 
-  const [date, setDate] = useState(TodayDate.format('YYYY-MM-DD'))
-  const [fixtureData, setFixtureData] = useState(null)
+  const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
+  const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const MatchHome = () => {
         console.log(fixtureData)
       })
       .catch((err) => {
-        setFixtureData(null)
+        setFixtureData([])
         console.error(err)
       })
   }, [date])
@@ -55,7 +56,7 @@ const MatchHome = () => {
     setDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day').format('YYYY-MM-DD'))
   }, [date])
 
-  const convertDate = useCallback((date) => {
+  const convertDate = useCallback((date: Dayjs) => {
     const formatDate = date.format('YYYY-MM-DD')
     if (formatDate === TodayDate.subtract(1, 'day').format('YYYY-MM-DD')) {
       return 'Yesterday'
@@ -85,10 +86,16 @@ const MatchHome = () => {
               </svg>
             </Styles.ArrowButton>
             <Styles.DateContainer>
-              <Styles.Date onClick={prevDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}</Styles.Date>
+              <Styles.Date onClick={prevDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').subtract(1, 'day'))}
+              </Styles.Date>
               <Styles.Date selected>{convertDate(dayjs(date, 'YYYY-MM-DD'))}</Styles.Date>
-              <Styles.Date onClick={nextDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}</Styles.Date>
-              <Styles.Date onClick={twoNextDate}>{convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}</Styles.Date>
+              <Styles.Date onClick={nextDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').add(1, 'day'))}
+              </Styles.Date>
+              <Styles.Date onClick={twoNextDate}>
+                {convertDate(dayjs(date, 'YYYY-MM-DD').add(2, 'day'))}
+              </Styles.Date>
             </Styles.DateContainer>
             <Styles.ArrowButton onClick={nextDate}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -110,13 +117,13 @@ const MatchHome = () => {
               </svg>
             )}
           </Styles.CountryName>
-          {majorLeaguesOpen && fixtureData !== null
-            ? MajorLeagues.map((league) => {
-                const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
-                if (fixtures.length > 0) return <LeagueFixtures data={fixtures} league={league} />
-                else return null
-              })
-            : null}
+          {majorLeaguesOpen &&
+            fixtureData &&
+            MajorLeagues.map((league) => {
+              const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
+              if (fixtures.length > 0) return <LeagueFixtures fixtures={fixtures} league={league} />
+              else return null
+            })}
         </Styles.LeaguesContainer>
       </Styles.Container>
     </React.Fragment>

@@ -1,7 +1,7 @@
 import Header from '@editorjs/header'
 import Embed from '@editorjs/embed'
 import LinkTool from '@editorjs/link'
-import Timeline from '../plugin/tool'
+import footballTool from '../plugin/footballTool'
 
 export const tools = {
   header: {
@@ -10,5 +10,5 @@ export const tools = {
   },
   embed: Embed,
   linkTool: LinkTool,
-  timeline: Timeline,
+  footballTool: footballTool,
 }

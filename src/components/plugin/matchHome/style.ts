@@ -45,7 +45,7 @@ export const DateContainer = styled.div`
   overflow: hidden;
 `
 
-export const Date = styled.button`
+export const Date = styled.button<{ selected?: boolean }>`
   flex-shrink: 0;
   width: 100px;
   height: 32px;
