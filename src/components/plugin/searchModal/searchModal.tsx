@@ -1,9 +1,12 @@
 import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
+import PlayerHome from '../player/playerHome'
 
 const SearchModal = () => {
+  const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
@@ -33,15 +36,21 @@ const SearchModal = () => {
           </Styles.SearchButton>
         </Styles.SearchContainer>
         <Styles.SearchMenuContainer>
-          <Styles.SearchMenu id="matches" selected>
-            Matches
-          </Styles.SearchMenu>
-          <Styles.SearchMenu id="leagues">Leagues</Styles.SearchMenu>
-          <Styles.SearchMenu id="teams">Teams</Styles.SearchMenu>
-          <Styles.SearchMenu id="players">Players</Styles.SearchMenu>
+          {menu.map((m, i) => {
+            return (
+              <Styles.SearchMenu
+                id={m}
+                key={i}
+                selected={i === selectedIndex}
+                onClick={() => setSelectedIndex(i)}
+              >
+                {m}
+              </Styles.SearchMenu>
+            )
+          })}
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
-          <MatchHome />
+          {selectedIndex === 0 ? <MatchHome /> : selectedIndex === 3 ? <PlayerHome /> : null}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
           <Styles.AddButton disabled={false}>Select</Styles.AddButton>

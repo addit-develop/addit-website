@@ -1,5 +1,4 @@
 import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
-import axios from 'axios'
 import * as Styles from './style'
 import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -8,15 +7,10 @@ import LeagueFixtures from './leagueFixtures'
 import Countries from '@/data/countriesData.json'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { fixtureType } from '@/types'
+import useAxios from '@/hooks/useAxios'
+import axios from 'axios'
 
 dayjs.extend(relativeTime)
-
-const FIXTURE_API = process.env.NEXT_PUBLIC_FIXTURE_API
-
-const headers = {
-  'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
-  'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-}
 
 const MatchHome = () => {
   const TodayDate = useMemo(() => dayjs(), [])
@@ -25,11 +19,27 @@ const MatchHome = () => {
   const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
+  // const axios = useAxios()
+  // const getFixturesData = async () => {
+  //   const response = await axios.get('/fixtures')
+  //   console.log('getFixturesData')
+  //   setFixtureData(response.data.response)
+  // }
+
+  // useEffect(() => {
+  //   getFixturesData()
+  //   console.log('asdfasd')
+  // }, [date])
+  const headers = {
+    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
+    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+  }
+
   useEffect(() => {
     axios
       .request({
         method: 'GET',
-        url: FIXTURE_API,
+        url: process.env.NEXT_PUBLIC_BASE_URL + '/fixtures',
         params: { date },
         headers,
       })
