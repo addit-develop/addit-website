@@ -22,4 +22,5 @@ const WritePage: NextPage = () => {
     </div>
   )
 }
+
 export default WritePage

@@ -1,6 +1,16 @@
+export type BlockDataType = {
+  type: string
+  data: []
+}
+
 type scoreType = {
   home: number | null
   away: number | null
+}
+
+type teamType = {
+  name: string
+  logo: string
 }
 
 export type fixtureType = {
@@ -48,4 +58,22 @@ export type PlayerType = {
   weight: string
   injured: boolean
   photo: string
+}
+
+export type FixtureBlockType = {
+  id: number
+  date: string
+  teams: {
+    home: teamType
+    away: teamType
+  }
+  score: scoreType
+  elapse: number
+}
+
+export type LeagueBlockType = {
+  id: number
+  name: string
+  logo: string
+  fixtures: FixtureBlockType[]
 }

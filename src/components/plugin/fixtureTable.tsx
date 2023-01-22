@@ -1,7 +1,7 @@
 import { default as React } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { fixtureType } from '@/types'
+import { fixtureType, LeagueBlockType } from '@/types'
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -78,7 +78,7 @@ const FixtureTable = ({ fixture }: PropType) => {
         ) : (
           <Score>
             {fixture.goals.home}:{fixture.goals.away}
-            <MatchTime>{fixture.fixture.status.elapsed}</MatchTime>
+            <MatchTime>{fixture.fixture.status.elapsed}'</MatchTime>
           </Score>
         )}
         <Flag src={fixture.teams.away.logo} />

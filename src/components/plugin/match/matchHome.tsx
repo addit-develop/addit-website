@@ -9,27 +9,31 @@ import MajorLeagues from '@/data/majorLeaguesData.json'
 import { fixtureType } from '@/types'
 import useAxios from '@/hooks/useAxios'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { setBlockType } from '../../../reducers/post'
+import rootReducer from '../../../reducers/index'
+
+type IRootState = ReturnType<typeof rootReducer>
 
 dayjs.extend(relativeTime)
 
-const MatchHome = () => {
+interface PropType {
+  selectMode: boolean
+}
+
+const MatchHome = ({ selectMode }: PropType) => {
+  const dispatch = useDispatch()
+  const { blockData } = useSelector((state: IRootState) => state.post)
+  useEffect(() => {
+    dispatch(setBlockType('Fixture_List_By_Date'))
+  }, [])
+
   const TodayDate = useMemo(() => dayjs(), [])
 
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
   const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
-  // const axios = useAxios()
-  // const getFixturesData = async () => {
-  //   const response = await axios.get('/fixtures')
-  //   console.log('getFixturesData')
-  //   setFixtureData(response.data.response)
-  // }
-
-  // useEffect(() => {
-  //   getFixturesData()
-  //   console.log('asdfasd')
-  // }, [date])
   const headers = {
     'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
     'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
@@ -131,7 +135,10 @@ const MatchHome = () => {
             fixtureData &&
             MajorLeagues.map((league) => {
               const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
-              if (fixtures.length > 0) return <LeagueFixtures fixtures={fixtures} league={league} />
+              if (fixtures.length > 0)
+                return (
+                  <LeagueFixtures fixtures={fixtures} league={league} selectMode={selectMode} />
+                )
               else return null
             })}
         </Styles.LeaguesContainer>

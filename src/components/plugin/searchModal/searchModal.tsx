@@ -2,15 +2,30 @@ import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
+import { useSelector } from 'react-redux'
+import rootReducer from '../../../reducers/index'
+
+type IRootState = ReturnType<typeof rootReducer>
 
 const SearchModal = () => {
+  const { blockData } = useSelector((state: IRootState) => state.post)
+
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  const [selectMode, setSelectMode] = useState<boolean>(false)
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
   }, [])
+
+  const selectContent = useCallback(() => {
+    if (selectMode) {
+      console.log(blockData)
+      setModalClosed(true)
+    }
+    setSelectMode(!selectMode)
+  }, [selectMode])
 
   return (
     <React.Fragment>
@@ -50,10 +65,16 @@ const SearchModal = () => {
           })}
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
-          {selectedIndex === 0 ? <MatchHome /> : selectedIndex === 3 ? <PlayerHome /> : null}
+          {selectedIndex === 0 ? (
+            <MatchHome selectMode={selectMode} />
+          ) : selectedIndex === 3 ? (
+            <PlayerHome />
+          ) : null}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
-          <Styles.AddButton disabled={false}>Select</Styles.AddButton>
+          <Styles.AddButton disabled={false} onClick={selectContent}>
+            {selectMode ? 'Add Block' : 'Select'}
+          </Styles.AddButton>
           <Styles.CloseButton onClick={closeModal}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path
