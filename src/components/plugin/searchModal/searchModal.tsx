@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setBlockData } from '../../../reducers/post'
 import rootReducer from '../../../reducers/index'
 import { LeagueBlockType } from '@/types'
+import TeamDetail from '../team/teamDetail'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -80,6 +81,8 @@ const SearchModal = () => {
             <MatchHome selectMode={selectMode} />
           ) : selectedIndex === 1 ? (
             <LeagueHome />
+          ) : selectedIndex === 2 ? (
+            <TeamDetail teamId={98} />
           ) : selectedIndex === 3 ? (
             <PlayerDetail playerId={65} />
           ) : null}

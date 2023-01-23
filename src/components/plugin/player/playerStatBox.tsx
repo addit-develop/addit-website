@@ -1,6 +1,6 @@
 import { COLORS } from '@/constants/constants'
 import { useCountryFlag } from '@/hooks/useCountryFlag'
-import { playerDataType, playerType, statisticsType, teamType } from '@/types'
+import { PlayerDataType, PlayerType, StatisticsType, TeamType } from '@/types'
 import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
@@ -36,7 +36,7 @@ const StatNumber = styled.div`
 `
 
 interface PropsType {
-  playerData: playerDataType
+  playerData: PlayerDataType
 }
 
 const PlayerStatBox = ({ playerData }: PropsType) => {
@@ -60,7 +60,7 @@ const PlayerStatBox = ({ playerData }: PropsType) => {
         <Row>
           <StatBox>
             <StatName>Shirt</StatName>
-            <StatNumber>{NaN}</StatNumber>
+            <StatNumber>등번호</StatNumber>
           </StatBox>
           <StatBox>
             <StatName>Injured</StatName>

@@ -6,6 +6,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginRequestAction } from '../../reducers/user'
 import rootReducer from '../../reducers/index'
+import Link from 'next/link'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -34,10 +35,10 @@ const Header: NextComponentType = () => {
   return (
     <div className={styles.header}>
       <div className={styles.header__container}>
-        <div className={styles.header__title}>
+        <Link href="/" className={styles.header__title}>
           <Image className={styles.header__logo} src={logo} alt="addit_full_logo" />
           <div>for Football</div>
-        </div>
+        </Link>
         <div className={styles.header__navigation__button} id="menu" onClick={openMenu}>
           {menuState ? (
             <svg

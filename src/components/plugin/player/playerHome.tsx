@@ -1,11 +1,11 @@
-import { playerDataType, playerType, statisticsType } from '@/types'
+import { PlayerDataType, PlayerType, StatisticsType } from '@/types'
 import * as Styles from './style'
 import React, { useEffect, useState } from 'react'
 import useAxios from '@/hooks/useAxios'
 import Link from 'next/link'
 
 const PlayerHome = () => {
-  const [playerList, setPlayerList] = useState<playerDataType[]>([])
+  const [playerList, setPlayerList] = useState<PlayerDataType[]>([])
 
   const axios = useAxios()
   const getPlayersData = async () => {

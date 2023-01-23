@@ -1,15 +1,7 @@
-import {
-  default as React,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  Dispatch,
-  SetStateAction,
-} from 'react'
+import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { fixtureType, leagueType, LeagueBlockType, FixtureBlockType } from '@/types'
+import { FixtureType, LeagueType, LeagueBlockType, FixtureBlockType } from '@/types'
 import FixtureTable from '../fixtureTable'
 import { produceWithPatches } from 'immer'
 import { useDispatch, useSelector } from 'react-redux'

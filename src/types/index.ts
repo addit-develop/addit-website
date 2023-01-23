@@ -3,41 +3,41 @@ export type BlockDataType = {
   data: []
 }
 
-type scoreType = {
+type ScoreType = {
   home: number | null
   away: number | null
 }
 
-export type fixtureType = {
+export type FixtureType = {
   fixture: any
   league: any
   teams: {
     home: any
     away: any
   }
-  goals: scoreType
+  goals: ScoreType
   score: {
-    halftime: scoreType
-    fulltime: scoreType
-    extratime: scoreType
-    penalty: scoreType
+    halftime: ScoreType
+    fulltime: ScoreType
+    extratime: ScoreType
+    penalty: ScoreType
   }
 }
 
-export type leagueType = {
+export type LeagueType = {
   id: number
   name: string
   type: string
   logo: string
 }
 
-export type countryType = {
+export type CountryType = {
   code: string
   name: string
   flag: string
 }
 
-export type playerType = {
+export type PlayerType = {
   id: number
   name: string
   firstname: string
@@ -55,7 +55,7 @@ export type playerType = {
   photo: string
 }
 
-export type statisticsType = {
+export type StatisticsType = {
   team: any
   league: any
   games: any
@@ -71,12 +71,12 @@ export type statisticsType = {
   penalty: any
 }
 
-export type playerDataType = {
-  player: playerType
-  statistics: statisticsType[]
+export type PlayerDataType = {
+  player: PlayerType
+  statistics: StatisticsType[]
 }
 
-export type teamType = {
+export type TeamType = {
   id: number
   name: string
   code: string
@@ -99,7 +99,7 @@ export type FixtureBlockType = {
       logo: string
     }
   }
-  score: scoreType
+  score: ScoreType
   status: string
   elapse: number | null
 }

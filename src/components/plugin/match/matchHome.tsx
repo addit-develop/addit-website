@@ -6,7 +6,7 @@ import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
 import Countries from '@/data/countriesData.json'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { BlockDataType, FixtureBlockType, fixtureType, LeagueBlockType } from '@/types'
+import { BlockDataType, FixtureBlockType, FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,7 +28,7 @@ const MatchHome = ({ selectMode }: PropType) => {
   const TodayDate = useMemo(() => dayjs(), [])
 
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
-  const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
+  const [fixtureData, setFixtureData] = useState<FixtureType[]>([])
   const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
