@@ -1,4 +1,7 @@
-import { AnyTxtRecord } from 'dns'
+export type BlockDataType = {
+  type: string
+  data: []
+}
 
 type scoreType = {
   home: number | null
@@ -81,4 +84,29 @@ export type teamType = {
   founded: number
   national: boolean
   logo: string
+}
+
+export type FixtureBlockType = {
+  id: number
+  date: string
+  teams: {
+    home: {
+      name: string
+      logo: string
+    }
+    away: {
+      name: string
+      logo: string
+    }
+  }
+  score: scoreType
+  status: string
+  elapse: number | null
+}
+
+export type LeagueBlockType = {
+  id: number
+  name: string
+  logo: string
+  fixtures: FixtureBlockType[]
 }

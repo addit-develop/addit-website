@@ -160,11 +160,14 @@ export const AddButton = styled.button`
   width: 100%;
   height: 40px;
   border-radius: 20px;
-  background-color: ${(props) => (props.disabled ? '${COLORS.gray}' : '#3981bf')};
+  background-color: ${COLORS.blue};
   padding: 2px 0;
   font-size: 16px;
   color: ${COLORS.lightgray};
   font-weight: bold;
+  &:disabled {
+    background-color: ${COLORS.gray};
+  }
   @media only screen and (max-height: 720px) {
     height: 36px;
     border-radius: 18px;

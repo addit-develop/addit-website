@@ -6,28 +6,91 @@ import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
 import Countries from '@/data/countriesData.json'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { fixtureType } from '@/types'
+import { BlockDataType, FixtureBlockType, fixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { setBlockType, setBlockData } from '../../../reducers/post'
+import rootReducer from '../../../reducers/index'
+
+type IRootState = ReturnType<typeof rootReducer>
 
 dayjs.extend(relativeTime)
 
-const MatchHome = () => {
+interface PropType {
+  selectMode: boolean
+}
+
+const MatchHome = ({ selectMode }: PropType) => {
+  const dispatch = useDispatch()
+  const { blockData } = useSelector((state: IRootState) => state.post)
+
   const TodayDate = useMemo(() => dayjs(), [])
 
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
   const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
+  const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
   const axios = useAxios()
-  const getFixturesData = async () => {
+  const getFixtureData = async () => {
     const response = await axios.get('/fixtures', { params: { date } })
     console.log(response)
     setFixtureData(response.data.response)
   }
 
+  const makeFixtureBlock = () => {
+    const fullDataList: LeagueBlockType[] = []
+    const emptyFixtureList: LeagueBlockType[] = []
+    fixtureData.forEach((x) => {
+      const xBlockData: FixtureBlockType = {
+        id: x.fixture.id,
+        date: x.fixture.date,
+        teams: {
+          home: {
+            name: x.teams.home.name,
+            logo: x.teams.home.logo,
+          },
+          away: {
+            name: x.teams.away.name,
+            logo: x.teams.away.logo,
+          },
+        },
+        score: x.goals,
+        status: x.fixture.status.short,
+        elapse: x.fixture.status.elapsed,
+      }
+      const index = fullDataList.findIndex((y: LeagueBlockType) => x.league.id === y.id)
+      if (index === -1) {
+        fullDataList.push({
+          id: x.league.id,
+          name: x.league.name,
+          logo: x.league.logo,
+          fixtures: [xBlockData],
+        })
+        emptyFixtureList.push({
+          id: x.league.id,
+          name: x.league.name,
+          logo: x.league.logo,
+          fixtures: [],
+        })
+      } else {
+        fullDataList[index].fixtures.push(xBlockData)
+      }
+    })
+    setLeagueList(fullDataList)
+    dispatch(setBlockData(emptyFixtureList))
+  }
+
+  // reducer blockData 타입 설정
   useEffect(() => {
-    getFixturesData()
+    dispatch(setBlockType('Fixture_List_By_Date'))
+  }, [fixtureData])
+
+  // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
+  useEffect(() => {
+    getFixtureData()
+    makeFixtureBlock()
   }, [date])
 
   const prevDate = useCallback(() => {
@@ -106,9 +169,9 @@ const MatchHome = () => {
           {majorLeaguesOpen &&
             fixtureData &&
             MajorLeagues.map((league) => {
-              const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
-              if (fixtures.length > 0)
-                return <LeagueFixtures fixtures={fixtures} league={league} key={league.id} />
+              const leagueData = leagueList.find((x) => x.id === league.id)
+              if (leagueData)
+                return <LeagueFixtures data={leagueData} selectMode={selectMode} key={league.id} />
               else return null
             })}
         </Styles.LeaguesContainer>

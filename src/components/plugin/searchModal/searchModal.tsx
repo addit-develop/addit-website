@@ -4,15 +4,39 @@ import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
+import { useSelector, useDispatch } from 'react-redux'
+import { setBlockData } from '../../../reducers/post'
+import rootReducer from '../../../reducers/index'
+import { LeagueBlockType } from '@/types'
+
+type IRootState = ReturnType<typeof rootReducer>
 
 const SearchModal = () => {
+  const dispatch = useDispatch()
+  const { blockData } = useSelector((state: IRootState) => state.post)
+
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  const [selectMode, setSelectMode] = useState<boolean>(false)
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
   }, [])
+
+  const selectContent = useCallback(() => {
+    // 선택된 데이터 바탕으로 블록 생성
+    if (selectMode) {
+      // 선택된 경기가 없는 리그 정보 삭제
+      const filterData = blockData.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+      dispatch(setBlockData(filterData))
+
+      setModalClosed(true)
+    }
+
+    // 데이터 선택 모드로 변경
+    setSelectMode(!selectMode)
+  }, [selectMode, blockData])
 
   return (
     <React.Fragment>
@@ -53,7 +77,7 @@ const SearchModal = () => {
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
           {selectedIndex === 0 ? (
-            <MatchHome />
+            <MatchHome selectMode={selectMode} />
           ) : selectedIndex === 1 ? (
             <LeagueHome />
           ) : selectedIndex === 3 ? (
@@ -61,7 +85,9 @@ const SearchModal = () => {
           ) : null}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
-          <Styles.AddButton disabled={false}>Select</Styles.AddButton>
+          <Styles.AddButton disabled={false} onClick={selectContent}>
+            {selectMode ? 'Add Block' : 'Select'}
+          </Styles.AddButton>
           <Styles.CloseButton onClick={closeModal}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path
