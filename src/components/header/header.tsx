@@ -4,21 +4,15 @@ import logo from '@/assets/logo_long.svg'
 import styles from './header.module.css'
 import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginRequestAction } from '../../reducers/user'
-import rootReducer from '../../reducers/index'
 import Link from 'next/link'
+import { loginRequestAction } from '@/store/reducers/user'
+import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
-  const { logInLoading, logInError } = useSelector((state: IRootState) => state.user)
-
-  useEffect(() => {
-    if (logInError) {
-      alert(logInError)
-    }
-  }, [logInError])
+  const { logInLoading, logInError } = useSelector((state: IRootState) => state.userReducer)
 
   const [menuState, setMenuState] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
@@ -29,8 +23,14 @@ const Header: NextComponentType = () => {
 
   const signIn = useCallback(() => {
     setLoggedIn(!loggedIn)
-    dispatch(loginRequestAction())
+    // dispatch(loginRequestAction())
   }, [loggedIn])
+
+  //   useEffect(() => {
+  //     if (logInError) {
+  //       alert(logInError)
+  //     }
+  //   }, [logInError])
 
   return (
     <div className={styles.header}>

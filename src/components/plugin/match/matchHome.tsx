@@ -8,10 +8,9 @@ import Countries from '@/data/countriesData.json'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { BlockDataType, FixtureBlockType, FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBlockType, setBlockData } from '../../../reducers/post'
-import rootReducer from '../../../reducers/index'
+import rootReducer from '@/store/reducers'
+import { setBlockData, setBlockType } from '@/store/reducers/post'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -23,7 +22,7 @@ interface PropType {
 
 const MatchHome = ({ selectMode }: PropType) => {
   const dispatch = useDispatch()
-  const { blockData } = useSelector((state: IRootState) => state.post)
+  const { blockData } = useSelector((state: IRootState) => state.postReducer)
 
   const TodayDate = useMemo(() => dayjs(), [])
 

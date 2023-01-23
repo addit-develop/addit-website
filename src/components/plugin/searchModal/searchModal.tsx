@@ -5,16 +5,16 @@ import PlayerHome from '../player/playerHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
-import { setBlockData } from '../../../reducers/post'
-import rootReducer from '../../../reducers/index'
 import { LeagueBlockType } from '@/types'
 import TeamDetail from '../team/teamDetail'
+import { setBlockData } from '@/store/reducers/post'
+import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>
 
 const SearchModal = () => {
   const dispatch = useDispatch()
-  const { blockData } = useSelector((state: IRootState) => state.post)
+  const { blockData } = useSelector((state: IRootState) => state.postReducer)
 
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
