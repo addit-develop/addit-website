@@ -1,7 +1,7 @@
 import produce from 'immer'
 
 export const initialState = {
-  blockData: {},
+  blockData: { type: '', data: [] },
 }
 
 export const SET_BLOCK_DATA = 'SET_BLOCK_DATA'

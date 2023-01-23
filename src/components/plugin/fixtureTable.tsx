@@ -1,7 +1,7 @@
 import { default as React } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { fixtureType, LeagueBlockType } from '@/types'
+import { FixtureBlockType, LeagueBlockType } from '@/types'
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -65,7 +65,7 @@ const MatchTime = styled.div`
   color: ${COLORS.blue};
 `
 interface PropType {
-  fixture: fixtureType
+  fixture: FixtureBlockType
 }
 const FixtureTable = ({ fixture }: PropType) => {
   return (
@@ -73,12 +73,12 @@ const FixtureTable = ({ fixture }: PropType) => {
       <FixtureContainer>
         <Home>{fixture.teams.home.name}</Home>
         <Flag src={fixture.teams.home.logo} />
-        {fixture.fixture.status.short === 'NS' ? (
-          <Time>{fixture.fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)[0]}</Time>
+        {fixture.status === 'NS' ? (
+          <Time>{fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)[0]}</Time>
         ) : (
           <Score>
-            {fixture.goals.home}:{fixture.goals.away}
-            <MatchTime>{fixture.fixture.status.elapsed}'</MatchTime>
+            {fixture.score.home}:{fixture.score.away}
+            <MatchTime>{fixture.elapse}'</MatchTime>
           </Score>
         )}
         <Flag src={fixture.teams.away.logo} />

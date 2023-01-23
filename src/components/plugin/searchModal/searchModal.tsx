@@ -2,12 +2,15 @@ import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setBlockData } from '../../../reducers/post'
 import rootReducer from '../../../reducers/index'
+import { LeagueBlockType } from '@/types'
 
 type IRootState = ReturnType<typeof rootReducer>
 
 const SearchModal = () => {
+  const dispatch = useDispatch()
   const { blockData } = useSelector((state: IRootState) => state.post)
 
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
@@ -20,12 +23,18 @@ const SearchModal = () => {
   }, [])
 
   const selectContent = useCallback(() => {
+    // 선택된 데이터 바탕으로 블록 생성
     if (selectMode) {
-      console.log(blockData)
+      // 선택된 경기가 없는 리그 정보 삭제
+      const filterData = blockData.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+      dispatch(setBlockData(filterData))
+
       setModalClosed(true)
     }
+
+    // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
-  }, [selectMode])
+  }, [selectMode, blockData])
 
   return (
     <React.Fragment>

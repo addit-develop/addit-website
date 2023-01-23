@@ -2,6 +2,9 @@ import { default as React } from 'react'
 import ReactDOM from 'react-dom'
 import SearchBlock from './searchBlock'
 import SearchModal from './searchModal/searchModal'
+import { Provider } from 'react-redux'
+import { store } from '../../store/configureStore'
+
 export default class FootballTool {
   static get toolbox() {
     return {
@@ -35,10 +38,12 @@ export default class FootballTool {
     this.nodes.wrapper = rootNode
 
     ReactDOM.createRoot(rootNode).render(
-      <React.StrictMode>
-        <SearchBlock />
-        <SearchModal />
-      </React.StrictMode>
+      <Provider store={store}>
+        <React.StrictMode>
+          <SearchBlock />
+          <SearchModal />
+        </React.StrictMode>
+      </Provider>
     )
 
     return this.nodes.wrapper

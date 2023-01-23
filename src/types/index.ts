@@ -68,7 +68,8 @@ export type FixtureBlockType = {
     away: teamType
   }
   score: scoreType
-  elapse: number
+  status: string
+  elapse: number | null
 }
 
 export type LeagueBlockType = {
