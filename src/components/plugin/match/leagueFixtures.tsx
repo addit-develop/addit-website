@@ -66,14 +66,14 @@ const FixtureContainer = styled.div`
   height: fit-content;
 `
 
-interface PropType {
+interface PropsType {
   data: LeagueBlockType
   selectMode: boolean
   forBlock?: boolean
   id?: string
 }
 
-const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropType) => {
+const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: IRootState) => state.post)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
@@ -104,7 +104,9 @@ const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropType) =>
 
   useEffect(() => {
     // 선택한 경기 정보를 리스트에 반영
-    setSelectedFixtureData(data.fixtures.filter((x, i) => selectedFixtureBoolean[i]))
+    setSelectedFixtureData(
+      data.fixtures.filter((x: FixtureBlockType, i: number) => selectedFixtureBoolean[i])
+    )
     setAllSelected(selectedFixtureBoolean.findIndex((x) => x === true) !== -1)
     console.log(allSelected, selectedFixtureBoolean)
   }, [selectedFixtureBoolean, allSelected])
@@ -153,7 +155,7 @@ const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropType) =>
         </LeagueTitle>
         {menuState
           ? data.fixtures.map((fixture, i) => (
-              <FixtureContainer>
+              <FixtureContainer key={i}>
                 <SelectBox
                   selectMode={selectMode}
                   allSelected={selectedFixtureBoolean[i]}

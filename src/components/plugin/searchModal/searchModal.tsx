@@ -2,6 +2,8 @@ import * as Styles from './style'
 import { default as React, useCallback, useEffect, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
+import PlayerDetail from '../player/playerDetail'
+import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
 import { setBlockData, setBlockReady } from '../../../reducers/post'
 import rootReducer from '../../../reducers/index'
@@ -83,8 +85,10 @@ const SearchModal = ({ id }: Props) => {
         <Styles.ContentContainer>
           {selectedIndex === 0 ? (
             <MatchHome selectMode={selectMode} id={id} />
+          ) : selectedIndex === 1 ? (
+            <LeagueHome />
           ) : selectedIndex === 3 ? (
-            <PlayerHome />
+            <PlayerDetail playerId={65} />
           ) : null}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>

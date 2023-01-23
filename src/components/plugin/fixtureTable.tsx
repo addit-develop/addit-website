@@ -65,10 +65,10 @@ const MatchTime = styled.div`
   font-size: 14px;
   color: ${COLORS.blue};
 `
-interface PropType {
+interface PropsType {
   fixture: FixtureBlockType
 }
-const FixtureTable = ({ fixture }: PropType) => {
+const FixtureTable = ({ fixture }: PropsType) => {
   const time: string[] | null = fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)
 
   return (

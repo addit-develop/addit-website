@@ -5,7 +5,8 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { fixtureType, LeagueBlockType } from '@/types'
+import { BlockDataType, FixtureBlockType, fixtureType, LeagueBlockType } from '@/types'
+import useAxios from '@/hooks/useAxios'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeBlockData, setBlockData } from '../../../reducers/post'
@@ -30,25 +31,17 @@ const MatchHome = ({ selectMode, id }: PropType) => {
   const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
-  const headers = {
-    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
-    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
-  }
-
-  // reducer blockData 타입 설정
+  // 새로운 blockdata 생성
   useEffect(() => {
     dispatch(makeBlockData(id, 'Fixture_List_By_Date'))
   }, [])
 
+  const axios = useAxios()
+
   // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   useEffect(() => {
     axios
-      .request({
-        method: 'GET',
-        url: process.env.NEXT_PUBLIC_BASE_URL + '/fixtures',
-        params: { date },
-        headers,
-      })
+      .get('/fixtures', { params: { date } })
       .then((response) => {
         console.log(response)
         setFixtureData(response.data.response)
@@ -177,7 +170,14 @@ const MatchHome = ({ selectMode, id }: PropType) => {
             MajorLeagues.map((league) => {
               const leagueData = leagueList.find((x) => x.id === league.id)
               if (leagueData)
-                return <LeagueFixtures data={leagueData} selectMode={selectMode} id={id} />
+                return (
+                  <LeagueFixtures
+                    data={leagueData}
+                    selectMode={selectMode}
+                    id={id}
+                    key={league.id}
+                  />
+                )
               else return null
             })}
         </Styles.LeaguesContainer>
