@@ -4,13 +4,11 @@ import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
-import Countries from '@/data/countriesData.json'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { fixtureType, LeagueBlockType } from '@/types'
-import useAxios from '@/hooks/useAxios'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBlockType, setBlockData } from '../../../reducers/post'
+import { makeBlockData, setBlockData } from '../../../reducers/post'
 import rootReducer from '../../../reducers/index'
 
 type IRootState = ReturnType<typeof rootReducer>
@@ -19,11 +17,11 @@ dayjs.extend(relativeTime)
 
 interface PropType {
   selectMode: boolean
+  id: string
 }
 
-const MatchHome = ({ selectMode }: PropType) => {
+const MatchHome = ({ selectMode, id }: PropType) => {
   const dispatch = useDispatch()
-  const { blockData } = useSelector((state: IRootState) => state.post)
 
   const TodayDate = useMemo(() => dayjs(), [])
 
@@ -39,8 +37,8 @@ const MatchHome = ({ selectMode }: PropType) => {
 
   // reducer blockData 타입 설정
   useEffect(() => {
-    dispatch(setBlockType('Fixture_List_By_Date'))
-  }, [fixtureData])
+    dispatch(makeBlockData(id, 'Fixture_List_By_Date'))
+  }, [])
 
   // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   useEffect(() => {
@@ -93,7 +91,7 @@ const MatchHome = ({ selectMode }: PropType) => {
           }
         })
         setLeagueList(fullDataList)
-        dispatch(setBlockData(emptyFixtureList))
+        dispatch(setBlockData(id, emptyFixtureList))
       })
       .catch((err) => {
         setFixtureData([])
@@ -178,7 +176,8 @@ const MatchHome = ({ selectMode }: PropType) => {
             fixtureData &&
             MajorLeagues.map((league) => {
               const leagueData = leagueList.find((x) => x.id === league.id)
-              if (leagueData) return <LeagueFixtures data={leagueData} selectMode={selectMode} />
+              if (leagueData)
+                return <LeagueFixtures data={leagueData} selectMode={selectMode} id={id} />
               else return null
             })}
         </Styles.LeaguesContainer>
