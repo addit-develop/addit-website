@@ -1,3 +1,5 @@
+import { AnyTxtRecord } from 'dns'
+
 type scoreType = {
   home: number | null
   away: number | null
@@ -26,13 +28,13 @@ export type leagueType = {
   logo: string
 }
 
-export type NationType = {
+export type countryType = {
   code: string
   name: string
   flag: string
 }
 
-export type PlayerType = {
+export type playerType = {
   id: number
   name: string
   firstname: string
@@ -48,4 +50,35 @@ export type PlayerType = {
   weight: string
   injured: boolean
   photo: string
+}
+
+export type statisticsType = {
+  team: any
+  league: any
+  games: any
+  substitutes: any
+  shots: any
+  goals: any
+  passes: any
+  tackles: any
+  duels: any
+  dribbles: any
+  fouls: any
+  cards: any
+  penalty: any
+}
+
+export type playerDataType = {
+  player: playerType
+  statistics: statisticsType[]
+}
+
+export type teamType = {
+  id: number
+  name: string
+  code: string
+  country: string
+  founded: number
+  national: boolean
+  logo: string
 }

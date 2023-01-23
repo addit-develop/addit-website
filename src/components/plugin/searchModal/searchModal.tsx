@@ -2,6 +2,8 @@ import * as Styles from './style'
 import { default as React, useCallback, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
+import PlayerDetail from '../player/playerDetail'
+import LeagueHome from '../league/leagueHome'
 
 const SearchModal = () => {
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
@@ -50,7 +52,13 @@ const SearchModal = () => {
           })}
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
-          {selectedIndex === 0 ? <MatchHome /> : selectedIndex === 3 ? <PlayerHome /> : null}
+          {selectedIndex === 0 ? (
+            <MatchHome />
+          ) : selectedIndex === 1 ? (
+            <LeagueHome />
+          ) : selectedIndex === 3 ? (
+            <PlayerDetail playerId={65} />
+          ) : null}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
           <Styles.AddButton disabled={false}>Select</Styles.AddButton>

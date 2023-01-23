@@ -19,39 +19,15 @@ const MatchHome = () => {
   const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
-  // const axios = useAxios()
-  // const getFixturesData = async () => {
-  //   const response = await axios.get('/fixtures')
-  //   console.log('getFixturesData')
-  //   setFixtureData(response.data.response)
-  // }
-
-  // useEffect(() => {
-  //   getFixturesData()
-  //   console.log('asdfasd')
-  // }, [date])
-  const headers = {
-    'X-RapidAPI-Host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
-    'X-RapidAPI-Key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
+  const axios = useAxios()
+  const getFixturesData = async () => {
+    const response = await axios.get('/fixtures', { params: { date } })
+    console.log(response)
+    setFixtureData(response.data.response)
   }
 
   useEffect(() => {
-    axios
-      .request({
-        method: 'GET',
-        url: process.env.NEXT_PUBLIC_BASE_URL + '/fixtures',
-        params: { date },
-        headers,
-      })
-      .then((response) => {
-        console.log(response)
-        setFixtureData(response.data.response)
-        console.log(fixtureData)
-      })
-      .catch((err) => {
-        setFixtureData([])
-        console.error(err)
-      })
+    getFixturesData()
   }, [date])
 
   const prevDate = useCallback(() => {
@@ -131,7 +107,8 @@ const MatchHome = () => {
             fixtureData &&
             MajorLeagues.map((league) => {
               const fixtures = fixtureData.filter((fixture) => fixture.league.id === league.id)
-              if (fixtures.length > 0) return <LeagueFixtures fixtures={fixtures} league={league} />
+              if (fixtures.length > 0)
+                return <LeagueFixtures fixtures={fixtures} league={league} key={league.id} />
               else return null
             })}
         </Styles.LeaguesContainer>

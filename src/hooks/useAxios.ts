@@ -3,16 +3,15 @@ import { useMemo } from 'react'
 
 const useAxios = () => {
   const FIXTURE_API = process.env.NEXT_PUBLIC_BASE_URL
-
   const axiosInstance = useMemo(() => {
     const instance = axios.create({
       baseURL: FIXTURE_API,
     }) // Axios Instance 생성
     instance.interceptors.request.use(async (config) => {
-      //const token = await yourToken;  header에 들어갈 token 받아오기
       return {
         ...config,
         headers: {
+          ...(config.headers ?? {}),
           'x-rapidapi-host': process.env.NEXT_PUBLIC_X_RapidAPI_Host,
           'x-rapidapi-key': process.env.NEXT_PUBLIC_X_RapidAPI_Key,
         },

@@ -40,12 +40,12 @@ const Flag = styled.img`
   border: 1px solid ${COLORS.gray};
 `
 
-interface PropType {
+interface PropsType {
   fixtures: fixtureType[]
   league: leagueType
 }
 
-const LeagueFixtures = ({ fixtures, league }: PropType) => {
+const LeagueFixtures = ({ fixtures, league }: PropsType) => {
   const [menuState, setMenuState] = useState<boolean>(true)
 
   const openMenu = useCallback(() => {

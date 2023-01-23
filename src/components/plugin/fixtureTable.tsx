@@ -64,10 +64,10 @@ const MatchTime = styled.div`
   font-size: 14px;
   color: ${COLORS.blue};
 `
-interface PropType {
+interface PropsType {
   fixture: fixtureType
 }
-const FixtureTable = ({ fixture }: PropType) => {
+const FixtureTable = ({ fixture }: PropsType) => {
   return (
     <React.Fragment>
       <FixtureContainer>
