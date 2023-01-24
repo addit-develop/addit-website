@@ -1,5 +1,5 @@
 import { default as React, useState, useEffect, useCallback, useMemo } from 'react'
-import * as Styles from './style'
+import * as Styles from './matchHome-st'
 import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
@@ -16,12 +16,12 @@ type IRootState = ReturnType<typeof rootReducer>
 
 dayjs.extend(relativeTime)
 
-interface PropType {
+interface PropsType {
   selectMode: boolean
   id: string
 }
 
-const MatchHome = ({ selectMode, id }: PropType) => {
+const MatchHome = ({ selectMode, id }: PropsType) => {
   const dispatch = useDispatch()
 
   const TodayDate = useMemo(() => dayjs(), [])
