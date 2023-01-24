@@ -10,7 +10,7 @@ import { BlockDataType, FixtureBlockType, FixtureType, LeagueBlockType } from '@
 import useAxios from '@/hooks/useAxios'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer from '@/store/reducers'
-import { setBlockData, setBlockType } from '@/store/reducers/post'
+import { setBlockData, setBlockType } from '@/store/actions/postAction'
 
 type IRootState = ReturnType<typeof rootReducer>
 

@@ -6,7 +6,7 @@ import FixtureTable from '../fixtureTable'
 import { produceWithPatches } from 'immer'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer from '@/store/reducers'
-import { setBlockData } from '@/store/reducers/post'
+import { setBlockData } from '@/store/actions/postAction'
 
 type IRootState = ReturnType<typeof rootReducer>
 
