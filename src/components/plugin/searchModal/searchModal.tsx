@@ -1,20 +1,24 @@
 import * as Styles from './style'
-import { default as React, useCallback, useRef, useState } from 'react'
+import { default as React, useCallback, useEffect, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerHome from '../player/playerHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
-import { LeagueBlockType } from '@/types'
+import { LeagueBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
-import { setBlockData } from '@/store/reducers/post'
+import { setBlockData, setBlockReady } from '@/store/actions/postAction'
 import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>
 
-const SearchModal = () => {
+interface Props {
+  id: string
+}
+
+const SearchModal = ({ id }: Props) => {
   const dispatch = useDispatch()
-  const { blockData } = useSelector((state: IRootState) => state.postReducer)
+  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
 
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
@@ -29,15 +33,18 @@ const SearchModal = () => {
     // 선택된 데이터 바탕으로 블록 생성
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
-      const filterData = blockData.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
-      dispatch(setBlockData(filterData))
+      const filterData = blockDataList
+        .find((x: BlockDataType) => x.id === id)
+        .data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+      dispatch(setBlockData(id, filterData))
+      dispatch(setBlockReady(id))
 
       setModalClosed(true)
     }
 
     // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
-  }, [selectMode, blockData])
+  }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === id)])
 
   return (
     <React.Fragment>
@@ -78,7 +85,7 @@ const SearchModal = () => {
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
           {selectedIndex === 0 ? (
-            <MatchHome selectMode={selectMode} />
+            <MatchHome selectMode={selectMode} id={id} />
           ) : selectedIndex === 1 ? (
             <LeagueHome />
           ) : selectedIndex === 2 ? (

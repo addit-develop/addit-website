@@ -1,16 +1,15 @@
 import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { FixtureType, LeagueType, LeagueBlockType, FixtureBlockType } from '@/types'
+import { LeagueBlockType, FixtureBlockType, BlockDataType } from '@/types'
 import FixtureTable from '../fixtureTable'
-import { produceWithPatches } from 'immer'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer from '@/store/reducers'
 import { setBlockData } from '@/store/actions/postAction'
 
 type IRootState = ReturnType<typeof rootReducer>
 
-const FixturesContainer = styled.div`
+const FixturesContainer = styled.div<{ forBlock?: boolean }>`
   position: relative;
   width: 100%;
   height: fit-content;
@@ -19,6 +18,7 @@ const FixturesContainer = styled.div`
   padding: 0 10px;
   background-color: ${COLORS.white};
   border-radius: 10px;
+  border-bottom: ${(props) => (props.forBlock ? '1px solid ${COLORS.gray}' : 'none')};
 `
 
 const SelectBox = styled.div<{ selectMode?: boolean; allSelected?: boolean }>`
@@ -29,7 +29,7 @@ const SelectBox = styled.div<{ selectMode?: boolean; allSelected?: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${(props) => (props.allSelected ? 'transperant' : 'rgba(0, 0, 0, 0.5)')};
+  background-color: ${(props) => (props.allSelected ? 'transperant' : 'rgba(255, 255, 255, 0.8)')};
 `
 
 const LeagueTitle = styled.div`
@@ -69,11 +69,13 @@ const FixtureContainer = styled.div`
 interface PropsType {
   data: LeagueBlockType
   selectMode: boolean
+  forBlock?: boolean
+  id?: string
 }
 
-const LeagueFixtures = ({ data, selectMode }: PropsType) => {
+const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) => {
   const dispatch = useDispatch()
-  const { blockData } = useSelector((state: IRootState) => state.postReducer)
+  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
     data.fixtures.map(() => false)
   ) // 개별 경기 선택 유무 리스트
@@ -84,22 +86,27 @@ const LeagueFixtures = ({ data, selectMode }: PropsType) => {
 
   // 선택한 경기 정보 리스트 바뀔 때마다 reducer blockData에 반영
   useEffect(() => {
-    const newBlockData = blockData.data.map((x: LeagueBlockType) =>
-      x.id === data.id
-        ? {
-            id: data.id,
-            name: data.name,
-            logo: data.logo,
-            fixtures: selectedFixtureData,
-          }
-        : x
-    )
-    dispatch(setBlockData(newBlockData))
+    const myBlockData = blockDataList.find((x: BlockDataType) => x.id === id)
+    const newBlockData =
+      myBlockData &&
+      myBlockData.data.map((x: LeagueBlockType) =>
+        x.id === data.id
+          ? {
+              id: data.id,
+              name: data.name,
+              logo: data.logo,
+              fixtures: selectedFixtureData,
+            }
+          : x
+      )
+    if (id && !myBlockData.isReady) dispatch(setBlockData(id, newBlockData))
   }, [selectedFixtureData])
 
   useEffect(() => {
     // 선택한 경기 정보를 리스트에 반영
-    setSelectedFixtureData(data.fixtures.filter((x, i) => selectedFixtureBoolean[i]))
+    setSelectedFixtureData(
+      data.fixtures.filter((x: FixtureBlockType, i: number) => selectedFixtureBoolean[i])
+    )
     setAllSelected(selectedFixtureBoolean.findIndex((x) => x === true) !== -1)
     console.log(allSelected, selectedFixtureBoolean)
   }, [selectedFixtureBoolean, allSelected])
@@ -129,14 +136,14 @@ const LeagueFixtures = ({ data, selectMode }: PropsType) => {
 
   return (
     <React.Fragment>
-      <FixturesContainer>
+      <FixturesContainer forBlock={forBlock}>
         <LeagueTitle onClick={openMenu}>
           <SelectBox selectMode={selectMode} allSelected={allSelected} onClick={selectAll} />
           <LeagueName>
             <Flag src={data.logo} />
             {data.name}
           </LeagueName>
-          {menuState ? (
+          {forBlock ? null : menuState ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
             </svg>

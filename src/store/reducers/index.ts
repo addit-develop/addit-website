@@ -1,7 +1,7 @@
 import { HYDRATE } from 'next-redux-wrapper'
 import { combineReducers } from 'redux'
-import postReducer from './post'
-import userReducer from './user'
+import postReducer from './postReducer'
+import userReducer from './userReducer'
 
 // (이전상태, 액션) -> 다음상태
 const rootReducer = (state: any, action: any) => {

@@ -2,6 +2,7 @@ import { default as React } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
 import { FixtureBlockType, LeagueBlockType } from '@/types'
+import { getAllJSDocTagsOfKind } from 'typescript'
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -68,13 +69,15 @@ interface PropsType {
   fixture: FixtureBlockType
 }
 const FixtureTable = ({ fixture }: PropsType) => {
+  const time: string[] | null = fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)
+
   return (
     <React.Fragment>
       <FixtureContainer>
         <Home>{fixture.teams.home.name}</Home>
         <Flag src={fixture.teams.home.logo} />
         {fixture.status === 'NS' ? (
-          <Time>{fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)[0]}</Time>
+          <Time>{time && time[0]}</Time>
         ) : (
           <Score>
             {fixture.score.home}:{fixture.score.away}

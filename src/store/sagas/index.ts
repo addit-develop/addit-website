@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects'
 
-import postSaga from './post'
-import userSaga from './user'
+import postSaga from './postSaga'
+import userSaga from './userSaga'
 
 // axios.defaults.baseURL = ''
 // axios.defaults.withCredentials = true

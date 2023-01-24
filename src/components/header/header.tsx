@@ -5,7 +5,6 @@ import styles from './header.module.css'
 import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
-import { loginRequestAction } from '@/store/reducers/user'
 import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>

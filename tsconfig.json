@@ -21,12 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "src/components/plugin/footballTool.js",
-    "src/reducers/index.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/components/plugin/footballTool.js"],
   "exclude": ["node_modules"]
 }
