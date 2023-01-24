@@ -1,4 +1,6 @@
 import produce from 'immer'
+import { SET_BLOCK_DATA, SET_BLOCK_TYPE } from '../types'
+
 type StateType = {
   blockData: {
     type: string
@@ -6,28 +8,11 @@ type StateType = {
   }
 }
 
-export const initialState = {
+export const initialState: StateType = {
   blockData: { type: '', data: [] },
 }
 
-export const SET_BLOCK_DATA = 'SET_BLOCK_DATA'
-export const SET_BLOCK_TYPE = 'SET_BLOCK_TYPE'
-
-export const setBlockData = (data) => {
-  return {
-    type: SET_BLOCK_DATA,
-    data,
-  }
-}
-
-export const setBlockType = (data) => {
-  return {
-    type: SET_BLOCK_TYPE,
-    data,
-  }
-}
-
-const postReducer = (state = initialState, action) =>
+const postReducer = (state: StateType = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
       case SET_BLOCK_DATA:

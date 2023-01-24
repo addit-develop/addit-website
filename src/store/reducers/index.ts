@@ -4,7 +4,7 @@ import postReducer from './post'
 import userReducer from './user'
 
 // (이전상태, 액션) -> 다음상태
-const rootReducer = (state, action) => {
+const rootReducer = (state: any, action: any) => {
   switch (action.type) {
     case HYDRATE:
       console.log('HYDRATE', action)
