@@ -8,22 +8,31 @@ import { useSelector, useDispatch } from 'react-redux'
 import { LeagueBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
 import { setBlockData, setBlockReady } from '@/store/actions/postAction'
-import rootReducer from '@/store/reducers'
+import rootReducer, { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
-
-type IRootState = ReturnType<typeof rootReducer>
+import { changeModalPage } from '@/store/actions/pageAction'
 
 interface Props {
   id: string
 }
+type MenuType = {
+  page: string
+  title: string
+}
 
 const SearchModal = ({ id }: Props) => {
   const dispatch = useDispatch()
-  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
+  const { blockDataList } = useSelector((state: RootState) => state.postReducer)
+  const { currentPage, currentMenu } = useSelector((state: RootState) => state.pageReducer)
 
-  const menu = ['Matches', 'Leagues', 'Teams', 'Players']
+  const menu: MenuType[] = [
+    { page: 'matchHome', title: 'Matches' },
+    { page: 'leagueHome', title: 'Leagues' },
+    { page: 'teamDetail', title: 'Teams' },
+    { page: 'playerDetail', title: 'Players' },
+  ]
+
   const [modalClosed, setModalClosed] = useState<boolean>(false)
-  const [selectedIndex, setSelectedIndex] = useState<number>(0)
   const [selectMode, setSelectMode] = useState<boolean>(false)
 
   const closeModal = useCallback(() => {
@@ -39,14 +48,32 @@ const SearchModal = ({ id }: Props) => {
         .data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
       dispatch(setBlockData(id, filterData))
       dispatch(setBlockReady(id))
-
       setModalClosed(true)
     }
-
     // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
   }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === id)])
 
+  const showCurrentModalPage = useCallback(() => {
+    switch (currentPage) {
+      case 'matchHome':
+        return <MatchHome selectMode={selectMode} id={id} />
+      case 'matchDetail':
+        return <MatchDetail fixtureId={1} selectMode={selectMode} id={id} />
+      case 'leagueHome':
+        return <LeagueHome />
+      // case 'leagueDetail':
+      //   return <League
+      case 'teamDetail':
+        return <TeamDetail teamId={98} />
+      case 'playerDetail':
+        return <PlayerDetail playerId={65} />
+    }
+  }, [currentPage])
+
+  // const selectMenu = (m: MenuType) => {
+  //   dispatch(changeModalPage(m.page, m.title))
+  // }
   return (
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
@@ -74,28 +101,20 @@ const SearchModal = ({ id }: Props) => {
           {menu.map((m, i) => {
             return (
               <Styles.SearchMenu
-                id={m}
+                id={m.title}
                 key={i}
-                selected={i === selectedIndex}
-                onClick={() => setSelectedIndex(i)}
+                selected={currentMenu === m.title}
+                onClick={() => {
+                  console.log(currentMenu)
+                  dispatch(changeModalPage(m.page, m.title))
+                }}
               >
-                {m}
+                {m.title}
               </Styles.SearchMenu>
             )
           })}
         </Styles.SearchMenuContainer>
-        <Styles.ContentContainer>
-          {selectedIndex === 0 ? (
-            // <MatchDetail selectMode={selectMode} fixtureId={868149} id={id} />
-            <MatchHome selectMode={selectMode} id={id} />
-          ) : selectedIndex === 1 ? (
-            <LeagueHome />
-          ) : selectedIndex === 2 ? (
-            <TeamDetail teamId={98} />
-          ) : selectedIndex === 3 ? (
-            <PlayerDetail playerId={65} />
-          ) : null}
-        </Styles.ContentContainer>
+        <Styles.ContentContainer>{showCurrentModalPage()}</Styles.ContentContainer>
         <Styles.ModalMenuContainer>
           <Styles.AddButton disabled={false} onClick={selectContent}>
             {selectMode ? 'Add Block' : 'Select'}

@@ -60,7 +60,7 @@ const MatchDetail = ({ fixtureId, selectMode, id }: PropsType) => {
             ) : (
               <Styles.Score>
                 {matchData?.goals.home}:{matchData?.goals.away}
-                <Styles.MatchTime>{matchData?.fixture.status.elapsed}'</Styles.MatchTime>
+                <Styles.MatchTime>{matchData?.fixture.status.elapsed}</Styles.MatchTime>
               </Styles.Score>
             )}
             <Styles.TeamContainer>
@@ -70,8 +70,8 @@ const MatchDetail = ({ fixtureId, selectMode, id }: PropsType) => {
           </Styles.ResultContainer>
           <Styles.ScorersContainer>
             <Styles.Scorers team="home">
-              {scorerList?.home.map((x) => (
-                <div>
+              {scorerList?.home.map((x, i) => (
+                <div key={i}>
                   {x.player.name} {x.time.elapsed}
                   {x.time.elapsed.extra ? ' + ' + x.time.elapsed.extra : ''}
                 </div>
@@ -84,8 +84,8 @@ const MatchDetail = ({ fixtureId, selectMode, id }: PropsType) => {
               />
             </svg>
             <Styles.Scorers team="away">
-              {scorerList?.away.map((x) => (
-                <div>
+              {scorerList?.away.map((x, i) => (
+                <div key={i}>
                   {x.player.name} {x.time.elapsed}
                   {x.time.elapsed.extra ? ' + ' + x.time.elapsed.extra : ''}
                 </div>

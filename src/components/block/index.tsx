@@ -6,9 +6,7 @@ import { useSelector } from 'react-redux'
 import EmptyBlock from './emptyBlock'
 import FixtureListByDate from './FixtureListByDate'
 import { BlockDataType } from '@/types'
-import rootReducer from '@/store/reducers'
-
-type IRootState = ReturnType<typeof rootReducer>
+import rootReducer, { RootState } from '@/store/reducers'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -21,7 +19,7 @@ interface Props {
 }
 
 const FootballBlock = ({ id }: Props) => {
-  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
+  const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [blockData, setBlockData] = useState<BlockDataType>(
     blockDataList.find((x: BlockDataType) => x.id === id)
   )

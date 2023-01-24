@@ -5,13 +5,11 @@ import styles from './header.module.css'
 import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
-import rootReducer from '@/store/reducers'
-
-type IRootState = ReturnType<typeof rootReducer>
+import rootReducer, { RootState } from '@/store/reducers'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
-  const { logInLoading, logInError } = useSelector((state: IRootState) => state.userReducer)
+  const { logInLoading, logInError } = useSelector((state: RootState) => state.userReducer)
 
   const [menuState, setMenuState] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)

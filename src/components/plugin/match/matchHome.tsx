@@ -7,11 +7,8 @@ import LeagueFixtures from './leagueFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
-import { useDispatch, useSelector } from 'react-redux'
-import rootReducer from '@/store/reducers'
+import { useDispatch } from 'react-redux'
 import { makeBlockData, setBlockData } from '@/store/actions/postAction'
-
-type IRootState = ReturnType<typeof rootReducer>
 
 dayjs.extend(relativeTime)
 
