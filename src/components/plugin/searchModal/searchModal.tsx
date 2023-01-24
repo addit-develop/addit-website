@@ -9,6 +9,7 @@ import { LeagueBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
 import { setBlockData, setBlockReady } from '@/store/actions/postAction'
 import rootReducer from '@/store/reducers'
+import MatchDetail from '../match/matchDetail'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -85,6 +86,7 @@ const SearchModal = ({ id }: Props) => {
         </Styles.SearchMenuContainer>
         <Styles.ContentContainer>
           {selectedIndex === 0 ? (
+            // <MatchDetail selectMode={selectMode} fixtureId={868149} id={id} />
             <MatchHome selectMode={selectMode} id={id} />
           ) : selectedIndex === 1 ? (
             <LeagueHome />

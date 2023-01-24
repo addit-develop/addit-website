@@ -112,3 +112,15 @@ export type BlockDataType = {
   isReady: boolean
   data: any[]
 }
+
+export type MatchDetailDataType = {
+  fixture: any
+  league: any
+  teams: any
+  goals: any
+  score: any
+  events: any[]
+  lineups: any[]
+  statistics: any[]
+  players: any[]
+}
