@@ -2,10 +2,11 @@ import { COLORS } from '@/constants/constants'
 import { default as React, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
-import rootReducer from '../../reducers/index'
+
 import EmptyBlock from './emptyBlock'
 import FixtureListByDate from './FixtureListByDate'
 import { BlockDataType } from '@/types'
+import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const FootballBlock = ({ id }: Props) => {
-  const { blockDataList } = useSelector((state: IRootState) => state.post)
+  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
   const [blockData, setBlockData] = useState<BlockDataType>(
     blockDataList.find((x: BlockDataType) => x.id === id)
   )

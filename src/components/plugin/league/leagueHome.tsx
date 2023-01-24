@@ -1,6 +1,6 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
-import { countryType, leagueType } from '@/types'
+import { CountryType, LeagueType } from '@/types'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -42,8 +42,8 @@ const LeagueHome = () => {
   const [leagueList, setLeagueList] = useState<leagueDataType[]>([])
 
   type leagueDataType = {
-    league: leagueType
-    country: countryType
+    league: LeagueType
+    country: CountryType
     seasons: any
   }
 

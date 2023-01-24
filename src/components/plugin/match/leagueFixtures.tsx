@@ -4,8 +4,8 @@ import { COLORS } from '@/constants/constants'
 import { LeagueBlockType, FixtureBlockType, BlockDataType } from '@/types'
 import FixtureTable from '../fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBlockData } from '../../../reducers/post'
-import rootReducer from '../../../reducers/index'
+import rootReducer from '@/store/reducers'
+import { setBlockData } from '@/store/actions/postAction'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -75,7 +75,7 @@ interface PropsType {
 
 const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) => {
   const dispatch = useDispatch()
-  const { blockDataList } = useSelector((state: IRootState) => state.post)
+  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
     data.fixtures.map(() => false)
   ) // 개별 경기 선택 유무 리스트

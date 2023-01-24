@@ -1,6 +1,6 @@
 import { COLORS } from '@/constants/constants'
 import { useCountryFlag } from '@/hooks/useCountryFlag'
-import { playerDataType, playerType, teamType } from '@/types'
+import { PlayerDataType, PlayerType, TeamType } from '@/types'
 import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
@@ -43,8 +43,8 @@ const PlayerTeam = styled.div`
   font-size: 14px;
 `
 interface PropsType {
-  player: playerType
-  club: teamType
+  player: PlayerType
+  club: TeamType
 }
 const PlayerInfoBox = ({ player, club }: PropsType) => {
   const countryFlag = useCountryFlag(player.nationality)

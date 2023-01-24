@@ -8,17 +8,17 @@ import {
   LOG_OUT_FAILURE,
   LOG_IN_REQUEST,
   LOG_OUT_REQUEST,
-} from '../reducers/user'
+} from '../types'
 
 // logInAPI는 제너레이터가 아님
-function logInAPI(data) {
+function logInAPI(data: any) {
   return axios.post('/user/login', data)
 }
 
 // fuction*은 제너레이터 함수로 중간에 중단점(yield)을 만들 수 있다
 // put은 dispatch라 생각하면 된다
 // call은 동기 함수 호출 => 결과값을 받아올 때까지 기다린다
-function* logIn(action) {
+function* logIn(action: any) {
   try {
     const result = yield call(logInAPI, action.data)
     yield put({

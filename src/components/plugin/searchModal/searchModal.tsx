@@ -5,9 +5,10 @@ import PlayerHome from '../player/playerHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
-import { setBlockData, setBlockReady } from '../../../reducers/post'
-import rootReducer from '../../../reducers/index'
 import { LeagueBlockType, BlockDataType } from '@/types'
+import TeamDetail from '../team/teamDetail'
+import { setBlockData, setBlockReady } from '@/store/actions/postAction'
+import rootReducer from '@/store/reducers'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -17,7 +18,7 @@ interface Props {
 
 const SearchModal = ({ id }: Props) => {
   const dispatch = useDispatch()
-  const { blockDataList } = useSelector((state: IRootState) => state.post)
+  const { blockDataList } = useSelector((state: IRootState) => state.postReducer)
 
   const menu = ['Matches', 'Leagues', 'Teams', 'Players']
   const [modalClosed, setModalClosed] = useState<boolean>(false)
@@ -87,6 +88,8 @@ const SearchModal = ({ id }: Props) => {
             <MatchHome selectMode={selectMode} id={id} />
           ) : selectedIndex === 1 ? (
             <LeagueHome />
+          ) : selectedIndex === 2 ? (
+            <TeamDetail teamId={98} />
           ) : selectedIndex === 3 ? (
             <PlayerDetail playerId={65} />
           ) : null}

@@ -1,5 +1,5 @@
 import useAxios from '@/hooks/useAxios'
-import { playerDataType, playerType } from '@/types'
+import { PlayerDataType, PlayerType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import PlayerInfoBox from './playerInfoBox'
@@ -15,7 +15,7 @@ interface PropsType {
 
 const PlayerDetail = ({ playerId }: PropsType) => {
   const axios = useAxios()
-  const [playerDetailData, setPlayerDetailData] = useState<playerDataType | null>(null)
+  const [playerDetailData, setPlayerDetailData] = useState<PlayerDataType | null>(null)
   const getPlayerDetail = async () => {
     const res = await axios.get('/players', { params: { id: playerId, season: 2022 } })
     console.log(res)

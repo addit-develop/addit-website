@@ -1,6 +1,27 @@
 import produce from 'immer'
 
-export const initialState = {
+import {
+  LOG_IN_FAILURE,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_OUT_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+} from '../types'
+
+type StateType = {
+  logInDone: boolean
+  logInLoading: boolean //로그인 시도 중
+  logInError: string | null
+  logOutDone: boolean
+  logOutLoading: boolean //로그아웃 시도 중
+  logOutError: string | null
+  me: string | null
+  signUpData: any
+  loginData: any
+}
+
+export const initialState: StateType = {
   logInDone: false,
   logInLoading: false, //로그인 시도 중
   logInError: null,
@@ -12,29 +33,7 @@ export const initialState = {
   loginData: {},
 }
 
-export const LOG_IN_REQUEST = 'LOG_IN_REQUEST'
-export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS'
-export const LOG_IN_FAILURE = 'LOG_IN_FAILURE'
-
-export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST'
-export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS'
-export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE'
-
-// action creator
-export const loginRequestAction = (data) => {
-  return {
-    type: LOG_IN_REQUEST,
-    data,
-  }
-}
-
-export const logoutRequestAction = () => {
-  return {
-    type: LOG_OUT_REQUEST,
-  }
-}
-
-const reducer = (state = initialState, action) =>
+const userReducer = (state = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
       case LOG_IN_REQUEST:
@@ -70,4 +69,4 @@ const reducer = (state = initialState, action) =>
     }
   })
 
-export default reducer
+export default userReducer

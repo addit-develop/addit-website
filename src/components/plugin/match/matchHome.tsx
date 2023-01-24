@@ -5,12 +5,11 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
 import LeagueFixtures from './leagueFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { BlockDataType, FixtureBlockType, fixtureType, LeagueBlockType } from '@/types'
+import { FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { makeBlockData, setBlockData } from '../../../reducers/post'
-import rootReducer from '../../../reducers/index'
+import rootReducer from '@/store/reducers'
+import { makeBlockData, setBlockData } from '@/store/actions/postAction'
 
 type IRootState = ReturnType<typeof rootReducer>
 
@@ -27,7 +26,7 @@ const MatchHome = ({ selectMode, id }: PropsType) => {
   const TodayDate = useMemo(() => dayjs(), [])
 
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
-  const [fixtureData, setFixtureData] = useState<fixtureType[]>([])
+  const [fixtureData, setFixtureData] = useState<FixtureType[]>([])
   const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
 
