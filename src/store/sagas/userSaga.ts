@@ -12,7 +12,7 @@ import {
 
 // logInAPI는 제너레이터가 아님
 function logInAPI(data: any) {
-  return axios.post('/user/login', data)
+  return axios.get('/auth/login', data)
 }
 
 // fuction*은 제너레이터 함수로 중간에 중단점(yield)을 만들 수 있다

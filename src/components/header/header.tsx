@@ -6,6 +6,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import rootReducer, { RootState } from '@/store/reducers'
+import { loginRequestAction } from '@/store/actions/userAction'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
@@ -20,7 +21,6 @@ const Header: NextComponentType = () => {
 
   const signIn = useCallback(() => {
     setLoggedIn(!loggedIn)
-    // dispatch(loginRequestAction())
   }, [loggedIn])
 
   //   useEffect(() => {
@@ -71,9 +71,11 @@ const Header: NextComponentType = () => {
             Signout
           </div>
         ) : (
-          <div className={styles.header__navigation__signup} onClick={signIn}>
-            Signup
-          </div>
+          <Link href={`https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`}>
+            <div className={styles.header__navigation__signup}>
+              Signup
+            </div>
+          </Link>
         )}
       </div>
     </div>
