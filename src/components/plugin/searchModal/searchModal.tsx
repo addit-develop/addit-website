@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { LeagueBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
 import { setBlockData, setBlockReady } from '@/store/actions/postAction'
-import rootReducer, { RootState } from '@/store/reducers'
+import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import { changeModalPage } from '@/store/actions/pageAction'
 
@@ -23,7 +23,13 @@ type MenuType = {
 const SearchModal = ({ id }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu } = useSelector((state: RootState) => state.pageReducer)
+  const { currentPage, currentMenu, pageProps } = useSelector(
+    (state: RootState) => state.pageReducer
+  )
+
+  useEffect(() => {
+    dispatch(changeModalPage('matchHome', 'Matches', {}))
+  }, [])
 
   const menu: MenuType[] = [
     { page: 'matchHome', title: 'Matches' },
@@ -45,7 +51,7 @@ const SearchModal = ({ id }: Props) => {
       // 선택된 경기가 없는 리그 정보 삭제
       const filterData = blockDataList
         .find((x: BlockDataType) => x.id === id)
-        .data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+        ?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
       dispatch(setBlockData(id, filterData))
       dispatch(setBlockReady(id))
       setModalClosed(true)
@@ -59,7 +65,7 @@ const SearchModal = ({ id }: Props) => {
       case 'matchHome':
         return <MatchHome selectMode={selectMode} id={id} />
       case 'matchDetail':
-        return <MatchDetail fixtureId={1} selectMode={selectMode} id={id} />
+        return <MatchDetail selectMode={selectMode} id={id} fixtureId={pageProps?.fixtureId} />
       case 'leagueHome':
         return <LeagueHome />
       // case 'leagueDetail':
