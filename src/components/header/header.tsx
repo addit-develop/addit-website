@@ -6,28 +6,31 @@ import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import rootReducer, { RootState } from '@/store/reducers'
-import { loginRequestAction } from '@/store/actions/userAction'
+import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
+import { useReducer } from 'react'
+import { useRouter } from 'next/router'
+import { v4 as uuidv4 } from 'uuid';
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
-  const { logInLoading, logInError } = useSelector((state: RootState) => state.userReducer)
+  const { me, logInError } = useSelector((state: RootState) => state.userReducer)
+  const router = useRouter()
 
   const [menuState, setMenuState] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
+  
+  const logIn = useCallback(() => {
+    const state = uuidv4();
+    router.push(`https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${state}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`)
+    dispatch(loginRequestAction(state))
+  }, [])
 
-  const signIn = useCallback(() => {
-    setLoggedIn(!loggedIn)
-  }, [loggedIn])
-
-  //   useEffect(() => {
-  //     if (logInError) {
-  //       alert(logInError)
-  //     }
-  //   }, [logInError])
+  const logout = useCallback(() => {
+    dispatch(logoutRequestAction())
+  }, [])
 
   return (
     <div className={styles.header}>
@@ -66,16 +69,14 @@ const Header: NextComponentType = () => {
       >
         <div className={styles.header__navigation__menu}>Contact</div>
         <div className={styles.header__navigation__menu}>About</div>
-        {loggedIn ? (
-          <div className={styles.header__navigation__menu} onClick={signIn}>
-            Signout
+        {me ? (
+          <div className={styles.header__navigation__menu} onClick={logout}>
+            LogOut
           </div>
         ) : (
-          <Link href={`https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=state_parameter_passthrough_value&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`}>
-            <div className={styles.header__navigation__signup}>
-              Signup
-            </div>
-          </Link>
+          <div className={styles.header__navigation__signup} onClick={logIn}>
+            LogIn
+          </div>
         )}
       </div>
     </div>
