@@ -39,6 +39,11 @@ const SearchModal = ({ blockId }: Props) => {
   const [modalClosed, setModalClosed] = useState<boolean>(false)
   const [selectMode, setSelectMode] = useState<boolean>(false)
 
+  // 모달창 초기화 (이전에 작성한 블록이 있을 경우 모달창 정보가 남아있음)
+  useEffect(() => {
+    dispatch(changeModalPage('matchHome', 'Matches'))
+  }, [])
+
   const closeModal = useCallback(() => {
     setModalClosed(true)
   }, [])
@@ -56,7 +61,7 @@ const SearchModal = ({ blockId }: Props) => {
     }
     // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
-  }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === blockId)])
+  }, [selectMode, blockDataList])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
@@ -78,11 +83,8 @@ const SearchModal = ({ blockId }: Props) => {
       case 'playerDetail':
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
     }
-  }, [currentPage])
+  }, [currentPage, selectMode])
 
-  // const selectMenu = (m: MenuType) => {
-  //   dispatch(changeModalPage(m.page, m.title))
-  // }
   return (
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">

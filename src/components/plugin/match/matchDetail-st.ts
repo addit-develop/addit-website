@@ -116,7 +116,7 @@ export const Date = styled.div`
   justify-content: center;
   font-size: 14px;
   color: ${COLORS.darkgray};
-  border: 1px 0 solid ${COLORS.darkgray};
+  border-top: 1px solid ${COLORS.lightgray};
 `
 
 export const SubTitle = styled.div`
@@ -127,6 +127,7 @@ export const SubTitle = styled.div`
   justify-content: start;
   font-size: 16px;
   font-weight: bold;
+  border-top: 1px solid ${COLORS.lightgray};
 `
 
 export const Timeline = styled.div`
