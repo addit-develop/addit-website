@@ -14,13 +14,6 @@ interface PropsType {
 }
 
 const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
-  if (fixtureId === undefined) {
-    return (
-      <React.Fragment>
-        <Styles.Container>잘못된 접근입니다.</Styles.Container>
-      </React.Fragment>
-    )
-  }
   const [matchData, setMatchData] = useState<MatchDetailDataType>()
   const [scorerList, setScorerList] = useState<{ home: any[]; away: any[] }>()
   const [eventList, setEventList] = useState<{
@@ -81,6 +74,13 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
     getMatchData()
   }, [])
 
+  if (fixtureId === undefined) {
+    return (
+      <React.Fragment>
+        <Styles.Container>잘못된 접근입니다.</Styles.Container>
+      </React.Fragment>
+    )
+  }
   return (
     <React.Fragment>
       <Styles.Container>

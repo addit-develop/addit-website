@@ -2,8 +2,13 @@ import useAxios from '@/hooks/useAxios'
 import { CountryType, LeagueType } from '@/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import LeagueDetailTitle from './leagueDetailTitle'
-import LeagueDetailBody from './leaugeDetailBody'
+import LeagueDetailBody from './leagueDetailBody'
+import styled from 'styled-components'
 
+const Container = styled.div`
+  overflow-y: scroll;
+  width: 100%;
+`
 interface PropsType {
   leagueId: number
   blockId: string
@@ -32,8 +37,10 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   if (!leagueData) return null
   return (
     <React.Fragment>
-      <LeagueDetailTitle league={leagueData.league} />
-      <LeagueDetailBody league={leagueData.league} />
+      <Container>
+        <LeagueDetailTitle league={leagueData.league} />
+        <LeagueDetailBody league={leagueData.league} />
+      </Container>
     </React.Fragment>
   )
 }

@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const MenuList = styled.div`
   width: 100%;
-  height: 40px;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@ export const MenuList = styled.div`
 export const MenuItem = styled.button<{ selected?: boolean }>`
   flex-shrink: 0;
   flex: 1;
-  padding: 6px 0px;
+  padding: 3px 0px;
   text-align: center;
   font-size: 16px;
   border-radius: 16px;
