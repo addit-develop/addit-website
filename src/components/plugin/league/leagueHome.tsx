@@ -5,6 +5,8 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import MajorLeagues from '@/data/majorLeaguesData.json'
+import { changeModalPage } from '@/store/actions/pageAction'
+import { useDispatch } from 'react-redux'
 
 const Container = styled.div`
   width: 100%;
@@ -37,20 +39,25 @@ const LeagueName = styled.div`
   font-weight: 'medium';
 `
 
+type leagueDataType = {
+  league: LeagueType
+  country: CountryType
+  seasons: any
+}
+
 const LeagueHome = () => {
   const axios = useAxios()
+  const dispatch = useDispatch()
   const [leagueList, setLeagueList] = useState<leagueDataType[]>([])
-
-  type leagueDataType = {
-    league: LeagueType
-    country: CountryType
-    seasons: any
-  }
 
   const getLeagueData = async () => {
     const response = await axios.get('/leagues', { params: { season: 2023, current: true } })
     console.log(response)
     setLeagueList(response.data.response)
+  }
+
+  const navigateLeagueDetail = (leagueId: number) => {
+    dispatch(changeModalPage('leagueDetail', 'Leagues', leagueId))
   }
 
   useEffect(() => {
@@ -64,7 +71,12 @@ const LeagueHome = () => {
         <LeagueList>
           {MajorLeagues.map((league, i) => {
             return (
-              <LeagueBox key={i}>
+              <LeagueBox
+                key={i}
+                onClick={() => {
+                  dispatch(changeModalPage('leagueDetail', 'Leagues', league.id))
+                }}
+              >
                 <Image src={league.logo} height="28" width="28" alt={league.name} />
                 <LeagueName>{league.name}</LeagueName>
               </LeagueBox>

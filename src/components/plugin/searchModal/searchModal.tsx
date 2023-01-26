@@ -11,35 +11,38 @@ import { setBlockData, setBlockReady } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import { changeModalPage } from '@/store/actions/pageAction'
+import TeamHome from '../team/teamHome'
+import LeagueDetail from '../league/leagueDetail'
 
 interface Props {
-  id: string
+  blockId: string
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ id }: Props) => {
+const SearchModal = ({ blockId }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps } = useSelector(
     (state: RootState) => state.pageReducer
   )
 
-  useEffect(() => {
-    dispatch(changeModalPage('matchHome', 'Matches', {}))
-  }, [])
-
   const menu: MenuType[] = [
     { page: 'matchHome', title: 'Matches' },
     { page: 'leagueHome', title: 'Leagues' },
-    { page: 'teamDetail', title: 'Teams' },
-    { page: 'playerDetail', title: 'Players' },
+    { page: 'teamHome', title: 'Teams' },
+    { page: 'playerHome', title: 'Players' },
   ]
 
   const [modalClosed, setModalClosed] = useState<boolean>(false)
   const [selectMode, setSelectMode] = useState<boolean>(false)
+
+  // 모달창 초기화 (이전에 작성한 블록이 있을 경우 모달창 정보가 남아있음)
+  useEffect(() => {
+    dispatch(changeModalPage('matchHome', 'Matches'))
+  }, [])
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
@@ -50,36 +53,38 @@ const SearchModal = ({ id }: Props) => {
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
       const filterData = blockDataList
-        .find((x: BlockDataType) => x.id === id)
+        .find((x: BlockDataType) => x.id === blockId)
         ?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
-      dispatch(setBlockData(id, filterData))
-      dispatch(setBlockReady(id))
+      dispatch(setBlockData(blockId, filterData))
+      dispatch(setBlockReady(blockId))
       setModalClosed(true)
     }
     // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
-  }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === id)])
+  }, [selectMode, blockDataList])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
       case 'matchHome':
-        return <MatchHome selectMode={selectMode} id={id} />
+        return <MatchHome selectMode={selectMode} blockId={blockId} />
       case 'matchDetail':
-        return <MatchDetail selectMode={selectMode} id={id} fixtureId={pageProps?.fixtureId} />
+        if (pageProps)
+          return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
       case 'leagueHome':
         return <LeagueHome />
-      // case 'leagueDetail':
-      //   return <League
+      case 'leagueDetail':
+        if (pageProps) return <LeagueDetail blockId={blockId} leagueId={pageProps} />
+      case 'teamHome':
+        return <TeamHome />
       case 'teamDetail':
-        return <TeamDetail teamId={98} />
+        if (pageProps) return <TeamDetail blockId={blockId} teamId={pageProps} />
+      case 'playerHome':
+        return <PlayerHome />
       case 'playerDetail':
-        return <PlayerDetail playerId={65} />
+        if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
     }
-  }, [currentPage])
+  }, [currentPage, selectMode])
 
-  // const selectMenu = (m: MenuType) => {
-  //   dispatch(changeModalPage(m.page, m.title))
-  // }
   return (
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
@@ -111,7 +116,6 @@ const SearchModal = ({ id }: Props) => {
                 key={i}
                 selected={currentMenu === m.title}
                 onClick={() => {
-                  console.log(currentMenu)
                   dispatch(changeModalPage(m.page, m.title))
                 }}
               >

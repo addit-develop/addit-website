@@ -68,10 +68,10 @@ interface PropsType {
   data: LeagueBlockType
   selectMode: boolean
   forBlock?: boolean
-  id?: string
+  blockId?: string
 }
 
-const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) => {
+const LeagueFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsType) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
@@ -84,7 +84,7 @@ const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) =
 
   // 선택한 경기 정보 리스트 바뀔 때마다 reducer blockData에 반영
   useEffect(() => {
-    const myBlockData = blockDataList.find((x: BlockDataType) => x.id === id)
+    const myBlockData = blockDataList.find((x: BlockDataType) => x.id === blockId)
     const newBlockData =
       myBlockData &&
       myBlockData.data.map((x: LeagueBlockType) =>
@@ -97,7 +97,7 @@ const LeagueFixtures = ({ data, selectMode, forBlock = false, id }: PropsType) =
             }
           : x
       )
-    if (id && !myBlockData.isReady) dispatch(setBlockData(id, newBlockData))
+    if (blockId && !myBlockData?.isReady) dispatch(setBlockData(blockId, newBlockData))
   }, [selectedFixtureData])
 
   useEffect(() => {

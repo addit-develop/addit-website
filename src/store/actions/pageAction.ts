@@ -1,14 +1,14 @@
-import { CHANGE_MODAL_PAGE } from '../types'
+import { PLAYER_DETAIL_PAGE, SET_MODAL_PAGE, TEAM_DETAIL_PAGE } from '../types'
 
 export type PageAction = ReturnType<typeof changeModalPage>
 
-export const changeModalPage = (page: string, menu: string, props?: {}) => {
+export const changeModalPage = (page: string, menu: string, pageProps?: number) => {
   return {
-    type: CHANGE_MODAL_PAGE,
+    type: SET_MODAL_PAGE,
     data: {
       page,
       menu,
-      props,
+      pageProps,
     },
   }
 }

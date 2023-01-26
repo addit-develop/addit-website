@@ -10,13 +10,15 @@ const Container = styled.div`
 
 interface PropsType {
   teamId: number
+  blockId: string
 }
-const TeamDetail = ({ teamId }: PropsType) => {
+const TeamDetail = ({ teamId, blockId }: PropsType) => {
   const axios = useAxios()
   const [team, setTeam] = useState<TeamType | null>(null)
 
   const getTeamData = async () => {
     const res = await axios.get('/teams', { params: { id: teamId } })
+    console.log(res)
     setTeam(res.data.response[0].team)
   }
 

@@ -75,7 +75,7 @@ const FixtureTable = ({ fixture }: PropsType) => {
   const time: string[] | null = fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)
 
   const moveToMatchDetail = useCallback(() => {
-    dispatch(changeModalPage('matchDetail', 'Matches', { fixtureId: fixture.id }))
+    dispatch(changeModalPage('matchDetail', 'Matches', fixture.id))
   }, [fixture])
 
   return (
