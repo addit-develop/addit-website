@@ -19,73 +19,71 @@ interface PropsType {
 
 const MatchHome = ({ selectMode, id }: PropsType) => {
   const dispatch = useDispatch()
-
   const TodayDate = useMemo(() => dayjs(), [])
-
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
   const [fixtureData, setFixtureData] = useState<FixtureType[]>([])
   const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
+
+  const axios = useAxios()
+
+  // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
+  const getFixtureData = async () => {
+    const response = await axios.get('/fixtures', { params: { date } })
+    console.log(response)
+    setFixtureData(response.data.response)
+  }
+
+  const makeFixtureBlock = () => {
+    const fullDataList: LeagueBlockType[] = []
+    const emptyFixtureList: LeagueBlockType[] = []
+    fixtureData.forEach((x: any) => {
+      const xBlockData = {
+        id: x.fixture.id,
+        date: x.fixture.date,
+        teams: {
+          home: {
+            name: x.teams.home.name,
+            logo: x.teams.home.logo,
+          },
+          away: {
+            name: x.teams.away.name,
+            logo: x.teams.away.logo,
+          },
+        },
+        score: x.goals,
+        status: x.fixture.status.short,
+        elapse: x.fixture.status.elapsed,
+      }
+      const index = fullDataList.findIndex((y: LeagueBlockType) => x.league.id === y.id)
+      if (index === -1) {
+        fullDataList.push({
+          id: x.league.id,
+          name: x.league.name,
+          logo: x.league.logo,
+          fixtures: [xBlockData],
+        })
+        emptyFixtureList.push({
+          id: x.league.id,
+          name: x.league.name,
+          logo: x.league.logo,
+          fixtures: [],
+        })
+      } else {
+        fullDataList[index].fixtures.push(xBlockData)
+      }
+    })
+    setLeagueList(fullDataList)
+    dispatch(setBlockData(id, emptyFixtureList))
+  }
 
   // 새로운 blockdata 생성
   useEffect(() => {
     dispatch(makeBlockData(id, 'Fixture_List_By_Date'))
   }, [])
 
-  const axios = useAxios()
-
-  // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   useEffect(() => {
-    axios
-      .get('/fixtures', { params: { date } })
-      .then((response) => {
-        console.log(response)
-        setFixtureData(response.data.response)
-        const fullDataList: LeagueBlockType[] = []
-        const emptyFixtureList: LeagueBlockType[] = []
-        response.data.response.forEach((x: any) => {
-          const xBlockData = {
-            id: x.fixture.id,
-            date: x.fixture.date,
-            teams: {
-              home: {
-                name: x.teams.home.name,
-                logo: x.teams.home.logo,
-              },
-              away: {
-                name: x.teams.away.name,
-                logo: x.teams.away.logo,
-              },
-            },
-            score: x.goals,
-            status: x.fixture.status.short,
-            elapse: x.fixture.status.elapsed,
-          }
-          const index = fullDataList.findIndex((y: LeagueBlockType) => x.league.id === y.id)
-          if (index === -1) {
-            fullDataList.push({
-              id: x.league.id,
-              name: x.league.name,
-              logo: x.league.logo,
-              fixtures: [xBlockData],
-            })
-            emptyFixtureList.push({
-              id: x.league.id,
-              name: x.league.name,
-              logo: x.league.logo,
-              fixtures: [],
-            })
-          } else {
-            fullDataList[index].fixtures.push(xBlockData)
-          }
-        })
-        setLeagueList(fullDataList)
-        dispatch(setBlockData(id, emptyFixtureList))
-      })
-      .catch((err) => {
-        setFixtureData([])
-        console.error(err)
-      })
+    getFixtureData().then(makeFixtureBlock)
   }, [date])
 
   const prevDate = useCallback(() => {

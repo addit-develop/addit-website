@@ -1,12 +1,6 @@
 import { BlockDataType } from '@/types'
 import produce from 'immer'
-import {
-  MAKE_BLOCK_DATA,
-  SET_BLOCK_DATA,
-  SET_BLOCK_READY,
-  SET_BLOCK_TYPE,
-  CHANGE_MODAL_PAGE,
-} from '../types'
+import { MAKE_BLOCK_DATA, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
@@ -42,9 +36,6 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case SET_BLOCK_READY:
         const readyBlock = draft.blockDataList.find((x) => x.id === action.id)
         if (readyBlock) readyBlock.isReady = true
-        break
-      case CHANGE_MODAL_PAGE:
-        draft.modalPage = action.page
         break
       default:
         break

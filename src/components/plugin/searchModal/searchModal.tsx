@@ -11,6 +11,8 @@ import { setBlockData, setBlockReady } from '@/store/actions/postAction'
 import rootReducer, { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import { changeModalPage } from '@/store/actions/pageAction'
+import TeamHome from '../team/teamHome'
+import LeagueDetail from '../league/leagueDetail'
 
 interface Props {
   id: string
@@ -23,13 +25,13 @@ type MenuType = {
 const SearchModal = ({ id }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu } = useSelector((state: RootState) => state.pageReducer)
+  const { currentPage, currentMenu, pageId } = useSelector((state: RootState) => state.pageReducer)
 
   const menu: MenuType[] = [
     { page: 'matchHome', title: 'Matches' },
     { page: 'leagueHome', title: 'Leagues' },
-    { page: 'teamDetail', title: 'Teams' },
-    { page: 'playerDetail', title: 'Players' },
+    { page: 'teamHome', title: 'Teams' },
+    { page: 'playerHome', title: 'Players' },
   ]
 
   const [modalClosed, setModalClosed] = useState<boolean>(false)
@@ -62,12 +64,16 @@ const SearchModal = ({ id }: Props) => {
         return <MatchDetail fixtureId={1} selectMode={selectMode} id={id} />
       case 'leagueHome':
         return <LeagueHome />
-      // case 'leagueDetail':
-      //   return <League
+      case 'leagueDetail':
+        if (pageId) return <LeagueDetail leagueId={pageId} />
+      case 'teamHome':
+        return <TeamHome />
       case 'teamDetail':
-        return <TeamDetail teamId={98} />
+        if (pageId) return <TeamDetail teamId={pageId} />
+      case 'playerHome':
+        return <PlayerHome />
       case 'playerDetail':
-        return <PlayerDetail playerId={65} />
+        if (pageId) return <PlayerDetail playerId={pageId} />
     }
   }, [currentPage])
 
@@ -105,7 +111,6 @@ const SearchModal = ({ id }: Props) => {
                 key={i}
                 selected={currentMenu === m.title}
                 onClick={() => {
-                  console.log(currentMenu)
                   dispatch(changeModalPage(m.page, m.title))
                 }}
               >

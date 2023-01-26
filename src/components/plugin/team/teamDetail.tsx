@@ -17,6 +17,7 @@ const TeamDetail = ({ teamId }: PropsType) => {
 
   const getTeamData = async () => {
     const res = await axios.get('/teams', { params: { id: teamId } })
+    console.log(res)
     setTeam(res.data.response[0].team)
   }
 
