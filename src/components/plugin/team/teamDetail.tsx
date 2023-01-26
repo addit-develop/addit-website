@@ -10,8 +10,9 @@ const Container = styled.div`
 
 interface PropsType {
   teamId: number
+  blockId: string
 }
-const TeamDetail = ({ teamId }: PropsType) => {
+const TeamDetail = ({ teamId, blockId }: PropsType) => {
   const axios = useAxios()
   const [team, setTeam] = useState<TeamType | null>(null)
 

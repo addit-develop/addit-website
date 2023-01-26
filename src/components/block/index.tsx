@@ -15,17 +15,17 @@ const BlockContainer = styled.div`
 `
 
 interface Props {
-  id: string
+  blockId: string
 }
 
-const FootballBlock = ({ id }: Props) => {
+const FootballBlock = ({ blockId }: Props) => {
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const [blockData, setBlockData] = useState<BlockDataType>(
-    blockDataList.find((x: BlockDataType) => x.id === id)
+  const [blockData, setBlockData] = useState<BlockDataType | undefined>(
+    blockDataList.find((x: BlockDataType) => x.id === blockId)
   )
 
   useEffect(() => {
-    setBlockData(blockDataList.find((x: BlockDataType) => x.id === id))
+    setBlockData(blockDataList.find((x: BlockDataType) => x.id === blockId))
   }, [blockDataList])
 
   return (

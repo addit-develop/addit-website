@@ -14,10 +14,10 @@ dayjs.extend(relativeTime)
 
 interface PropsType {
   selectMode: boolean
-  id: string
+  blockId: string
 }
 
-const MatchHome = ({ selectMode, id }: PropsType) => {
+const MatchHome = ({ selectMode, blockId }: PropsType) => {
   const dispatch = useDispatch()
   const TodayDate = useMemo(() => dayjs(), [])
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
@@ -27,17 +27,10 @@ const MatchHome = ({ selectMode, id }: PropsType) => {
 
   const axios = useAxios()
 
-  // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
-  const getFixtureData = async () => {
-    const response = await axios.get('/fixtures', { params: { date } })
-    console.log(response)
-    setFixtureData(response.data.response)
-  }
-
-  const makeFixtureBlock = () => {
+  const makeFixtureBlock = (data: FixtureType[]) => {
     const fullDataList: LeagueBlockType[] = []
     const emptyFixtureList: LeagueBlockType[] = []
-    fixtureData.forEach((x: any) => {
+    data.forEach((x: any) => {
       const xBlockData = {
         id: x.fixture.id,
         date: x.fixture.date,
@@ -74,16 +67,31 @@ const MatchHome = ({ selectMode, id }: PropsType) => {
       }
     })
     setLeagueList(fullDataList)
-    dispatch(setBlockData(id, emptyFixtureList))
+    dispatch(setBlockData(blockId, emptyFixtureList))
+  }
+
+  // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
+  const getFixtureData = async () => {
+    const response = await axios
+      .get('/fixtures', { params: { date } })
+      .then((response) => {
+        console.log(response)
+        setFixtureData(response.data.response)
+        makeFixtureBlock(response.data.response)
+      })
+      .catch((err) => {
+        setFixtureData([])
+        console.error(err)
+      })
   }
 
   // 새로운 blockdata 생성
   useEffect(() => {
-    dispatch(makeBlockData(id, 'Fixture_List_By_Date'))
+    dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
   }, [])
 
   useEffect(() => {
-    getFixtureData().then(makeFixtureBlock)
+    getFixtureData()
   }, [date])
 
   const prevDate = useCallback(() => {
@@ -168,7 +176,7 @@ const MatchHome = ({ selectMode, id }: PropsType) => {
                   <LeagueFixtures
                     data={leagueData}
                     selectMode={selectMode}
-                    id={id}
+                    blockId={blockId}
                     key={league.id}
                   />
                 )

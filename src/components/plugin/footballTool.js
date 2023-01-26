@@ -43,8 +43,8 @@ export default class FootballTool {
     ReactDOM.createRoot(rootNode).render(
       <Provider store={store}>
         <React.StrictMode>
-          <FootballBlock id={this.id} />
-          <SearchModal id={this.id} />
+          <FootballBlock blockId={this.id} />
+          <SearchModal blockId={this.id} />
         </React.StrictMode>
       </Provider>
     )

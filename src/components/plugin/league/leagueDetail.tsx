@@ -6,6 +6,7 @@ import LeagueDetailBody from './leaugeDetailBody'
 
 interface PropsType {
   leagueId: number
+  blockId: string
 }
 
 type LeagueDataType = {
@@ -14,7 +15,7 @@ type LeagueDataType = {
   seasons: any[]
 }
 
-const LeagueDetail = ({ leagueId }: PropsType) => {
+const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const [leagueData, setLeagueData] = useState<LeagueDataType>()
   const axios = useAxios()
 

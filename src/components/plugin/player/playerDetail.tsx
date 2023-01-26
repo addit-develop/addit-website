@@ -11,9 +11,10 @@ const Container = styled.div`
 
 interface PropsType {
   playerId: number
+  blockId: string
 }
 
-const PlayerDetail = ({ playerId }: PropsType) => {
+const PlayerDetail = ({ playerId, blockId }: PropsType) => {
   const axios = useAxios()
   const [playerDetailData, setPlayerDetailData] = useState<PlayerDataType | null>(null)
   const getPlayerDetail = async () => {

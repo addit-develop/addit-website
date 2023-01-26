@@ -15,17 +15,19 @@ import TeamHome from '../team/teamHome'
 import LeagueDetail from '../league/leagueDetail'
 
 interface Props {
-  id: string
+  blockId: string
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ id }: Props) => {
+const SearchModal = ({ blockId }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu, pageId } = useSelector((state: RootState) => state.pageReducer)
+  const { currentPage, currentMenu, pageProps } = useSelector(
+    (state: RootState) => state.pageReducer
+  )
 
   const menu: MenuType[] = [
     { page: 'matchHome', title: 'Matches' },
@@ -46,34 +48,35 @@ const SearchModal = ({ id }: Props) => {
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
       const filterData = blockDataList
-        .find((x: BlockDataType) => x.id === id)
+        .find((x: BlockDataType) => x.id === blockId)
         ?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
-      dispatch(setBlockData(id, filterData))
-      dispatch(setBlockReady(id))
+      dispatch(setBlockData(blockId, filterData))
+      dispatch(setBlockReady(blockId))
       setModalClosed(true)
     }
     // 데이터 선택 모드로 변경
     setSelectMode(!selectMode)
-  }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === id)])
+  }, [selectMode, blockDataList.find((x: BlockDataType) => x.id === blockId)])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
       case 'matchHome':
-        return <MatchHome selectMode={selectMode} id={id} />
+        return <MatchHome selectMode={selectMode} blockId={blockId} />
       case 'matchDetail':
-        return <MatchDetail selectMode={selectMode} id={id} fixtureId={pageProps?.fixtureId} />
+        if (pageProps)
+          return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
-        if (pageId) return <LeagueDetail leagueId={pageId} />
+        if (pageProps) return <LeagueDetail blockId={blockId} leagueId={pageProps} />
       case 'teamHome':
         return <TeamHome />
       case 'teamDetail':
-        if (pageId) return <TeamDetail teamId={pageId} />
+        if (pageProps) return <TeamDetail blockId={blockId} teamId={pageProps} />
       case 'playerHome':
         return <PlayerHome />
       case 'playerDetail':
-        if (pageId) return <PlayerDetail playerId={pageId} />
+        if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
     }
   }, [currentPage])
 

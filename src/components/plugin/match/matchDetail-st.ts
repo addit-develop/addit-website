@@ -51,9 +51,7 @@ export const Flag = styled.img`
   flex-shrink: 0;
   width: 50px;
   height: 50px;
-  border-radius: 100%;
   object-fit: contain;
-  border: 1px solid ${COLORS.gray};
 `
 
 export const Time = styled.div`
@@ -105,9 +103,9 @@ export const Scorers = styled.div<{ team?: string }>`
   width: 100%;
   height: fit-content;
   display: flex;
-  flex-direction: coulumn;
+  flex-direction: column;
   gap: 4px;
-  justify-content: ${(props) => (props.team === 'home' ? 'end' : 'start')};
+  text-align: ${(props) => (props.team === 'home' ? 'end' : 'start')};
 `
 
 export const Date = styled.div`
@@ -125,7 +123,7 @@ export const SubTitle = styled.div`
   width: 100%;
   height: fit-content;
   display: flex;
-  padding: 8px;
+  padding: 8px 0;
   justify-content: start;
   font-size: 16px;
   font-weight: bold;
