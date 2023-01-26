@@ -1,7 +1,9 @@
-import { default as React } from 'react'
+import { default as React, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { FixtureBlockType, LeagueBlockType } from '@/types'
+import { FixtureBlockType } from '@/types'
+import { useDispatch } from 'react-redux'
+import { changeModalPage } from '@/store/actions/pageAction'
 import { getAllJSDocTagsOfKind } from 'typescript'
 
 const FixtureContainer = styled.div`
@@ -69,11 +71,16 @@ interface PropsType {
   fixture: FixtureBlockType
 }
 const FixtureTable = ({ fixture }: PropsType) => {
+  const dispatch = useDispatch()
   const time: string[] | null = fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)
+
+  const moveToMatchDetail = useCallback(() => {
+    dispatch(changeModalPage('matchDetail', 'Matches', { fixtureId: fixture.id }))
+  }, [fixture])
 
   return (
     <React.Fragment>
-      <FixtureContainer>
+      <FixtureContainer onClick={moveToMatchDetail}>
         <Home>{fixture.teams.home.name}</Home>
         <Flag src={fixture.teams.home.logo} />
         {fixture.status === 'NS' ? (

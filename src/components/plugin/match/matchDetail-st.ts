@@ -3,7 +3,8 @@ import { COLORS } from '@/constants/constants'
 
 export const Container = styled.div`
   width: 100%;
-  height: fit-content;
+  height: 100%;
+  overflow: scroll;
   background-color: ${COLORS.white};
 `
 
@@ -106,7 +107,7 @@ export const Scorers = styled.div<{ team?: string }>`
   display: flex;
   flex-direction: coulumn;
   gap: 4px;
-  text-align: ${(props) => (props.team === 'home' ? 'end' : 'start')};
+  justify-content: ${(props) => (props.team === 'home' ? 'end' : 'start')};
 `
 
 export const Date = styled.div`
@@ -120,7 +121,34 @@ export const Date = styled.div`
   border: 1px 0 solid ${COLORS.darkgray};
 `
 
-export const Timeline = styled.div``
+export const SubTitle = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  padding: 8px;
+  justify-content: start;
+  font-size: 16px;
+  font-weight: bold;
+`
+
+export const Timeline = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 8px 8px;
+`
+
+export const Event = styled.div<{ team?: string }>`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: ${(props) => (props.team === 'home' ? 'row' : 'row-reverse')};
+  justify-content: ${(props) => (props.team === 'home' ? 'start' : 'end')};
+  align-items: center;
+  gap: 20px;
+`
 
 export const Lineup = styled.div``
 
