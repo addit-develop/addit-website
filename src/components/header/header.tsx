@@ -7,9 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import rootReducer, { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
-import { useReducer } from 'react'
 import { useRouter } from 'next/router'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
@@ -21,10 +20,12 @@ const Header: NextComponentType = () => {
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
-  
+
   const logIn = useCallback(() => {
-    const state = uuidv4();
-    router.push(`https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${state}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`)
+    const state = v4()
+    router.push(
+      `https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${state}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`
+    )
     dispatch(loginRequestAction(state))
   }, [])
 
