@@ -1,6 +1,7 @@
 import produce from 'immer'
 
 import {
+  CHECK_LOGINED_USER_REQUEST,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -10,27 +11,29 @@ import {
 } from '../types'
 
 type StateType = {
-  logInDone: boolean
+  logined: boolean
   logInLoading: boolean //로그인 시도 중
   logInError: string | null
+  checkingUser: boolean | null
   logOutDone: boolean
   logOutLoading: boolean //로그아웃 시도 중
   logOutError: string | null
   me: string | null
   signUpData: any
-  loginData: any
+  loginData: string | null
 }
 
 export const initialState: StateType = {
-  logInDone: false,
+  logined: false,
   logInLoading: false, //로그인 시도 중
   logInError: null,
+  checkingUser: false,
   logOutDone: false,
   logOutLoading: false, //로그아웃 시도 중
   logOutError: null,
   me: null,
   signUpData: {},
-  loginData: {},
+  loginData: null,
 }
 
 const userReducer = (state = initialState, action: any) =>
@@ -39,14 +42,20 @@ const userReducer = (state = initialState, action: any) =>
       case LOG_IN_REQUEST:
         draft.logInLoading = true
         draft.logInError = null
-        draft.logInDone = false
+        draft.logined = false
+        draft.loginData = action.data
+        break
+      case  CHECK_LOGINED_USER_REQUEST:
+        draft.checkingUser = true
         break
       case LOG_IN_SUCCESS:
         draft.logInLoading = false
-        draft.me = action.data
-        draft.logInDone = true
+        draft.logined = true
+        draft.checkingUser = false
+        draft.me = action.data['nickname']
         break
       case LOG_IN_FAILURE:
+        draft.checkingUser = false
         draft.logInLoading = false
         draft.logInError = action.error
         break
