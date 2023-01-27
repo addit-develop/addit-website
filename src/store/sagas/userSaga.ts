@@ -7,20 +7,15 @@ import {
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
-  CHECK_LOGINED_USER_REQUEST,
+  CHECK_USER_REQUEST,
 } from '../types'
 
-// logInAPI는 제너레이터가 아님
 function checkUserAPI(data : any) {
   return axios.post("http://localhost:3065/auth/checkUser", data)
 }
-
-// fuction*은 제너레이터 함수로 중간에 중단점(yield)을 만들 수 있다
-// put은 dispatch라 생각하면 된다
-// call은 동기 함수 호출 => 결과값을 받아올 때까지 기다린다
 function* checkUser(action : any) {
   try {
-    const result = yield call(checkUserAPI, action.data)
+    const result : {data:{nickname:string}} = yield call(checkUserAPI, action.data)
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
@@ -57,7 +52,7 @@ function* logOut() {
 // take만 쓰면 일회용이므로 while 혹은 takeEvery(takeLatest)를 쓴다
 // takeLatest는 다중 클릭 시 마지막 응답만 처리된다. 실수로 여러번 클릭하는 경우를 대처 가능
 function* watchOauth2Response() {
-  yield takeLatest(CHECK_LOGINED_USER_REQUEST, checkUser)
+  yield takeLatest(CHECK_USER_REQUEST, checkUser)
 }
 
 function* watchLogOut() {
