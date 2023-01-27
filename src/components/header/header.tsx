@@ -8,11 +8,10 @@ import Link from 'next/link'
 import rootReducer, { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import { useRouter } from 'next/router'
-import { v4 } from 'uuid'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
-  const { me, logInError } = useSelector((state: RootState) => state.userReducer)
+  const { me } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()
 
   const [menuState, setMenuState] = useState(false)
@@ -20,14 +19,11 @@ const Header: NextComponentType = () => {
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
-
-  const logIn = useCallback(() => {
-    const state = v4()
-    router.push(
-      `https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${state}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CLIENTID}`
-    )
-    dispatch(loginRequestAction(state))
-  }, [])
+  
+  const logIn = useCallback(async () => {
+      const loginUrl = await loginRequestAction()
+      if(loginUrl){router.push(loginUrl)}
+    }, [])
 
   const logout = useCallback(() => {
     dispatch(logoutRequestAction())

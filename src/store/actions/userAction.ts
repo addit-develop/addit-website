@@ -1,11 +1,13 @@
-import { LOG_IN_REQUEST, LOG_OUT_REQUEST, CHECK_LOGINED_USER_REQUEST, LOG_IN_FAILURE } from '../types'
+import { LOG_OUT_REQUEST, CHECK_USER_REQUEST, LOG_IN_FAILURE } from '../types'
+import axios from 'axios'
 
 // action creator
-export const loginRequestAction = (data : string) => {
-  console.log(data)
-  return {
-    type: LOG_IN_REQUEST,
-    data: data
+export const loginRequestAction = async () => {
+  try {
+    const result = await axios.get("http://localhost:3065/auth/login") // get google oauth2 login url from back
+    return `https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${result.data['state']}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${result.data['client_id']}`
+  } catch (err) {
+    return null // if err return null for url
   }
 }
 
@@ -16,9 +18,9 @@ export const oauthResponseFailAction = (error : any) => { // google oauth2 login
   }
 }
 
-export const oauthResponseSuccessAction = (data : {'code': any}) => { // google oauth2 login succed and requsting back for confirm user
+export const oauthResponseSuccessAction = (data : {code:string | string[], state:string | string[]}) => { // google oauth2 login succed and requsting back for confirm user
   return {
-    type: CHECK_LOGINED_USER_REQUEST,
+    type: CHECK_USER_REQUEST,
     data: data
   }
 }

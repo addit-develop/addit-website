@@ -1,9 +1,8 @@
 import produce from 'immer'
 
 import {
-  CHECK_LOGINED_USER_REQUEST,
+  CHECK_USER_REQUEST,
   LOG_IN_FAILURE,
-  LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
@@ -11,52 +10,43 @@ import {
 } from '../types'
 
 type StateType = {
-  logined: boolean
-  logInLoading: boolean //로그인 시도 중
   logInError: string | null
   checkingUser: boolean | null
+  logInDone: boolean
+
+  me: string | null
+
   logOutDone: boolean
   logOutLoading: boolean //로그아웃 시도 중
   logOutError: string | null
-  me: string | null
-  signUpData: any
-  loginData: string | null
 }
 
 export const initialState: StateType = {
-  logined: false,
-  logInLoading: false, //로그인 시도 중
   logInError: null,
   checkingUser: false,
+  logInDone: false,
+
+  me: null,
+
   logOutDone: false,
   logOutLoading: false, //로그아웃 시도 중
   logOutError: null,
-  me: null,
-  signUpData: {},
-  loginData: null,
 }
 
 const userReducer = (state = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case LOG_IN_REQUEST:
-        draft.logInLoading = true
-        draft.logInError = null
-        draft.logined = false
-        draft.loginData = action.data
-        break
-      case  CHECK_LOGINED_USER_REQUEST:
+      case CHECK_USER_REQUEST: // checking user in oauth2 response from back
         draft.checkingUser = true
         break
       case LOG_IN_SUCCESS:
-        draft.logInLoading = false
-        draft.logined = true
+        draft.logInDone = true
         draft.checkingUser = false
         draft.me = action.data['nickname']
         break
       case LOG_IN_FAILURE:
         draft.checkingUser = false
-        draft.logInLoading = false
+        draft.logInDone = true
         draft.logInError = action.error
         break
       case LOG_OUT_REQUEST:
