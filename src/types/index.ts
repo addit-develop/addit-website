@@ -81,6 +81,31 @@ export type TeamType = {
   logo: string
 }
 
+export type TeamStatType = {
+  played: number
+  win: number
+  draw: number
+  lose: number
+  goals: {
+    for: number
+    against: number
+  }
+}
+
+export type StandingDataType = {
+  rank: number
+  team: TeamType
+  points: number
+  goalsDiff: number
+  form: string
+  status: string
+  description: string
+  all: TeamStatType
+  home: TeamStatType
+  away: TeamStatType
+  update: string
+}
+
 export type FixtureBlockType = {
   id: number
   date: string

@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import rootReducer, { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
-import { useReducer } from 'react'
 import { useRouter } from 'next/router'
 
 const Header: NextComponentType = () => {
