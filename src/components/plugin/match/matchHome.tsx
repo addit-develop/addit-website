@@ -3,7 +3,7 @@ import * as Styles from './matchHome-st'
 import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
-import LeagueFixtures from './leagueFixtures'
+import MatchFixtures from './matchFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
@@ -173,7 +173,7 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
               const leagueData = leagueList.find((x) => x.id === league.id)
               if (leagueData)
                 return (
-                  <LeagueFixtures
+                  <MatchFixtures
                     data={leagueData}
                     selectMode={selectMode}
                     blockId={blockId}

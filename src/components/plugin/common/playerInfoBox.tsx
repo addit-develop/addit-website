@@ -17,6 +17,8 @@ const Container = styled.div`
   margin-bottom: 1px;
 `
 const PlayerInfo = styled.div`
+  flex: 1;
+
   flex-direction: column;
   display: flex;
   gap: 8px;
@@ -42,11 +44,17 @@ const PlayerTeam = styled.div`
   gap: 4px;
   font-size: 14px;
 `
+const Stat = styled.div`
+  font-size: 18px;
+  color: ${COLORS.blue};
+`
 interface PropsType {
   player: PlayerType
   club: TeamType
+  stat?: number
 }
-const PlayerInfoBox = ({ player, club }: PropsType) => {
+
+const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
   const countryFlag = useCountryFlag(player.nationality)
   return (
     <React.Fragment>
@@ -79,6 +87,7 @@ const PlayerInfoBox = ({ player, club }: PropsType) => {
             </PlayerTeam>
           </PlayerTeamRow>
         </PlayerInfo>
+        {stat && <Stat>{stat}</Stat>}
       </Container>
     </React.Fragment>
   )
