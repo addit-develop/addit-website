@@ -46,6 +46,7 @@ const userReducer = (state = initialState, action: any) =>
         break
       case LOG_IN_FAILURE:
         draft.checkingUser = false
+        draft.logInDone = true
         draft.logInError = action.error
         break
       case LOG_OUT_REQUEST:

@@ -3,7 +3,6 @@ import rootReducer, { RootState } from '@/store/reducers'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { oauthResponseSuccessAction, oauthResponseFailAction } from '@/store/actions/userAction'
-import { ResultContainer } from '@/components/plugin/match/matchDetail-st'
 // this page is for checking Login result.
 // Don't render this page, userInfo included.
 
