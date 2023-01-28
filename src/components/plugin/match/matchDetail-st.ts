@@ -37,6 +37,7 @@ export const ResultContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 8px;
 `
 
 export const TeamContainer = styled.div`
@@ -288,6 +289,6 @@ export const Stat = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px;
+  padding: 0 16px;
   font-size: 14px;
 `
