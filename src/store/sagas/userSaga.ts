@@ -13,37 +13,37 @@ import {
   LOAD_USER_FAILURE,
 } from '../types'
 
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = true
 
 function loadUserAPI() {
-  return axios.get("http://localhost:3065/")
+  return axios.get('http://localhost:3065/')
 }
 function* loadUser() {
-  try{
-    const result : {data:{nickname:string}} = yield call(loadUserAPI)
+  try {
+    const result: { data: { nickname: string } } = yield call(loadUserAPI)
     yield put({
       type: LOAD_USER_SUCCESS,
-      data : result.data,
+      data: result.data,
     })
-  } catch(err : any){
+  } catch (err: any) {
     yield put({
       type: LOAD_USER_FAILURE,
-      error : err.response,
+      error: err.response,
     })
   }
 }
 
-function checkUserAPI(data : any) {
-  return axios.post("http://localhost:3065/auth/checkUser", data)
+function checkUserAPI(data: any) {
+  return axios.post('http://localhost:3065/auth/checkUser', data)
 }
-function* checkUser(action : any) {
+function* checkUser(action: any) {
   try {
-    const result : {data:{nickname:string}} = yield call(checkUserAPI, action.data)
+    const result: { data: { nickname: string } } = yield call(checkUserAPI, action.data)
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data,
     })
-  } catch (err : any) {
+  } catch (err: any) {
     yield put({
       type: LOG_IN_FAILURE,
       error: err.response,
@@ -61,7 +61,7 @@ function* logOut() {
     yield put({
       type: LOG_OUT_SUCCESS,
     })
-  } catch (err : any) {
+  } catch (err: any) {
     yield put({
       type: LOG_OUT_FAILURE,
       error: err.response.data,
