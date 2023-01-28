@@ -1,0 +1,15 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+}
+
+.content {
+  width: 100%;
+  height: fit-content;
+  max-width: 762px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
