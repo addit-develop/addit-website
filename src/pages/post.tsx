@@ -6,6 +6,8 @@ import styles from '@/styles/post.module.css'
 // example data from editor.js
 const example = {
   title: ' This is sample post!',
+  email: 'addit.develop@gmail.com',
+  time: 1674897739588,
   blocks: [
     {
       id: '4VO1-bae5v',
@@ -28,6 +30,7 @@ const example = {
 const PostPage: NextPage = () => {
   // turn json to html
   const result = parser.toHTML(example.blocks)
+  const convertedTime = new Date(example.time)
 
   return (
     <>
@@ -39,6 +42,9 @@ const PostPage: NextPage = () => {
         <div className={styles.page}>
           <div className={styles.postContainer}>
             <div className={styles.title}>{example.title}</div>
+            <div className={styles.detail}>{`${
+              example.email
+            }${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${convertedTime}`}</div>
             <div className={styles.content} dangerouslySetInnerHTML={{ __html: result }} />
           </div>
         </div>
