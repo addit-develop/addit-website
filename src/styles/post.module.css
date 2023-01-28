@@ -5,11 +5,24 @@
   padding: 24px;
 }
 
-.content {
+.postContainer {
   width: 100%;
   height: fit-content;
   max-width: 762px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.title {
+  flex-shrink: 0;
+  width: 100%;
+  height: fit-content;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
 }

@@ -5,6 +5,7 @@ import styles from '@/styles/post.module.css'
 
 // example data from editor.js
 const example = {
+  title: ' This is sample post!',
   blocks: [
     {
       id: '4VO1-bae5v',
@@ -36,7 +37,10 @@ const PostPage: NextPage = () => {
       </Head>
       <main>
         <div className={styles.page}>
-          <div className={styles.content} dangerouslySetInnerHTML={{ __html: result }} />
+          <div className={styles.postContainer}>
+            <div className={styles.title}>{example.title}</div>
+            <div className={styles.content} dangerouslySetInnerHTML={{ __html: result }} />
+          </div>
         </div>
       </main>
     </>

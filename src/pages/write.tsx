@@ -13,15 +13,36 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
 const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>()
+  const [title, setTitle] = useState<string | null>()
 
   const savePost = useCallback(() => {
-    console.log(data)
-  }, [data])
+    const saveData = {
+      title: title,
+      ...data,
+    }
+    console.log(saveData)
+  }, [data, title])
+
+  const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') e.preventDefault()
+  }, [])
+
+  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
+    setTitle(e.currentTarget.textContent)
+  }, [])
 
   return (
     <div className={styles.page}>
       <div className={styles.editor__backgroundImage}>+ Add background image</div>
       <div className={styles.editor}>
+        <div className={styles.title}>
+          <div
+            id="titleInput"
+            contentEditable
+            onKeyDown={(e) => preventEnter(e)}
+            onInput={(e) => saveTitle(e)}
+          />
+        </div>
         <Editor data={data} onChange={setData} holder="editorjs-container" />
         <button className={styles.publish} onClick={savePost}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
