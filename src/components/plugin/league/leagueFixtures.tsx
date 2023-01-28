@@ -9,6 +9,7 @@ interface PropsType {
   league: LeagueType
   season: number
 }
+
 const LeagueFixtures = ({ league, season }: PropsType) => {
   const axios = useAxios()
   const today = useMemo(() => dayjs(), [])
@@ -36,7 +37,7 @@ const LeagueFixtures = ({ league, season }: PropsType) => {
 
   useEffect(() => {
     getFixturesData()
-  }, [])
+  }, [season])
 
   return (
     <React.Fragment>

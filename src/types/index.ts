@@ -101,6 +101,13 @@ export type TeamType = {
   logo: string
 }
 
+export type SeasonType = {
+  year: number
+  start: string
+  end: string
+  current: boolean
+  coverage: Object
+}
 export type TeamStatType = {
   played: number
   win: number

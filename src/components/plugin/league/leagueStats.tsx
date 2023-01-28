@@ -57,7 +57,8 @@ const LeagueStats = ({ league, season }: PropsType) => {
     getTopScorer()
     getTopAssist()
     getTopYellowCard()
-  }, [])
+  }, [season])
+
   return (
     <React.Fragment>
       <Container>

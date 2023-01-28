@@ -25,20 +25,21 @@ const Index = styled.div`
 `
 interface PropsType {
   league: LeagueType
+  season: number
 }
 
-const LeagueStanding = ({ league }: PropsType) => {
+const LeagueStanding = ({ league, season }: PropsType) => {
   const [standingData, setStandingData] = useState<StandingDataType[]>([])
   const axios = useAxios()
 
   const getStandingData = async () => {
-    const res = await axios.get('/standings', { params: { league: league.id, season: 2022 } })
+    const res = await axios.get('/standings', { params: { league: league.id, season } })
     if (res.data.response) setStandingData(res.data.response[0].league.standings[0])
   }
 
   useEffect(() => {
     getStandingData()
-  })
+  }, [season])
 
   if (!standingData) return null
   return (
