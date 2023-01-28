@@ -1,6 +1,7 @@
 import { LOG_OUT_REQUEST, CHECK_USER_REQUEST, LOG_IN_FAILURE } from '../types'
 import axios from 'axios'
 
+
 // action creator
 export const loginRequestAction = async () => {
   try {

@@ -30,3 +30,9 @@ export const setBlockReady = (id: string) => {
     id,
   }
 }
+
+export const savePost = () => {
+  return {
+    
+  }
+}
