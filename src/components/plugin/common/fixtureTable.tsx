@@ -88,7 +88,7 @@ const FixtureTable = ({ fixture }: PropsType) => {
         ) : (
           <Score>
             {fixture.score.home}:{fixture.score.away}
-            <MatchTime>{fixture.elapse}'</MatchTime>
+            <MatchTime>{fixture.elapse}</MatchTime>
           </Score>
         )}
         <Flag src={fixture.teams.away.logo} />

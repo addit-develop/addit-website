@@ -2,7 +2,7 @@ import useAxios from '@/hooks/useAxios'
 import { PlayerDataType, PlayerType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import PlayerInfoBox from './playerInfoBox'
+import PlayerInfoBox from '../common/playerInfoBox'
 import PlayerStatBox from './playerStatBox'
 
 const Container = styled.div`

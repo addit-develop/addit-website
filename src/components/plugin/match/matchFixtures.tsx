@@ -2,7 +2,7 @@ import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
 import { LeagueBlockType, FixtureBlockType, BlockDataType } from '@/types'
-import FixtureTable from '../fixtureTable'
+import FixtureTable from '../common/fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer, { RootState } from '@/store/reducers'
 import { setBlockData } from '@/store/actions/postAction'
@@ -71,7 +71,7 @@ interface PropsType {
   blockId?: string
 }
 
-const LeagueFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsType) => {
+const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsType) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
@@ -168,4 +168,4 @@ const LeagueFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTy
   )
 }
 
-export default LeagueFixtures
+export default MatchFixtures

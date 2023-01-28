@@ -2,7 +2,7 @@ import { COLORS } from '@/constants/constants'
 import { default as React } from 'react'
 import styled from 'styled-components'
 import { LeagueBlockType } from '@/types'
-import LeagueFixtures from '../plugin/match/leagueFixtures'
+import MatchFixtures from '../plugin/match/matchFixtures'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -25,7 +25,7 @@ const FixtureListByDate = ({ data }: Props) => {
   return (
     <React.Fragment>
       <BlockContainer>
-        {data && data.map((x) => <LeagueFixtures data={x} selectMode={false} forBlock={true} />)}
+        {data && data.map((x) => <MatchFixtures data={x} selectMode={false} forBlock={true} />)}
       </BlockContainer>
     </React.Fragment>
   )

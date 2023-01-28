@@ -8,25 +8,26 @@ import { oauthResponseSuccessAction, oauthResponseFailAction } from '@/store/act
 
 
 const CheckLogInMiddleware = () => {
-  var router = useRouter()
-  var {code, state, error, scope} = router.query;
-  const { me, logInLoading, logInError, loginData } = useSelector((state: RootState) => state.userReducer)
-  useEffect(() => {
-    router.replace('/', undefined, {shallow:true})
-  }, [logInLoading])
+  const router = useRouter()
   const dispatch = useDispatch()  
+  const {code, state, error} = router.query;
+  const { me, logInDone } = useSelector((state: RootState) => state.userReducer)
 
   useEffect(() => {
-    console.log(state)
-    console.log(loginData)
-    if(error || state !== loginData){
-      console.log('state incorrect')
+    if(error){
+      console.log('access denied')
       dispatch(oauthResponseFailAction(error))
+    }else if(code && state){
+      console.log('access confirmed')
+      dispatch(oauthResponseSuccessAction({code:code, state:state}))
     }
-    else if(code){
-      dispatch(oauthResponseSuccessAction({'code':code}))
+  }, [code, error]);
+
+  useEffect(() => {
+    if(logInDone){
+      router.replace('/', undefined, {shallow:true})
     }
-  }, [code, error, loginData, state])
+  }, [logInDone])
 }
 
 export default CheckLogInMiddleware
