@@ -5,14 +5,21 @@ import styles from './header.module.css'
 import { useCallback, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
-import rootReducer, { RootState } from '@/store/reducers'
+import { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import { useRouter } from 'next/router'
+import { LOAD_USER_REQUEST } from '@/store/types'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
   const { me } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
+  }, [])
 
   const [menuState, setMenuState] = useState(false)
 
@@ -36,6 +43,7 @@ const Header: NextComponentType = () => {
           <Image className={styles.header__logo} src={logo} alt="addit_full_logo" />
           <div>for Football</div>
         </Link>
+        <div>hello {me}</div>
         <div className={styles.header__navigation__button} id="menu" onClick={openMenu}>
           {menuState ? (
             <svg

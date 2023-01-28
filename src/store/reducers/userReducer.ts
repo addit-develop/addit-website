@@ -7,10 +7,17 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../types'
 
 type StateType = {
-  logInError: string | null
+  loadUserLoading: boolean
+  loadUserDone: boolean
+  loadUserError: any | null
+
+  logInError: any | null
   checkingUser: boolean | null
   logInDone: boolean
 
@@ -18,10 +25,14 @@ type StateType = {
 
   logOutDone: boolean
   logOutLoading: boolean //로그아웃 시도 중
-  logOutError: string | null
+  logOutError: any | null
 }
 
 export const initialState: StateType = {
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
+
   logInError: null,
   checkingUser: false,
   logInDone: false,
@@ -36,13 +47,28 @@ export const initialState: StateType = {
 const userReducer = (state = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_USER_REQUEST : // load user when F5
+        draft.loadUserLoading = true
+        draft.loadUserError = null
+        draft.loadUserDone = false
+        draft.me = null
+        break
+        case LOAD_USER_SUCCESS :
+        draft.loadUserLoading = false
+        draft.loadUserDone = true
+        draft.me = action.data
+        break
+        case LOAD_USER_FAILURE :
+        draft.loadUserLoading = false
+        draft.loadUserError = action.error
+        break
       case CHECK_USER_REQUEST: // checking user in oauth2 response from back
         draft.checkingUser = true
         break
       case LOG_IN_SUCCESS:
         draft.logInDone = true
         draft.checkingUser = false
-        draft.me = action.data['nickname']
+        draft.me = action.data
         break
       case LOG_IN_FAILURE:
         draft.checkingUser = false

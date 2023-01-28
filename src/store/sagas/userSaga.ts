@@ -8,7 +8,30 @@ import {
   LOG_OUT_FAILURE,
   LOG_OUT_REQUEST,
   CHECK_USER_REQUEST,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../types'
+
+axios.defaults.withCredentials = true
+
+function loadUserAPI() {
+  return axios.get("http://localhost:3065/")
+}
+function* loadUser() {
+  try{
+    const result : {data:{nickname:string}} = yield call(loadUserAPI)
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data : result.data,
+    })
+  } catch(err : any){
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error : err.response,
+    })
+  }
+}
 
 function checkUserAPI(data : any) {
   return axios.post("http://localhost:3065/auth/checkUser", data)
@@ -29,7 +52,7 @@ function* checkUser(action : any) {
 }
 
 function logOutAPI() {
-  return axios.post('http://localhost:3065/auth/logout')
+  return axios.get('http://localhost:3065/auth/logout')
 }
 
 function* logOut() {
@@ -51,6 +74,10 @@ function* logOut() {
 // logIn 함수를 실행할 때 'LOG_IN_REQUEST' action이 매개변수로 전달된다
 // take만 쓰면 일회용이므로 while 혹은 takeEvery(takeLatest)를 쓴다
 // takeLatest는 다중 클릭 시 마지막 응답만 처리된다. 실수로 여러번 클릭하는 경우를 대처 가능
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser)
+}
+
 function* watchOauth2Response() {
   yield takeLatest(CHECK_USER_REQUEST, checkUser)
 }
@@ -62,5 +89,5 @@ function* watchLogOut() {
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
 export default function* userSaga() {
-  yield all([fork(watchOauth2Response), fork(watchLogOut)])
+  yield all([fork(watchLoadUser), fork(watchOauth2Response), fork(watchLogOut)])
 }
