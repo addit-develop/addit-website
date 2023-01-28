@@ -18,6 +18,7 @@ export const tools = {
     class: Header,
     inlineToolbar: ['link'],
   },
+  footballTool: footballTool,
   embed: {
     class: Embed,
     config: {
@@ -54,5 +55,4 @@ export const tools = {
     },
   },
   linkTool: LinkTool,
-  footballTool: footballTool,
 }
