@@ -26,7 +26,6 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
 
   const getLeagueDetail = async () => {
     const res = await axios.get('/leagues', { params: { id: leagueId } })
-    console.log(res)
     setLeagueData(res.data.response[0])
   }
 

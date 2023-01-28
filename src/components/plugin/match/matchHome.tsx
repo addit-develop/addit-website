@@ -3,12 +3,13 @@ import * as Styles from './matchHome-st'
 import dayjs, { Dayjs } from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
-import MatchFixtures from './matchFixtures'
+import MatchFixtures from './leagueGroupedFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
 import { FixtureType, LeagueBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
 import { useDispatch } from 'react-redux'
 import { makeBlockData, setBlockData } from '@/store/actions/postAction'
+import LeagueGroupedFixtures from './leagueGroupedFixtures'
 
 dayjs.extend(relativeTime)
 
@@ -22,67 +23,36 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
   const TodayDate = useMemo(() => dayjs(), [])
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
   const [fixtureData, setFixtureData] = useState<FixtureType[]>([])
-  const [leagueList, setLeagueList] = useState<LeagueBlockType[]>(new Array())
   const [majorLeaguesOpen, setMajorLeaguesOpen] = useState(true)
-
   const axios = useAxios()
 
-  const makeFixtureBlock = (data: FixtureType[]) => {
-    const fullDataList: LeagueBlockType[] = []
+  const makeFixtureBlock = (fixtures: FixtureType[]) => {
     const emptyFixtureList: LeagueBlockType[] = []
-    data.forEach((x: any) => {
-      const xBlockData = {
-        id: x.fixture.id,
-        date: x.fixture.date,
-        teams: {
-          home: {
-            name: x.teams.home.name,
-            logo: x.teams.home.logo,
-          },
-          away: {
-            name: x.teams.away.name,
-            logo: x.teams.away.logo,
-          },
-        },
-        score: x.goals,
-        status: x.fixture.status.short,
-        elapse: x.fixture.status.elapsed,
-      }
-      const index = fullDataList.findIndex((y: LeagueBlockType) => x.league.id === y.id)
-      if (index === -1) {
-        fullDataList.push({
-          id: x.league.id,
-          name: x.league.name,
-          logo: x.league.logo,
-          fixtures: [xBlockData],
-        })
+    let leagueIdList: number[] = []
+    fixtures.forEach((x) => {
+      if (!leagueIdList.includes(x.league.id)) {
         emptyFixtureList.push({
           id: x.league.id,
           name: x.league.name,
           logo: x.league.logo,
           fixtures: [],
         })
-      } else {
-        fullDataList[index].fixtures.push(xBlockData)
+        leagueIdList.push(x.league.id)
       }
     })
-    setLeagueList(fullDataList)
     dispatch(setBlockData(blockId, emptyFixtureList))
   }
 
   // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   const getFixtureData = async () => {
-    const response = await axios
-      .get('/fixtures', { params: { date } })
-      .then((response) => {
-        console.log(response)
-        setFixtureData(response.data.response)
-        makeFixtureBlock(response.data.response)
-      })
-      .catch((err) => {
-        setFixtureData([])
-        console.error(err)
-      })
+    const response = await axios.get('/fixtures', { params: { date } })
+    try {
+      setFixtureData(response.data.response)
+      makeFixtureBlock(response.data.response)
+    } catch (error) {
+      setFixtureData([])
+      console.error(error)
+    }
   }
 
   // 새로운 blockdata 생성
@@ -170,11 +140,11 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
           {majorLeaguesOpen &&
             fixtureData &&
             MajorLeagues.map((league) => {
-              const leagueData = leagueList.find((x) => x.id === league.id)
-              if (leagueData)
+              const leagueFixtureData = fixtureData.filter((x) => x.league.id === league.id)
+              if (leagueFixtureData.length)
                 return (
-                  <MatchFixtures
-                    data={leagueData}
+                  <LeagueGroupedFixtures
+                    fixtures={leagueFixtureData}
                     selectMode={selectMode}
                     blockId={blockId}
                     key={league.id}

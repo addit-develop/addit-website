@@ -4,11 +4,31 @@ type ScoreType = {
 }
 
 export type FixtureType = {
-  fixture: any
-  league: any
+  fixture: {
+    id: number
+    referee: string | null
+    timezone: string
+    date: string
+    timestamp: number | null
+    periods: {
+      first: number | null
+      second: number | null
+    }
+    venue: {
+      id: number
+      name: string
+      city: string
+    }
+    status: {
+      long: string
+      short: string
+      elapsed: number | null
+    }
+  }
+  league: LeagueType & { season: number; round: string }
   teams: {
-    home: any
-    away: any
+    home: TeamType & { winner: boolean }
+    away: TeamType & { winner: boolean }
   }
   goals: ScoreType
   score: {
@@ -106,29 +126,11 @@ export type StandingDataType = {
   update: string
 }
 
-export type FixtureBlockType = {
-  id: number
-  date: string
-  teams: {
-    home: {
-      name: string
-      logo: string
-    }
-    away: {
-      name: string
-      logo: string
-    }
-  }
-  score: ScoreType
-  status: string
-  elapse: number | null
-}
-
 export type LeagueBlockType = {
   id: number
   name: string
   logo: string
-  fixtures: FixtureBlockType[]
+  fixtures: FixtureType[]
 }
 
 export type BlockDataType = {

@@ -30,7 +30,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
     const response = await axios
       .get('/fixtures', { params: { id: fixtureId } })
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         setMatchData(response.data.response[0])
         const newScorerList = { home: new Array(), away: new Array() }
         const newEventList = {
@@ -61,7 +61,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
             newEventList.penalty.push(x)
           }
         })
-        console.log(newEventList)
+        // console.log(newEventList)
         setScorerList(newScorerList)
         setEventList(newEventList)
       })

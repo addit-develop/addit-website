@@ -1,7 +1,7 @@
 import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { LeagueBlockType, FixtureBlockType, BlockDataType } from '@/types'
+import { LeagueBlockType, BlockDataType, FixtureType } from '@/types'
 import FixtureTable from '../common/fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer, { RootState } from '@/store/reducers'
@@ -65,21 +65,21 @@ const FixtureContainer = styled.div`
 `
 
 interface PropsType {
-  data: LeagueBlockType
+  fixtures: FixtureType[]
   selectMode: boolean
   forBlock?: boolean
   blockId?: string
 }
 
-const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsType) => {
+const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId }: PropsType) => {
+  const league = fixtures && fixtures[0].league
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
-    data.fixtures.map(() => false)
+    fixtures.map(() => false)
   ) // 개별 경기 선택 유무 리스트
   const [allSelected, setAllSelected] = useState<boolean>(false) // 전체 선택 유뮤
-  const [selectedFixtureData, setSelectedFixtureData] = useState<FixtureBlockType[]>([]) // 선택한 경기 정보 리스트
-
+  const [selectedFixtureData, setSelectedFixtureData] = useState<FixtureType[]>([]) // 선택한 경기 정보 리스트
   const [menuState, setMenuState] = useState<boolean>(true) // 메뉴 열림 상태
 
   // 선택한 경기 정보 리스트 바뀔 때마다 reducer blockData에 반영
@@ -88,11 +88,11 @@ const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTyp
     const newBlockData =
       myBlockData &&
       myBlockData.data.map((x: LeagueBlockType) =>
-        x.id === data.id
+        x.id === league.id
           ? {
-              id: data.id,
-              name: data.name,
-              logo: data.logo,
+              id: league.id,
+              name: league.name,
+              logo: league.logo,
               fixtures: selectedFixtureData,
             }
           : x
@@ -103,14 +103,14 @@ const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTyp
   useEffect(() => {
     // 선택한 경기 정보를 리스트에 반영
     setSelectedFixtureData(
-      data.fixtures.filter((x: FixtureBlockType, i: number) => selectedFixtureBoolean[i])
+      fixtures.filter((x: FixtureType, i: number) => selectedFixtureBoolean[i])
     )
     setAllSelected(selectedFixtureBoolean.findIndex((x) => x === true) !== -1)
-    console.log(allSelected, selectedFixtureBoolean)
+    // console.log(allSelected, selectedFixtureBoolean)
   }, [selectedFixtureBoolean, allSelected])
 
   const selectAll = useCallback(() => {
-    setSelectedFixtureBoolean(data.fixtures.map(() => !allSelected))
+    setSelectedFixtureBoolean(fixtures.map(() => !allSelected))
     setAllSelected(!allSelected)
     // 선택한 경기 정보를 리스트에 반영
   }, [allSelected])
@@ -138,8 +138,8 @@ const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTyp
         <LeagueTitle onClick={openMenu}>
           <SelectBox selectMode={selectMode} allSelected={allSelected} onClick={selectAll} />
           <LeagueName>
-            <Flag src={data.logo} />
-            {data.name}
+            <Flag src={league.logo} />
+            {league.name}
           </LeagueName>
           {forBlock ? null : menuState ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -152,7 +152,7 @@ const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTyp
           )}
         </LeagueTitle>
         {menuState
-          ? data.fixtures.map((fixture, i) => (
+          ? fixtures.map((fixture, i) => (
               <FixtureContainer key={i}>
                 <SelectBox
                   selectMode={selectMode}
@@ -168,4 +168,4 @@ const MatchFixtures = ({ data, selectMode, forBlock = false, blockId }: PropsTyp
   )
 }
 
-export default MatchFixtures
+export default LeagueGroupedFixtures

@@ -17,7 +17,7 @@ const LeagueDetailBody = ({ league }: PropsType) => {
       {selectedMenu === 'Table' ? (
         <LeagueStanding league={league} />
       ) : selectedMenu === 'Fixtures' ? (
-        <LeagueFixtures league={league} />
+        <LeagueFixtures league={league} season={season} />
       ) : (
         <LeagueStats league={league} season={season} />
       )}

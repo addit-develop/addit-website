@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 
 import EmptyBlock from './emptyBlock'
-import FixtureListByDate from './FixtureListByDate'
+import FixtureListByLeague from './FixtureListByLeague'
 import { BlockDataType } from '@/types'
 import rootReducer, { RootState } from '@/store/reducers'
 
@@ -32,7 +32,7 @@ const FootballBlock = ({ blockId }: Props) => {
     <React.Fragment>
       <BlockContainer>
         {blockData && blockData.isReady ? (
-          <FixtureListByDate data={blockData.data} />
+          <FixtureListByLeague data={blockData.data} />
         ) : (
           <EmptyBlock />
         )}
