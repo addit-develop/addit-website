@@ -159,3 +159,23 @@ export type MatchDetailDataType = {
   statistics: any[]
   players: any[]
 }
+
+import { OutputData } from '@editorjs/editorjs'
+export type Comment = {
+  content: string
+  email:string
+  time:number | string
+  like:number
+}
+
+export type Post = {
+  id: number,
+  title: string
+  email: string
+  hashtags: string[]
+  data: OutputData
+  snippet: string
+  comments: Comment[]
+  likes:number
+  views:number
+}

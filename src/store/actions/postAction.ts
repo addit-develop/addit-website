@@ -1,4 +1,5 @@
-import { MAKE_BLOCK_DATA, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE } from '../types'
+import { MAKE_BLOCK_DATA, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE, SAVE_POST_REQUEST } from '../types'
+import { Post } from '@/types'
 
 export const makeBlockData = (id: string, blockType: string) => {
   return {
@@ -31,8 +32,9 @@ export const setBlockReady = (id: string) => {
   }
 }
 
-export const savePost = () => {
+export const savePostRequestAction = (post:Post) => {
   return {
-    
+    type:SAVE_POST_REQUEST,
+    post:post,
   }
 }
