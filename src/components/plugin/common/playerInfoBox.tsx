@@ -1,8 +1,11 @@
 import { COLORS } from '@/constants/constants'
 import { useCountryFlag } from '@/hooks/useCountryFlag'
+import { changeModalPage } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 import { PlayerDataType, PlayerType, TeamType } from '@/types'
 import Image from 'next/image'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -55,10 +58,16 @@ interface PropsType {
 }
 
 const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
+  const dispatch = useDispatch()
+  const {} = useSelector((state: RootState) => state.pageReducer)
   const countryFlag = useCountryFlag(player.nationality)
   return (
     <React.Fragment>
-      <Container>
+      <Container
+        onClick={() => {
+          dispatch(changeModalPage('playerDetail', 'Players', player.id))
+        }}
+      >
         <Image src={player.photo} width={72} height={72} alt={player.name} />
         <PlayerInfo>
           <PlayerName>{player.name}</PlayerName>
