@@ -24,11 +24,11 @@ type MenuType = {
 
 const SearchModal = ({ blockId }: Props) => {
   const dispatch = useDispatch()
+  // const searchRef = useRef()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps } = useSelector(
     (state: RootState) => state.pageReducer
   )
-
   const menu: MenuType[] = [
     { page: 'matchHome', title: 'Matches' },
     { page: 'leagueHome', title: 'Leagues' },
