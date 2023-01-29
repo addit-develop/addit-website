@@ -3,6 +3,10 @@ import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import styles from '@/styles/write.module.css'
+import { Comment, Post } from '@/types'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/store/reducers'
+import { savePostRequestAction } from '@/store/actions/postAction'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -10,25 +14,65 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 
+
 const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
-  const [data, setData] = useState<OutputData>()
-  const [title, setTitle] = useState<string | null>()
-
+  const [data, setData] = useState<OutputData>({
+    time:0,
+    blocks:[],
+    version:'2.26.4',
+  })
+  const [title, setTitle] = useState<string>('')
+  const { me } = useSelector((state: RootState) => state.userReducer)
+  const dispatch = useDispatch()
   const savePost = useCallback(() => {
-    const saveData = {
-      title: title,
-      ...data,
+    if(me){
+      var snippet : string | null = null;
+      var hashtags : string[] = [];
+      var firstImage : 	{type: string, data: object} | null = null;
+      for(const index in data.blocks){
+        const block = data.blocks[index];
+        if(block.type === 'paragraph'){
+          if(!snippet){
+            if(block.data.text.length>50){
+              snippet = block.data.text.substr(0, 50)+'...';
+            } else{
+              snippet = block.data.text;
+            }
+          }
+          //hashtags.push(block.data.text.match(`/#[^\s]+/g`).slice(1).toLowerCase())
+          //"(#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*)"
+          //.map((e:string)=>e.slice(1).toLowerCase())
+          hashtags.push(block.data.text.match(/^#[^ !@#$%^&*(),.?":{}|<>]*$/gi));
+        }
+        else if(block.type === 'image' && !firstImage){
+          firstImage = block.data;
+          console.log('image');
+        }
+      }
+      console.log(hashtags);
+      const post : Post = {
+        id: 0,
+        title: title,
+        hashtags: hashtags,
+        email: me,
+        data: data,
+        snippet: snippet || '',
+        comments: [],
+        likes: 0,
+        views: 0,
+      }
+      console.log(post)
+      dispatch(savePostRequestAction(post))
     }
-    console.log(saveData)
-  }, [data, title])
+  }, [data, title, me])
 
   const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') e.preventDefault()
   }, [])
 
   const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    setTitle(e.currentTarget.textContent)
+    setTitle(e.currentTarget.textContent || '')
   }, [])
 
   return (
