@@ -1,6 +1,9 @@
 import { COLORS } from '@/constants/constants'
+import { changeModalPage } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 import { StandingDataType, TeamStatType } from '@/types'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import CircledImage from '../common/circledImage'
 
@@ -34,9 +37,18 @@ interface PropsType {
 }
 
 const LeagueStandingTeam = ({ team }: PropsType) => {
+  const dispatch = useDispatch()
+  const { currentPage, currentMenu, pageProps } = useSelector(
+    (state: RootState) => state.pageReducer
+  )
+
   return (
     <React.Fragment>
-      <Container>
+      <Container
+        onClick={() => {
+          dispatch(changeModalPage('teamDetail', 'Teams', team.team.id))
+        }}
+      >
         <Rank>{team.rank}</Rank>
         <CircledImage src={team.team.logo} width={24} height={24} />
         <TeamName>{team.team.name}</TeamName>

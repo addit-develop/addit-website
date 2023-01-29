@@ -37,13 +37,13 @@ const Date = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
-  color: ${COLORS.black};
   cursor: pointer;
 `
 
 const LeagueName = styled.div`
+  font-size: 15px;
   display: flex;
+  color: ${COLORS.black};
   cursor: pointer;
   gap: 4px;
 `

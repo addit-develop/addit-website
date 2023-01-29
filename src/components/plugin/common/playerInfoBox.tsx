@@ -61,9 +61,7 @@ const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
       <Container>
         <Image src={player.photo} width={72} height={72} alt={player.name} />
         <PlayerInfo>
-          <PlayerName>
-            {player.firstname} {player.lastname}
-          </PlayerName>
+          <PlayerName>{player.name}</PlayerName>
           <PlayerTeamRow>
             <PlayerTeam>
               <Image

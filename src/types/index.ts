@@ -68,6 +68,7 @@ export type PlayerType = {
   weight: string
   injured: boolean
   photo: string
+  position?: string
 }
 
 export type StatisticsType = {
