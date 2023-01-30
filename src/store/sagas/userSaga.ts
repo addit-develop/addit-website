@@ -1,4 +1,4 @@
-import { all, fork, call, put, takeLatest, delay } from 'redux-saga/effects'
+import { all, fork, call, put, takeLatest} from 'redux-saga/effects'
 import axios from 'axios'
 
 import {
@@ -13,14 +13,12 @@ import {
   LOAD_USER_FAILURE,
 } from '../types'
 
-// axios.defaults.withCredentials = true
-
 function loadUserAPI() {
   return axios.get('http://localhost:3065/')
 }
 function* loadUser() {
   try {
-    const result: { data: { nickname: string } } = yield call(loadUserAPI)
+    const result: { data: string } = yield call(loadUserAPI)
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data,
@@ -28,7 +26,7 @@ function* loadUser() {
   } catch (err: any) {
     yield put({
       type: LOAD_USER_FAILURE,
-      error: err.response,
+      error: err.response.data,
     })
   }
 }

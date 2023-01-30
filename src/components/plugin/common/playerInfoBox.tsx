@@ -53,7 +53,7 @@ const Stat = styled.div`
 `
 interface PropsType {
   player: PlayerType
-  club: TeamType
+  club?: TeamType
   stat?: number
 }
 
@@ -82,16 +82,18 @@ const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
               />
               <div>{player.nationality}</div>
             </PlayerTeam>
-            <PlayerTeam>
-              <Image
-                src={club.logo}
-                width={24}
-                height={24}
-                alt={player.name}
-                style={{ borderRadius: 12, borderWidth: 1, borderColor: COLORS.lightgray }}
-              />
-              <div>{club.name}</div>
-            </PlayerTeam>
+            {club && (
+              <PlayerTeam>
+                <Image
+                  src={club.logo}
+                  width={24}
+                  height={24}
+                  alt={player.name}
+                  style={{ borderRadius: 12, borderWidth: 1, borderColor: COLORS.lightgray }}
+                />
+                <div>{club.name}</div>
+              </PlayerTeam>
+            )}
           </PlayerTeamRow>
         </PlayerInfo>
         {stat && <Stat>{stat}</Stat>}

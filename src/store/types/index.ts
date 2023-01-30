@@ -18,5 +18,7 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE' as const
 export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST' as const
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS' as const
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE' as const
-
-export type PostBody = {}
+//savePostReducer
+export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST' as const
+export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS' as const
+export const SAVE_POST_ERROR = 'SAVE_POST_ERROR' as const
