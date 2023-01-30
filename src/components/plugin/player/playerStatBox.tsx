@@ -1,4 +1,5 @@
 import { COLORS } from '@/constants/constants'
+import useAxios from '@/hooks/useAxios'
 import { useCountryFlag } from '@/hooks/useCountryFlag'
 import { PlayerDataType, PlayerType, StatisticsType, TeamType } from '@/types'
 import Image from 'next/image'
@@ -37,9 +38,10 @@ const StatNumber = styled.div`
 
 interface PropsType {
   playerData: PlayerDataType
+  playerNumber: number
 }
 
-const PlayerStatBox = ({ playerData }: PropsType) => {
+const PlayerStatBox = ({ playerData, playerNumber }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
@@ -60,7 +62,7 @@ const PlayerStatBox = ({ playerData }: PropsType) => {
         <Row>
           <StatBox>
             <StatName>Shirt</StatName>
-            <StatNumber>등번호</StatNumber>
+            <StatNumber>{playerNumber}</StatNumber>
           </StatBox>
           <StatBox>
             <StatName>Injured</StatName>

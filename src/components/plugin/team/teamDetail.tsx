@@ -17,10 +17,11 @@ const Container = styled.div`
 
 interface PropsType {
   teamId: number
+  leagueId: number
   blockId: string
 }
 
-const TeamDetail = ({ teamId, blockId }: PropsType) => {
+const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
   const axios = useAxios()
   const menu = ['Fixtures', 'Table', 'Squad', 'Stats', 'Transfer']
 
@@ -46,7 +47,7 @@ const TeamDetail = ({ teamId, blockId }: PropsType) => {
         {selectedMenu === 'Fixtures' ? (
           <TeamFixtures team={team} />
         ) : selectedMenu === 'Table' ? (
-          <TeamTable team={team} />
+          <TeamTable team={team} leagueId={leagueId} />
         ) : selectedMenu === 'Squad' ? (
           <TeamSquad team={team} />
         ) : selectedMenu === 'Stats' ? (

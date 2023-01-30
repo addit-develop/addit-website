@@ -14,7 +14,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   gap: 2px;
-  background-color: ${COLORS.lightgray};
+  background-color: ${COLORS.white};
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -37,7 +37,6 @@ const PlayerHome = () => {
   const searchPlayer = async (key: string) => {
     const response = await axios.get('/players', { params: { league: 39, search: key } })
     setPlayerList(response.data.response)
-    console.log(response)
   }
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const PlayerHome = () => {
     <React.Fragment>
       <Container>
         {playerList.length === 0 ? (
-          <SearchAny>Search any player</SearchAny>
+          <SearchAny>Search player</SearchAny>
         ) : (
           <>
             {playerList.map((p) => {

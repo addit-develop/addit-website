@@ -45,14 +45,18 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
 
   // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   const getFixtureData = async () => {
-    const response = await axios.get('/fixtures', { params: { date } })
-    try {
-      setFixtureData(response.data.response)
-      makeFixtureBlock(response.data.response)
-    } catch (error) {
-      setFixtureData([])
-      console.error(error)
-    }
+    await axios
+      .get('/fixtures', {
+        params: { date, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+      })
+      .then((response) => {
+        setFixtureData(response.data.response)
+        makeFixtureBlock(response.data.response)
+      })
+      .catch((err) => {
+        setFixtureData([])
+        console.error(err)
+      })
   }
 
   // 새로운 blockdata 생성

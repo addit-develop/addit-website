@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { NextPage } from 'next/types'
 import { parser } from 'editorjs-viewer'
 import styles from '@/styles/post.module.css'
+import { useRouter } from 'next/router'
 
 // example data from editor.js
 const example = {
@@ -28,6 +29,8 @@ const example = {
 }
 
 const PostPage: NextPage = () => {
+  const router = useRouter()
+  const { id } = router.query
   // turn json to html
   const result = parser.toHTML(example.blocks)
   const convertedTime = new Date(example.time)

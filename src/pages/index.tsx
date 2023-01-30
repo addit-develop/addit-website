@@ -5,6 +5,7 @@ import styles from '@/styles/home.module.css'
 import { useMemo } from 'react'
 
 interface PostData {
+  id: number
   title: string
   email: string
   snippet: string
@@ -15,6 +16,7 @@ interface PostData {
 // example posts data
 const example: PostData[] = [
   {
+    id: 1,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -22,6 +24,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 2,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -29,6 +32,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 3,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -36,6 +40,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 4,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -43,6 +48,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 5,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -71,26 +77,24 @@ const HomePage: NextPage = () => {
           <input type="checkbox" />
           My posts
         </div>
-        <div className={styles.content}>
-          <div className={styles.postsContainer}>
-            {example.map((x) => (
-              <Link className={styles.postCard} href={'/post'}>
-                {example[0].image !== '' ? (
-                  <img className={styles.postImage}></img>
-                ) : (
-                  <div className={styles.postImage} />
-                )}
-                <div className={styles.postDetails}>
-                  <div className={styles.postTitle}>{example[0].title}</div>
-                  <div className={styles.postSnippet}>{example[0].snippet}</div>
-                  <div className={styles.postUploadInfo}>
-                    {example[0].email}
-                    <span>{`${example[0].time}`}</span>
-                  </div>
+        <div className={styles.postsContainer}>
+          {example.map((x) => (
+            <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
+              {example[0].image !== '' ? (
+                <img className={styles.postImage}></img>
+              ) : (
+                <div className={styles.postImage} />
+              )}
+              <div className={styles.postDetails}>
+                <div className={styles.postTitle}>{example[0].title}</div>
+                <div className={styles.postSnippet}>{example[0].snippet}</div>
+                <div className={styles.postUploadInfo}>
+                  {example[0].email}
+                  <span>{`${example[0].time}`}</span>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
         <Link className={styles.write} href={'/write'}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">

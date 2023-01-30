@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   gap: 10px;
   overflow-y: scroll;
 `

@@ -28,7 +28,9 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
   const axios = useAxios()
   const getMatchData = useCallback(async () => {
     const response = await axios
-      .get('/fixtures', { params: { id: fixtureId } })
+      .get('/fixtures', {
+        params: { id: fixtureId, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+      })
       .then((response) => {
         // console.log(response)
         setMatchData(response.data.response[0])

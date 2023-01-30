@@ -6,9 +6,12 @@ export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   overflow: scroll;
-  background-color: ${COLORS.white};
+  background-color: ${COLORS.lightgray};
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const Header = styled.div`
@@ -19,6 +22,7 @@ export const Header = styled.div`
   justify-content: start;
   align-items: center;
   gap: 8px;
+  background-color: ${COLORS.white};
 `
 
 export const Round = styled.div`
@@ -63,7 +67,7 @@ export const Time = styled.div`
   width: 72px;
   height: 100%;
   font-size: 28px;
-  color: ${COLORS.darkgray};
+  color: ${COLORS.black};
   font-weight: 500;
   text-align: center;
   line-height: 60px;
@@ -142,6 +146,8 @@ export const Timeline = styled.div`
   gap: 10px;
   padding: 0 0 8px;
   text-align: center;
+  border-radius: 10px;
+  background-color: ${COLORS.white};
   & > span {
     height: 40px;
     line-height: 40px;
@@ -173,6 +179,15 @@ export const Event = styled.div<{ team?: string }>`
   }
 `
 
+export const LineupContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: ${COLORS.white};
+`
+
 export const Lineup = styled.div`
   flex-shrink: 0;
   width: 100%;
@@ -196,8 +211,6 @@ export const startingXIRow = styled.div`
   justify-content: space-around;
   align-items: center;
 `
-
-export const subContainer = styled.div``
 
 export const playerStarting = styled.div`
   position: relative;
@@ -281,6 +294,8 @@ export const StatsContainer = styled.div`
   height: fit-content;
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
+  background-color: ${COLORS.white};
 `
 
 export const Stat = styled.div`

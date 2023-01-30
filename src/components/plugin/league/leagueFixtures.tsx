@@ -23,6 +23,7 @@ const LeagueFixtures = ({ league, season }: PropsType) => {
         season: season,
         from: today.subtract(1, 'week').format('YYYY-MM-DD'),
         to: today.format('YYYY-MM-DD'),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
     })
     setFixtures(res.data.response)

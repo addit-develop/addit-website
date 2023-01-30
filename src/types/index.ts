@@ -160,22 +160,29 @@ export type MatchDetailDataType = {
   players: any[]
 }
 
+export type MatchPredictionDataType = {
+  predictions: any
+  league: any
+  teams: any
+  comparision: any
+  h2h: FixtureType[]
+}
 import { OutputData } from '@editorjs/editorjs'
 export type Comment = {
   content: string
-  email:string
-  time:number | string
-  like:number
+  email: string
+  time: number | string
+  like: number
 }
 
 export type Post = {
-  id: number,
+  id: number
   title: string
   email: string
   hashtags: string[]
   data: OutputData
   snippet: string
   comments: Comment[]
-  likes:number
-  views:number
+  likes: number
+  views: number
 }

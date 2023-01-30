@@ -26,13 +26,14 @@
 .title {
   width: 100%;
   height: fit-content;
-  padding: 0 0 16px 28px;
+  padding: 0 0 16px 20px;
 }
 
 .title > div[contenteditable] {
   min-height: 40px;
   font-size: 28px;
   font-weight: bold;
+  padding: 8px;
 }
 
 .title > div[contenteditable]:focus {
