@@ -83,7 +83,10 @@ const SearchModal = ({ blockId }: Props) => {
       case 'teamHome':
         return <TeamHome />
       case 'teamDetail':
-        if (pageProps) return <TeamDetail blockId={blockId} teamId={pageProps} />
+        if (pageProps)
+          return (
+            <TeamDetail blockId={blockId} teamId={pageProps.teamId} leagueId={pageProps.leagueId} />
+          )
       case 'playerHome':
         return <PlayerHome />
       case 'playerDetail':

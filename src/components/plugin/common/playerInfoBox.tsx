@@ -7,6 +7,7 @@ import Image from 'next/image'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import CircledImage from './circledImage'
 
 const Container = styled.div`
   width: 100%;
@@ -17,15 +18,15 @@ const Container = styled.div`
   background-color: ${COLORS.white};
   overflow-y: scroll;
   overflow-x: hidden;
-  margin-bottom: 1px;
 `
+
 const PlayerInfo = styled.div`
   flex: 1;
-
   flex-direction: column;
   display: flex;
   gap: 8px;
 `
+
 const PlayerName = styled.div`
   width: 300px;
   font-size: 20px;
@@ -47,10 +48,12 @@ const PlayerTeam = styled.div`
   gap: 4px;
   font-size: 14px;
 `
+
 const Stat = styled.div`
   font-size: 18px;
   color: ${COLORS.blue};
 `
+
 interface PropsType {
   player: PlayerType
   club?: TeamType
@@ -59,7 +62,6 @@ interface PropsType {
 
 const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
   const dispatch = useDispatch()
-  const {} = useSelector((state: RootState) => state.pageReducer)
   const countryFlag = useCountryFlag(player.nationality)
   return (
     <React.Fragment>
@@ -73,24 +75,12 @@ const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
           <PlayerName>{player.name}</PlayerName>
           <PlayerTeamRow>
             <PlayerTeam>
-              <Image
-                src={countryFlag}
-                width={24}
-                height={24}
-                alt={player.name}
-                style={{ borderRadius: 12, borderWidth: 1, borderColor: COLORS.lightgray }}
-              />
+              <CircledImage src={countryFlag} width={24} height={24} altText={player.name} />
               <div>{player.nationality}</div>
             </PlayerTeam>
             {club && (
               <PlayerTeam>
-                <Image
-                  src={club.logo}
-                  width={24}
-                  height={24}
-                  alt={player.name}
-                  style={{ borderRadius: 12, borderWidth: 1, borderColor: COLORS.lightgray }}
-                />
+                <CircledImage src={club.logo} width={24} height={24} altText={player.name} />
                 <div>{club.name}</div>
               </PlayerTeam>
             )}

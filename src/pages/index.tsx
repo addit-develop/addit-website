@@ -5,6 +5,7 @@ import styles from '@/styles/home.module.css'
 import { useMemo } from 'react'
 
 interface PostData {
+  id: number
   title: string
   email: string
   snippet: string
@@ -15,6 +16,7 @@ interface PostData {
 // example posts data
 const example: PostData[] = [
   {
+    id: 1,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -22,6 +24,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 2,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -29,6 +32,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 3,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -36,6 +40,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 4,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -43,6 +48,7 @@ const example: PostData[] = [
     image: '',
   },
   {
+    id: 5,
     title: ' This is sample post!',
     email: 'addit.develop@gmail.com',
     snippet: 'Learn about hosting built for scale and reliability.',
@@ -73,7 +79,7 @@ const HomePage: NextPage = () => {
         </div>
         <div className={styles.postsContainer}>
           {example.map((x) => (
-            <Link className={styles.postCard} href={'/post'}>
+            <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
               {example[0].image !== '' ? (
                 <img className={styles.postImage}></img>
               ) : (
