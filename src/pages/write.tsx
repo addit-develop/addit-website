@@ -27,8 +27,10 @@ const WritePage: NextPage = () => {
   const dispatch = useDispatch()
   const savePost = useCallback(() => {
     if(me){
+      const hashtagRegex = /#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g
+      var hashtags : string[] = (title.match(hashtagRegex)||[]).map((e)=>e.slice(1).toLowerCase())
       var snippet : string | null = null;
-      var hashtags : string[] = [];
+      
       var firstImage : 	{type: string, data: object} | null = null;
       for(const index in data.blocks){
         const block = data.blocks[index];
@@ -40,17 +42,12 @@ const WritePage: NextPage = () => {
               snippet = block.data.text;
             }
           }
-          //hashtags.push(block.data.text.match(`/#[^\s]+/g`).slice(1).toLowerCase())
-          //"(#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*)"
-          //.map((e:string)=>e.slice(1).toLowerCase())
-          hashtags.push(block.data.text.match(/^#[^ !@#$%^&*(),.?":{}|<>]*$/gi));
+          hashtags = hashtags.concat(block.data.text.match(hashtagRegex).map((e:string)=>e.slice(1).toLowerCase()));
         }
         else if(block.type === 'image' && !firstImage){
           firstImage = block.data;
-          console.log('image');
         }
       }
-      console.log(hashtags);
       const post : Post = {
         id: 0,
         title: title,
@@ -62,7 +59,6 @@ const WritePage: NextPage = () => {
         likes: 0,
         views: 0,
       }
-      console.log(post)
       dispatch(savePostRequestAction(post))
     }
   }, [data, title, me])
