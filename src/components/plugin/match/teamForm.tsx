@@ -76,7 +76,7 @@ const TeamForm = ({ predictionData }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
-        <Styles.SubTitle>Team form {predictionData?.league.name}</Styles.SubTitle>
+        <Styles.SubTitle>Team form in {predictionData?.league.name}</Styles.SubTitle>
         <SubContainer>
           <TeamContainer>
             {predictionData?.teams.home.name}
