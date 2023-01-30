@@ -14,7 +14,6 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 
-
 const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>({
@@ -42,7 +41,7 @@ const WritePage: NextPage = () => {
               snippet = block.data.text;
             }
           }
-          hashtags = hashtags.concat(block.data.text.match(hashtagRegex).map((e:string)=>e.slice(1).toLowerCase()));
+          hashtags = hashtags.concat((block.data.text.match(hashtagRegex)||[]).map((e:string)=>e.slice(1).toLowerCase()));
         }
         else if(block.type === 'image' && !firstImage){
           firstImage = block.data;

@@ -34,8 +34,8 @@ export const tools = {
     class: ImageTool,
     config: {
       endpoints: {
-        byFile: '', // Your backend file uploader endpoint
-        byUrl: '', // Your endpoint that provides uploading by Url
+        byFile: 'http://localhost:3065/post/image/byFile', // Your backend file uploader endpoint
+        byUrl: 'http://localhost:3065/post/image/byUrl', // Your endpoint that provides uploading by Url
       },
     },
   },
