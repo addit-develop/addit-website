@@ -1,15 +1,15 @@
 import * as Styles from './matchDetail-st'
 import { default as React, useEffect, useCallback, useState } from 'react'
 import useAxios from '@/hooks/useAxios'
-import { MatchDetailDataType } from '@/types'
+import { MatchDetailDataType, FixtureType } from '@/types'
 import { COLORS } from '@/constants/constants'
 import dayjs, { Dayjs } from 'dayjs'
 import MatchLineup from './matchLineup'
 import MatchTimeline from './matchTimeline'
 
 interface PropsType {
-  matchData: MatchDetailDataType | undefined
-  scorerList: { home: any[]; away: any[] } | undefined
+  matchData: MatchDetailDataType | FixtureType | undefined
+  scorerList?: { home: any[]; away: any[] } | undefined
 }
 
 const MatchDetail = ({ matchData, scorerList }: PropsType) => {

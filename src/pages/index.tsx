@@ -71,26 +71,24 @@ const HomePage: NextPage = () => {
           <input type="checkbox" />
           My posts
         </div>
-        <div className={styles.content}>
-          <div className={styles.postsContainer}>
-            {example.map((x) => (
-              <Link className={styles.postCard} href={'/post'}>
-                {example[0].image !== '' ? (
-                  <img className={styles.postImage}></img>
-                ) : (
-                  <div className={styles.postImage} />
-                )}
-                <div className={styles.postDetails}>
-                  <div className={styles.postTitle}>{example[0].title}</div>
-                  <div className={styles.postSnippet}>{example[0].snippet}</div>
-                  <div className={styles.postUploadInfo}>
-                    {example[0].email}
-                    <span>{`${example[0].time}`}</span>
-                  </div>
+        <div className={styles.postsContainer}>
+          {example.map((x) => (
+            <Link className={styles.postCard} href={'/post'}>
+              {example[0].image !== '' ? (
+                <img className={styles.postImage}></img>
+              ) : (
+                <div className={styles.postImage} />
+              )}
+              <div className={styles.postDetails}>
+                <div className={styles.postTitle}>{example[0].title}</div>
+                <div className={styles.postSnippet}>{example[0].snippet}</div>
+                <div className={styles.postUploadInfo}>
+                  {example[0].email}
+                  <span>{`${example[0].time}`}</span>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+            </Link>
+          ))}
         </div>
         <Link className={styles.write} href={'/write'}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">

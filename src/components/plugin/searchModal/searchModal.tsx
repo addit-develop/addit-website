@@ -10,6 +10,7 @@ import TeamDetail from '../team/teamDetail'
 import { setBlockData, setBlockReady } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
+import MatchPrediction from '../match/matchPrediction'
 import { changeModalPage } from '@/store/actions/pageAction'
 import TeamHome from '../team/teamHome'
 import LeagueDetail from '../league/leagueDetail'
@@ -70,6 +71,11 @@ const SearchModal = ({ blockId }: Props) => {
       case 'matchDetail':
         if (pageProps)
           return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
+      case 'matchPrediction':
+        if (pageProps)
+          return (
+            <MatchPrediction selectMode={selectMode} blockId={blockId} fixtureData={pageProps} />
+          )
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':

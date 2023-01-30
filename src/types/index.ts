@@ -159,3 +159,11 @@ export type MatchDetailDataType = {
   statistics: any[]
   players: any[]
 }
+
+export type MatchPredictionDataType = {
+  predictions: any
+  league: any
+  teams: any
+  comparision: any
+  h2h: FixtureType[]
+}

@@ -117,6 +117,7 @@
   }
 
   .header__navigation {
+    z-index: 9;
     width: 100%;
     height: fit-content;
     display: none;

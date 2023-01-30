@@ -1,22 +1,25 @@
 import * as Styles from './matchDetail-st'
 import { default as React, useEffect, useCallback, useState } from 'react'
 import useAxios from '@/hooks/useAxios'
-import { MatchDetailDataType } from '@/types'
+import { MatchPredictionDataType } from '@/types'
 import MatchHeader from './matchHeader'
+import MatchScorePrediction from './matchScorePrediction'
+import TeamForm from './teamForm'
+import { FixtureType } from '@/types'
 
 interface PropsType {
-  fixtureId: number | undefined
+  fixtureData: FixtureType | undefined
   selectMode: boolean
   blockId: string
 }
 
-const MatchPrediction = ({ fixtureId, selectMode, blockId }: PropsType) => {
-  const [predictionData, setPredictionData] = useState<MatchDetailDataType>()
+const MatchPrediction = ({ fixtureData, selectMode, blockId }: PropsType) => {
+  const [predictionData, setPredictionData] = useState<MatchPredictionDataType>()
 
   const axios = useAxios()
   const getPredictionData = useCallback(async () => {
     const response = await axios
-      .get('/predictions', { params: { fixture: fixtureId } })
+      .get('/predictions', { params: { fixture: fixtureData?.fixture.id } })
       .then((response) => {
         console.log(response)
         setPredictionData(response.data.response[0])
@@ -24,13 +27,13 @@ const MatchPrediction = ({ fixtureId, selectMode, blockId }: PropsType) => {
       .catch((error) => {
         console.error(error)
       })
-  }, [fixtureId])
+  }, [fixtureData])
 
   useEffect(() => {
     getPredictionData()
   }, [])
 
-  if (fixtureId === undefined) {
+  if (fixtureData === undefined) {
     return (
       <React.Fragment>
         <Styles.Container>잘못된 접근입니다.</Styles.Container>
@@ -40,7 +43,9 @@ const MatchPrediction = ({ fixtureId, selectMode, blockId }: PropsType) => {
   return (
     <React.Fragment>
       <Styles.Container>
-        <MatchHeader />
+        <MatchHeader matchData={fixtureData} />
+        <MatchScorePrediction predictionData={predictionData} />
+        <TeamForm predictionData={predictionData} />
       </Styles.Container>
     </React.Fragment>
   )

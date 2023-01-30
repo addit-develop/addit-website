@@ -5,7 +5,7 @@ import { PLAYER_DETAIL_PAGE, SET_MODAL_PAGE, TEAM_DETAIL_PAGE } from '../types'
 type StateType = {
   currentMenu: string
   currentPage: string
-  pageProps?: number
+  pageProps?: any
 }
 
 export const initialState: StateType = {

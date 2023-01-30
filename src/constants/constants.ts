@@ -7,4 +7,5 @@ export const COLORS = {
   lightblack: '#666666',
   black: '#000000',
   drakblack: '#333333',
+  red: '#E55E5A',
 }

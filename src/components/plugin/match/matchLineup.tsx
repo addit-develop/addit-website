@@ -60,45 +60,47 @@ const MatchLineup = ({ matchData }: PropsType) => {
 
   return (
     <React.Fragment>
-      <Styles.SubTitle>Lineup</Styles.SubTitle>
-      <Styles.Lineup>
-        <Styles.startingXI>
-          <Styles.startingXIRow>
-            {getPlayerElement(0, matchData?.lineups[0]?.startXI[0])}
-          </Styles.startingXIRow>
-          {startXIData[0].map((x) => (
-            <Styles.startingXIRow>{x.map((y) => getPlayerElement(0, y))}</Styles.startingXIRow>
-          ))}
-        </Styles.startingXI>
-        <Styles.startingXI reverse>
-          <Styles.startingXIRow>
-            {getPlayerElement(1, matchData?.lineups[1].startXI[0])}
-          </Styles.startingXIRow>
-          {startXIData[1].map((x) => (
-            <Styles.startingXIRow>{x.map((y) => getPlayerElement(1, y))}</Styles.startingXIRow>
-          ))}
-        </Styles.startingXI>
-      </Styles.Lineup>
-      <Styles.SubPlayerContainer>
-        <Styles.SubPlayerList>
-          {matchData?.lineups[0]?.substitutes.map((x: lineupPlayerType) => (
-            <Styles.playerSub>
-              <div>{x.player.number}</div>
-              <div>{x.player.name}</div>
-            </Styles.playerSub>
-          ))}
-        </Styles.SubPlayerList>
-        <Styles.SubPlayerList>
+      <Styles.LineupContainer>
+        <Styles.SubTitle>Lineup</Styles.SubTitle>
+        <Styles.Lineup>
+          <Styles.startingXI>
+            <Styles.startingXIRow>
+              {getPlayerElement(0, matchData?.lineups[0]?.startXI[0])}
+            </Styles.startingXIRow>
+            {startXIData[0].map((x) => (
+              <Styles.startingXIRow>{x.map((y) => getPlayerElement(0, y))}</Styles.startingXIRow>
+            ))}
+          </Styles.startingXI>
+          <Styles.startingXI reverse>
+            <Styles.startingXIRow>
+              {getPlayerElement(1, matchData?.lineups[1].startXI[0])}
+            </Styles.startingXIRow>
+            {startXIData[1].map((x) => (
+              <Styles.startingXIRow>{x.map((y) => getPlayerElement(1, y))}</Styles.startingXIRow>
+            ))}
+          </Styles.startingXI>
+        </Styles.Lineup>
+        <Styles.SubPlayerContainer>
           <Styles.SubPlayerList>
-            {matchData?.lineups[1]?.substitutes.map((x: lineupPlayerType) => (
+            {matchData?.lineups[0]?.substitutes.map((x: lineupPlayerType) => (
               <Styles.playerSub>
                 <div>{x.player.number}</div>
                 <div>{x.player.name}</div>
               </Styles.playerSub>
             ))}
           </Styles.SubPlayerList>
-        </Styles.SubPlayerList>
-      </Styles.SubPlayerContainer>
+          <Styles.SubPlayerList>
+            <Styles.SubPlayerList>
+              {matchData?.lineups[1]?.substitutes.map((x: lineupPlayerType) => (
+                <Styles.playerSub>
+                  <div>{x.player.number}</div>
+                  <div>{x.player.name}</div>
+                </Styles.playerSub>
+              ))}
+            </Styles.SubPlayerList>
+          </Styles.SubPlayerList>
+        </Styles.SubPlayerContainer>
+      </Styles.LineupContainer>
     </React.Fragment>
   )
 }

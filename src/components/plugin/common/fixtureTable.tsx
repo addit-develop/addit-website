@@ -5,6 +5,14 @@ import { FixtureType } from '@/types'
 import { useDispatch } from 'react-redux'
 import { changeModalPage } from '@/store/actions/pageAction'
 import { getAllJSDocTagsOfKind } from 'typescript'
+import dayjs, { Dayjs } from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(relativeTime)
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const FixtureContainer = styled.div`
   width: 100%;
@@ -72,11 +80,16 @@ interface PropsType {
   fixture: FixtureType
 }
 const FixtureTable = ({ fixture }: PropsType) => {
+  const FixtureDayjs = dayjs(fixture.fixture.date).tz(
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  )
   const dispatch = useDispatch()
-  const time: string[] | null = fixture.fixture.date.match(/([0-9]{2})\:([0-9]{2})/g)
+  const time: string = FixtureDayjs.format('HH:mm').toString()
 
   const moveToMatchDetail = useCallback(() => {
-    dispatch(changeModalPage('matchDetail', 'Matches', fixture.fixture.id))
+    dayjs().isBefore(FixtureDayjs)
+      ? dispatch(changeModalPage('matchPrediction', 'Matches', fixture))
+      : dispatch(changeModalPage('matchDetail', 'Matches', fixture.fixture.id))
   }, [fixture])
 
   return (
@@ -85,7 +98,7 @@ const FixtureTable = ({ fixture }: PropsType) => {
         <Home>{fixture.teams.home.name}</Home>
         <Flag src={fixture.teams.home.logo} />
         {fixture.fixture.status.short === 'NS' ? (
-          <Time>{time && time[0]}</Time>
+          <Time>{time}</Time>
         ) : (
           <Score>
             {fixture.goals.home}:{fixture.goals.away}
