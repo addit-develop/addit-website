@@ -1,5 +1,5 @@
 import { all, fork, call, put, takeLatest} from 'redux-saga/effects'
-import axios from 'axios'
+import backAxios from '../configureBackAxios'
 
 import {
   LOG_IN_SUCCESS,
@@ -14,7 +14,7 @@ import {
 } from '../types'
 
 function loadUserAPI() {
-  return axios.get('http://localhost:3065/')
+  return backAxios.get('/')
 }
 function* loadUser() {
   try {
@@ -32,7 +32,7 @@ function* loadUser() {
 }
 
 function checkUserAPI(data: any) {
-  return axios.post('http://localhost:3065/auth/checkUser', data)
+  return backAxios.post('/auth/checkUser', data)
 }
 function* checkUser(action: any) {
   try {
@@ -50,7 +50,7 @@ function* checkUser(action: any) {
 }
 
 function logOutAPI() {
-  return axios.get('http://localhost:3065/auth/logout')
+  return backAxios.get('/auth/logout')
 }
 
 function* logOut() {

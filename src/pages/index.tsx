@@ -2,69 +2,35 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { NextPage } from 'next/types'
 import styles from '@/styles/home.module.css'
-import { useMemo } from 'react'
-
-interface PostData {
-  id: number
-  title: string
-  email: string
-  snippet: string
-  time: number | string
-  image: string
-}
-
-// example posts data
-const example: PostData[] = [
-  {
-    id: 1,
-    title: ' This is sample post!',
-    email: 'addit.develop@gmail.com',
-    snippet: 'Learn about hosting built for scale and reliability.',
-    time: 1674897739588,
-    image: '',
-  },
-  {
-    id: 2,
-    title: ' This is sample post!',
-    email: 'addit.develop@gmail.com',
-    snippet: 'Learn about hosting built for scale and reliability.',
-    time: 1674897739588,
-    image: '',
-  },
-  {
-    id: 3,
-    title: ' This is sample post!',
-    email: 'addit.develop@gmail.com',
-    snippet: 'Learn about hosting built for scale and reliability.',
-    time: 1674897739588,
-    image: '',
-  },
-  {
-    id: 4,
-    title: ' This is sample post!',
-    email: 'addit.develop@gmail.com',
-    snippet: 'Learn about hosting built for scale and reliability.',
-    time: 1674897739588,
-    image: '',
-  },
-  {
-    id: 5,
-    title: ' This is sample post!',
-    email: 'addit.develop@gmail.com',
-    snippet: 'Learn about hosting built for scale and reliability.',
-    time: 1674897739588,
-    image: '',
-  },
-]
+import { useCallback, useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { LOAD_POST_REQUEST } from '@/store/types'
+import { loadPostRequestAction } from '@/store/actions/postAction'
+import { PostSummary } from '@/types'
+import { RootState } from '@/store/reducers'
+import { useState } from 'react'
 
 const HomePage: NextPage = () => {
-  useMemo(() => {
-    example.forEach((x) => {
-      const covertedTime = new Date(x.time).toString().split(' ')
-      x.time = `${covertedTime[1]} ${covertedTime[2]} ${covertedTime[3]}`
-    })
-    console.log(example)
-  }, [example])
+  const dispatch = useDispatch()
+  const { mainPosts } = useSelector((state: RootState) => state.postReducer)
+  const { me, myPosts } = useSelector((state: RootState) => state.userReducer)
+
+  const [ toExposePosts, setToExposePosts ] = useState<PostSummary[]>(me?myPosts:mainPosts)
+  
+  useEffect(() => {
+    dispatch(loadPostRequestAction({summary : true, amount : 5}));
+  }, [])
+
+  const exposeMine = useCallback(()=>{
+    const box = document.getElementById('showMineCheckBox') as HTMLInputElement;
+    if(box && box.checked){
+      setToExposePosts(myPosts)
+      console.log('show mine')
+    }else{
+      setToExposePosts(mainPosts)
+      console.log('show all')
+    }
+  }, [myPosts, mainPosts])
 
   return (
     <>
@@ -73,29 +39,33 @@ const HomePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className={styles.myPostCheckBox}>
-          <input type="checkbox" />
+        {me?
+        (<div className={styles.myPostCheckBox}>
+          <input type="checkbox" id="showMineCheckBox" onClick={exposeMine} defaultChecked/>
           My posts
-        </div>
-        <div className={styles.postsContainer}>
-          {example.map((x) => (
-            <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
-              {example[0].image !== '' ? (
-                <img className={styles.postImage}></img>
-              ) : (
-                <div className={styles.postImage} />
-              )}
-              <div className={styles.postDetails}>
-                <div className={styles.postTitle}>{example[0].title}</div>
-                <div className={styles.postSnippet}>{example[0].snippet}</div>
-                <div className={styles.postUploadInfo}>
-                  {example[0].email}
-                  <span>{`${example[0].time}`}</span>
+        </div>) : (<></>)
+        }
+        {(toExposePosts.length === 0)? (<div>No Post</div>) : (
+          <div className={styles.postsContainer}>
+            {toExposePosts.map((x) => (
+              <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
+                {x.mainImage ? (
+                  <img className={styles.postmainImage}></img>
+                ) : (
+                  <div className={styles.postmainImage} />
+                )}
+                <div className={styles.postDetails}>
+                  <div className={styles.postTitle}>{x.title}</div>
+                  <div className={styles.postSnippet}>{x.snippet}</div>
+                  <div className={styles.postUploadInfo}>
+                    {x.email}
+                    <span>{`${x.time}`}</span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+          )}
         <Link className={styles.write} href={'/write'}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path

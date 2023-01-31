@@ -56,7 +56,7 @@ const PlayerHome = () => {
                   key={p.player.id}
                   onClick={() => dispatch(changeModalPage('playerDetail', 'Players', p.player.id))}
                 >
-                  <PlayerInfoBox player={p.player} />
+                  <PlayerInfoBox playerData={p} />
                 </div>
               )
             })}

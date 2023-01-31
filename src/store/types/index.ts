@@ -6,6 +6,10 @@ export const SET_BLOCK_READY = 'SET_BLOCK_READY' as const
 export const SET_MODAL_PAGE = 'SET_MODAL_PAGE' as const
 export const PLAYER_DETAIL_PAGE = 'PLAYER_DETAIL_PAGE' as const
 export const TEAM_DETAIL_PAGE = 'TEAM_DETAIL_PAGE' as const
+//loadPostSummaryReducer 
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST' as const
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS' as const
+export const LOAD_POST_ERROR = 'LOAD_POST_ERROR' as const
 //loadUserReducer
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST' as const
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS' as const

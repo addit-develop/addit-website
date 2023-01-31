@@ -1,4 +1,4 @@
-import { BlockDataType } from '@/types'
+import { BlockDataType, PostSummary } from '@/types'
 import produce from 'immer'
 import {
   MAKE_BLOCK_DATA,
@@ -8,6 +8,9 @@ import {
   SET_BLOCK_DATA,
   SET_BLOCK_READY,
   SET_BLOCK_TYPE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_ERROR,
 } from '../types'
 
 type StateType = {
@@ -16,6 +19,11 @@ type StateType = {
   savePostLoading: boolean
   savePostSuccess: boolean
   savePostError: any | null
+  loadPostLoading: boolean
+  loadPostSuccess: boolean
+  loadPostError: any | null
+
+  mainPosts: PostSummary[]
 }
 
 export const initialState: StateType = {
@@ -24,6 +32,11 @@ export const initialState: StateType = {
   savePostLoading: false,
   savePostSuccess: false,
   savePostError: null,
+  loadPostLoading: false,
+  loadPostSuccess: false,
+  loadPostError: null,
+
+  mainPosts: [],
 }
 
 const postReducer = (state: StateType = initialState, action: any) =>
@@ -63,6 +76,25 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case SAVE_POST_ERROR:
         draft.savePostLoading = false
         draft.savePostError = action.error
+        break
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true
+        draft.loadPostSuccess = false
+        draft.loadPostError = null
+        draft.mainPosts = []
+        break
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false
+        draft.loadPostSuccess = true
+        draft.mainPosts = action.data.map((x: PostSummary) => {
+          const covertedTime = new Date(x.time).toString().split(' ')
+          x.time = `${covertedTime[1]} ${covertedTime[2]} ${covertedTime[3]}`
+          return x
+        })
+        break
+      case LOAD_POST_ERROR:
+        draft.loadPostLoading = false
+        draft.loadPostError = action.error
         break
       default:
         break
