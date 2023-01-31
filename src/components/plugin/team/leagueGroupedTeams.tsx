@@ -13,7 +13,7 @@ const FixturesContainer = styled.div<{ forBlock?: boolean }>`
   height: fit-content;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  padding: 8px 10px;
   background-color: ${COLORS.white};
   border-radius: 10px;
   border-bottom: ${(props) => (props.forBlock ? '1px solid ${COLORS.gray}' : 'none')};
@@ -51,8 +51,9 @@ const LeagueName = styled.div`
 const TeamContainer = styled.div`
   display: flex;
   width: 100%;
-  padding: 4px 0px 4px 10px;
+  padding: 8px 0px 8px 10px;
   align-items: center;
+  cursor: pointer;
 `
 
 const TeamName = styled.div`

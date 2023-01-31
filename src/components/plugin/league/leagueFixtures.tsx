@@ -4,11 +4,21 @@ import dayjs from 'dayjs'
 import React, { useEffect, useMemo, useState } from 'react'
 import FixtureTable from '../common/fixtureTable'
 import DateGroupedFixtures from './dateGroupedFixtures'
+import styled from 'styled-components'
 
 interface PropsType {
   league: LeagueType
   season: number
 }
+
+const Container = styled.div`
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 2px;
+`
 
 const LeagueFixtures = ({ league, season }: PropsType) => {
   const axios = useAxios()
@@ -42,19 +52,21 @@ const LeagueFixtures = ({ league, season }: PropsType) => {
 
   return (
     <React.Fragment>
-      {!dateList ? (
-        <div>There was no game during recent 7 days.</div>
-      ) : (
-        dateList.map((d) => {
-          return (
-            <DateGroupedFixtures
-              key={d}
-              fixtures={fixtures.filter((f) => f.fixture.date.substring(0, 10) === d)}
-              selectMode={false}
-            />
-          )
-        })
-      )}
+      <Container>
+        {!dateList ? (
+          <div>There was no game during recent 7 days.</div>
+        ) : (
+          dateList.map((d) => {
+            return (
+              <DateGroupedFixtures
+                key={d}
+                fixtures={fixtures.filter((f) => f.fixture.date.substring(0, 10) === d)}
+                selectMode={false}
+              />
+            )
+          })
+        )}
+      </Container>
     </React.Fragment>
   )
 }

@@ -13,6 +13,9 @@ import dayjs from 'dayjs'
 const Container = styled.div`
   overflow-y: scroll;
   width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 interface PropsType {
   leagueId: number
