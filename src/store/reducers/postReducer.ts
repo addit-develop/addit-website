@@ -1,21 +1,29 @@
 import { BlockDataType } from '@/types'
 import produce from 'immer'
-import { MAKE_BLOCK_DATA, SAVE_POST_REQUEST, SAVE_POST_ERROR, SAVE_POST_SUCCESS, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE } from '../types'
+import {
+  MAKE_BLOCK_DATA,
+  SAVE_POST_REQUEST,
+  SAVE_POST_ERROR,
+  SAVE_POST_SUCCESS,
+  SET_BLOCK_DATA,
+  SET_BLOCK_READY,
+  SET_BLOCK_TYPE,
+} from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
-  savePostLoading : boolean
-  savePostSuccess : boolean
-  savePostError : any | null
+  savePostLoading: boolean
+  savePostSuccess: boolean
+  savePostError: any | null
 }
 
 export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
-  savePostLoading : false,
-  savePostSuccess : false,
-  savePostError : null,
+  savePostLoading: false,
+  savePostSuccess: false,
+  savePostError: null,
 }
 
 const postReducer = (state: StateType = initialState, action: any) =>

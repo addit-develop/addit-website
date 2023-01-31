@@ -6,6 +6,7 @@ import FixtureTable from '../common/fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer, { RootState } from '@/store/reducers'
 import { setBlockData } from '@/store/actions/postAction'
+import SelectBox from '../common/selectBox'
 
 const FixturesContainer = styled.div<{ forBlock?: boolean }>`
   position: relative;
@@ -17,17 +18,6 @@ const FixturesContainer = styled.div<{ forBlock?: boolean }>`
   background-color: ${COLORS.white};
   border-radius: 10px;
   border-bottom: ${(props) => (props.forBlock ? '1px solid ${COLORS.gray}' : 'none')};
-`
-
-const SelectBox = styled.div<{ selectMode?: boolean; allSelected?: boolean }>`
-  display: ${(props) => (props.selectMode ? 'flex' : 'none')};
-  z-index: 999;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: ${(props) => (props.allSelected ? 'transperant' : 'rgba(255, 255, 255, 0.8)')};
 `
 
 const LeagueTitle = styled.div`
@@ -136,7 +126,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
     <React.Fragment>
       <FixturesContainer forBlock={forBlock}>
         <LeagueTitle onClick={openMenu}>
-          <SelectBox selectMode={selectMode} allSelected={allSelected} onClick={selectAll} />
+          <SelectBox selectMode={selectMode} selected={allSelected} onClick={selectAll} />
           <LeagueName>
             <Flag src={league.logo} />
             {league.name}
@@ -156,7 +146,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
               <FixtureContainer key={i}>
                 <SelectBox
                   selectMode={selectMode}
-                  allSelected={selectedFixtureBoolean[i]}
+                  selected={selectedFixtureBoolean[i]}
                   onClick={() => selectOne(i)}
                 />
                 <FixtureTable fixture={fixture} key={i} />

@@ -14,6 +14,13 @@ export const Container = styled.div`
   }
 `
 
+export const ElementContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+`
+
 export const Header = styled.div`
   width: 100%;
   height: fit-content;

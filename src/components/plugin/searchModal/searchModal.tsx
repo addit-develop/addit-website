@@ -7,7 +7,12 @@ import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
 import { LeagueBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
-import { setBlockData, setBlockReady } from '@/store/actions/postAction'
+import {
+  setBlockData,
+  setBlockReady,
+  makeBlockData,
+  setBlockType,
+} from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import MatchPrediction from '../match/matchPrediction'
@@ -45,6 +50,12 @@ const SearchModal = ({ blockId }: Props) => {
     dispatch(changeModalPage('matchHome', 'Matches'))
   }, [])
 
+  // 새로운 blockdata 생성
+  useEffect(() => {
+    console.log(blockId)
+    dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
+  }, [blockId])
+
   const closeModal = useCallback(() => {
     setModalClosed(true)
   }, [])
@@ -53,10 +64,11 @@ const SearchModal = ({ blockId }: Props) => {
     // 선택된 데이터 바탕으로 블록 생성
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
-      const filterData = blockDataList
-        .find((x: BlockDataType) => x.id === blockId)
-        ?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
-      dispatch(setBlockData(blockId, filterData))
+      const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
+      if (myBlock?.type === 'Fixture_List_By_Date') {
+        const filterData = myBlock?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+        dispatch(setBlockData(blockId, filterData))
+      }
       dispatch(setBlockReady(blockId))
       setModalClosed(true)
     }
@@ -67,19 +79,25 @@ const SearchModal = ({ blockId }: Props) => {
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
       case 'matchHome':
+        dispatch(setBlockType(blockId, 'Fixture_List_By_Date'))
         return <MatchHome selectMode={selectMode} blockId={blockId} />
       case 'matchDetail':
+        console.log(blockId)
+        dispatch(setBlockType(blockId, 'Match_Detail'))
         if (pageProps)
           return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
+        else break
       case 'matchPrediction':
         if (pageProps)
           return (
             <MatchPrediction selectMode={selectMode} blockId={blockId} fixtureData={pageProps} />
           )
+        else break
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
         if (pageProps) return <LeagueDetail blockId={blockId} leagueId={pageProps} />
+        else break
       case 'teamHome':
         return <TeamHome />
       case 'teamDetail':
@@ -87,12 +105,14 @@ const SearchModal = ({ blockId }: Props) => {
           return (
             <TeamDetail blockId={blockId} teamId={pageProps.teamId} leagueId={pageProps.leagueId} />
           )
+        else break
       case 'playerHome':
         return <PlayerHome />
       case 'playerDetail':
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
+        else break
     }
-  }, [currentPage, selectMode])
+  }, [currentPage, selectMode, blockId])
 
   return (
     <React.Fragment>

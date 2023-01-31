@@ -145,7 +145,7 @@ export type BlockDataType = {
   id: string
   type: string
   isReady: boolean
-  data: any[]
+  data: any
 }
 
 export type MatchDetailDataType = {

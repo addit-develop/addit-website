@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import LeagueStandingTeam from './leagueStandingTeam'
 
 const Container = styled.div`
+  margin-top: 2px;
   padding: 6px 8px 6px 8px;
   background-color: ${COLORS.white};
   border-radius: 10px;

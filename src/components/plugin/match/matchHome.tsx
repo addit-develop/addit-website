@@ -59,10 +59,10 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
       })
   }
 
-  // 새로운 blockdata 생성
-  useEffect(() => {
-    dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
-  }, [])
+  // // 새로운 blockdata 생성
+  // useEffect(() => {
+  //   dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
+  // }, [])
 
   useEffect(() => {
     getFixtureData()

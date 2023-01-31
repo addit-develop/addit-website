@@ -1,11 +1,14 @@
 import * as Styles from './matchDetail-st'
 import { default as React, useEffect, useCallback, useState } from 'react'
 import useAxios from '@/hooks/useAxios'
+import { useDispatch } from 'react-redux'
+import { makeBlockData, setBlockData } from '@/store/actions/postAction'
 import { MatchDetailDataType } from '@/types'
 import MatchHeader from './matchHeader'
 import MatchLineup from './matchLineup'
 import MatchTimeline from './matchTimeline'
 import MatchStats from './matchStats'
+import SelectBox from '../common/selectBox'
 
 interface PropsType {
   fixtureId: number | undefined
@@ -13,17 +16,35 @@ interface PropsType {
   blockId: string
 }
 
+interface scorerListType {
+  home: any[]
+  away: any[]
+}
+
+interface eventListType {
+  firstHalf: any[]
+  firstHalfExtra?: any[]
+  secondHalf: any[]
+  secondHalfExtra?: any[]
+  extraTime?: any[]
+  penalty?: any[]
+}
+
 const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
+  const dispatch = useDispatch()
   const [matchData, setMatchData] = useState<MatchDetailDataType>()
-  const [scorerList, setScorerList] = useState<{ home: any[]; away: any[] }>()
-  const [eventList, setEventList] = useState<{
-    firstHalf: any[]
-    firstHalfExtra?: any[]
-    secondHalf: any[]
-    secondHalfExtra?: any[]
-    extraTime?: any[]
-    penalty?: any[]
-  }>()
+  const [scorerList, setScorerList] = useState<scorerListType>()
+  const [eventList, setEventList] = useState<eventListType>()
+  const [matchBlockData, setMatchBlockData] = useState<{
+    timeline: boolean
+    lineUp: boolean
+    stats: boolean
+    matchData: MatchDetailDataType | undefined
+  }>({ timeline: false, lineUp: false, stats: false, matchData: matchData })
+
+  useEffect(() => {
+    dispatch(setBlockData(blockId, matchBlockData))
+  }, [matchBlockData])
 
   const axios = useAxios()
   const getMatchData = useCallback(async () => {
@@ -66,6 +87,12 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
         // console.log(newEventList)
         setScorerList(newScorerList)
         setEventList(newEventList)
+        setMatchBlockData({
+          timeline: false,
+          lineUp: false,
+          stats: false,
+          matchData: response.data.response[0],
+        })
       })
       .catch((error) => {
         console.error(error)
@@ -83,13 +110,49 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
       </React.Fragment>
     )
   }
+
+  const selectElement = (type: string) => {
+    switch (type) {
+      case 'timeline':
+        setMatchBlockData({ ...matchBlockData, timeline: !matchBlockData.timeline })
+        break
+      case 'lineUp':
+        setMatchBlockData({ ...matchBlockData, lineUp: !matchBlockData.lineUp })
+        break
+      case 'stats':
+        setMatchBlockData({ ...matchBlockData, stats: !matchBlockData.stats })
+        break
+    }
+  }
+
   return (
     <React.Fragment>
       <Styles.Container>
         <MatchHeader matchData={matchData} scorerList={scorerList} />
-        <MatchTimeline matchData={matchData} eventList={eventList} />
-        <MatchLineup matchData={matchData} />
-        <MatchStats matchData={matchData} />
+        <Styles.ElementContainer>
+          <SelectBox
+            selectMode={selectMode}
+            selected={matchBlockData.timeline}
+            onClick={() => selectElement('timeline')}
+          />
+          <MatchTimeline matchData={matchData} eventList={eventList} />
+        </Styles.ElementContainer>
+        <Styles.ElementContainer>
+          <SelectBox
+            selectMode={selectMode}
+            selected={matchBlockData.lineUp}
+            onClick={() => selectElement('lineUp')}
+          />
+          <MatchLineup matchData={matchData} />
+        </Styles.ElementContainer>
+        <Styles.ElementContainer>
+          <SelectBox
+            selectMode={selectMode}
+            selected={matchBlockData.stats}
+            onClick={() => selectElement('stats')}
+          />
+          <MatchStats matchData={matchData} />
+        </Styles.ElementContainer>
       </Styles.Container>
     </React.Fragment>
   )
