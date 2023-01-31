@@ -1,3 +1,4 @@
+import { PostSummary } from '@/types'
 import produce from 'immer'
 
 import {
@@ -22,6 +23,7 @@ type StateType = {
   logInDone: boolean
 
   me: string | null
+  myPosts: PostSummary[]
 
   logOutDone: boolean
   logOutLoading: boolean //로그아웃 시도 중
@@ -38,6 +40,7 @@ export const initialState: StateType = {
   logInDone: false,
 
   me: null,
+  myPosts: [],
 
   logOutDone: false,
   logOutLoading: false, //로그아웃 시도 중

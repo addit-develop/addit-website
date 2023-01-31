@@ -14,7 +14,7 @@ import {
 } from '../types'
 
 function loadUserAPI() {
-  return backAxios.get('http://localhost:3065/')
+  return backAxios.get('/')
 }
 function* loadUser() {
   try {
@@ -32,7 +32,7 @@ function* loadUser() {
 }
 
 function checkUserAPI(data: any) {
-  return backAxios.post('http://localhost:3065/auth/checkUser', data)
+  return backAxios.post('/auth/checkUser', data)
 }
 function* checkUser(action: any) {
   try {
@@ -50,7 +50,7 @@ function* checkUser(action: any) {
 }
 
 function logOutAPI() {
-  return backAxios.get('http://localhost:3065/auth/logout')
+  return backAxios.get('/auth/logout')
 }
 
 function* logOut() {

@@ -30,21 +30,22 @@ const WritePage: NextPage = () => {
       var hashtags : string[] = (title.match(hashtagRegex)||[]).map((e)=>e.slice(1).toLowerCase())
       var snippet : string | null = null;
       
-      var firstImage : 	{type: string, data: object} | null = null;
+      var mainImage : string | null = null;
       for(const index in data.blocks){
         const block = data.blocks[index];
         if(block.type === 'paragraph'){
           if(!snippet){
             if(block.data.text.length>50){
-              snippet = block.data.text.substr(0, 50)+'...';
+              snippet = block.data.text.substr(0, 50)+'...'
             } else{
-              snippet = block.data.text;
+              snippet = block.data.text
             }
           }
           hashtags = hashtags.concat((block.data.text.match(hashtagRegex)||[]).map((e:string)=>e.slice(1).toLowerCase()));
         }
-        else if(block.type === 'image' && !firstImage){
-          firstImage = block.data;
+        else if(block.type === 'image' && !mainImage){
+          console.log(block.data)
+          mainImage = block.data.file.url
         }
       }
       const post : Post = {
@@ -57,6 +58,7 @@ const WritePage: NextPage = () => {
         comments: [],
         likes: 0,
         views: 0,
+        mainImage : mainImage,
       }
       dispatch(savePostRequestAction(post))
     }

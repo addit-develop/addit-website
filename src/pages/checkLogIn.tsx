@@ -28,6 +28,12 @@ const CheckLogInMiddleware = () => {
       router.replace('/', undefined, {shallow:true})
     }
   }, [logInDone])
+  
+  return(
+    <>
+      Loading...
+    </>
+  )
 }
 
 export default CheckLogInMiddleware

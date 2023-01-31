@@ -5,7 +5,7 @@ import backAxios from '../configureBackAxios'
 // action creator
 export const loginRequestAction = async () => {
   try {
-    const result = await backAxios.get("http://localhost:3065/auth/login") // get google oauth2 login url from back
+    const result = await backAxios.get("/auth/login") // get google oauth2 login url from back
     return `https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&access_type=offline&response_type=code&state=${result.data['state']}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_OAUTH2_CALLBACK_URL}&client_id=${result.data['client_id']}`
   } catch (err) {
     return null // if err return null for url

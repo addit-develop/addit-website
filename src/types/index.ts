@@ -182,7 +182,17 @@ export type Post = {
   hashtags: string[]
   data: OutputData
   snippet: string
+  mainImage : string | null
   comments: Comment[]
   likes: number
   views: number
+}
+
+export type PostSummary = {
+  id: number
+  title: string
+  email: string
+  snippet: string
+  time: number | string
+  mainImage: string | null
 }
