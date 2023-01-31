@@ -10,6 +10,7 @@ const Container = styled.div`
   width: 100%;
   padding: 8px 0px;
   background-color: ${COLORS.white};
+  border-radius: 10px;
 `
 const Row = styled.div`
   flex-direction: row;

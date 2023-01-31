@@ -26,6 +26,7 @@ const LeagueList = styled.div`
   padding: 8px 10px;
   background-color: ${COLORS.white};
   gap: 0px;
+  border-radius: 10px;
 `
 const LeagueBox = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ const LeagueBox = styled.div`
   gap: 24px;
   width: 100%;
   padding: 18px 0px;
+  cursor: pointer;
 `
 const LeagueName = styled.div`
   font-size: 16px;

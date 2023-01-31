@@ -32,6 +32,9 @@ const Season = styled.div`
   display: flex;
   align-items: center;
   /* margin-right: 20px; */
+  font-family: 'Manrope';
+  font-weight: 600;
+  color: ${COLORS.lightblack};
 `
 
 const SeasonSelector = styled.div`
@@ -39,7 +42,7 @@ const SeasonSelector = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${COLORS.white};
-  gap: 2px;
+  gap: 15px;
   padding: 10px 20px;
   top: 30px;
   right: 0px;
@@ -50,6 +53,9 @@ const SeasonSelector = styled.div`
 const SeasonItem = styled.div`
   white-space: nowrap;
   cursor: pointer;
+  font-family: 'Manrope';
+  font-weight: 600;
+  color: ${COLORS.lightblack};
 `
 
 interface PropsType {

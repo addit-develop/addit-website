@@ -15,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   gap: 12px;
   font-size: 14px;
-  border-bottom: 1px ${COLORS.gray} solid;
+  border-bottom: 1px ${COLORS.lightgray} solid;
   color: ${COLORS.drakblack};
 `
 const Rank = styled.div`
