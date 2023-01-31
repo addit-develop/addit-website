@@ -55,13 +55,14 @@ const Stat = styled.div`
 `
 
 interface PropsType {
-  player: PlayerType
-  club?: TeamType
+  playerData: PlayerDataType
   stat?: number
 }
 
-const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
+const PlayerInfoBox = ({ playerData, stat }: PropsType) => {
   const dispatch = useDispatch()
+  const player = playerData.player
+  const club = playerData.statistics[0].team || null
   const countryFlag = useCountryFlag(player.nationality)
   return (
     <React.Fragment>
@@ -75,12 +76,12 @@ const PlayerInfoBox = ({ player, club, stat }: PropsType) => {
           <PlayerName>{player.name}</PlayerName>
           <PlayerTeamRow>
             <PlayerTeam>
-              <CircledImage src={countryFlag} width={24} height={24} altText={player.name} />
+              <CircledImage src={countryFlag} width={24} height={24} altText={player.nationality} />
               <div>{player.nationality}</div>
             </PlayerTeam>
             {club && (
               <PlayerTeam>
-                <CircledImage src={club.logo} width={24} height={24} altText={player.name} />
+                <CircledImage src={club.logo} width={24} height={24} altText={club.name} />
                 <div>{club.name}</div>
               </PlayerTeam>
             )}
