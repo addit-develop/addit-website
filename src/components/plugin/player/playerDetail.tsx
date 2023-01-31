@@ -1,7 +1,7 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
-import { PlayerDataType, PlayerType } from '@/types'
+import { PlayerDataType, PlayerType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
@@ -30,35 +30,26 @@ interface PropsType {
 const PlayerDetail = ({ playerId, blockId }: PropsType) => {
   const axios = useAxios()
   const { currentSeason } = useCurrentSeason()
-  const [playerDetailData, setPlayerDetailData] = useState<PlayerDataType | null>(null)
-  const [playerNumber, setPlayerNumber] = useState<number | null>(null)
-  const getPlayerDetail = async () => {
-    const res = await axios.get('/players', { params: { id: playerId, season: currentSeason } })
-    setPlayerDetailData(res.data.response[0])
-  }
+  const [season, setSeason] = useState<number>(currentSeason)
+  const [playerData, setPlayerData] = useState<PlayerDataType | null>(null)
 
-  const getPlayerNumber = async () => {
-    const res = await axios.get('/players/squads', { params: { player: playerId } })
-    console.log(res.data.response)
-    setPlayerNumber(res.data.response[1].players[0].number)
+  const getPlayerDetail = async () => {
+    const res = await axios.get('/players', { params: { id: playerId, season: season } })
+    setPlayerData(res.data.response[0])
   }
 
   useEffect(() => {
     getPlayerDetail()
-    getPlayerNumber()
   }, [])
 
-  if (!playerDetailData) return null
+  if (!playerData) return null
   return (
     <React.Fragment>
       <Container>
-        <PlayerInfoBox
-          player={playerDetailData.player}
-          club={playerDetailData.statistics[0].team}
-        />
-        <PlayerStatBox playerData={playerDetailData} playerNumber={playerNumber || 0} />
-        <PlayerCareerStats />
+        <PlayerInfoBox playerData={playerData} />
+        <PlayerStatBox playerData={playerData} />
         <PlayerRecentMatches />
+        <PlayerCareerStats playerData={playerData} />
       </Container>
     </React.Fragment>
   )

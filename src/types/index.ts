@@ -72,19 +72,71 @@ export type PlayerType = {
 }
 
 export type StatisticsType = {
-  team: any
-  league: any
-  games: any
-  substitutes: any
-  shots: any
-  goals: any
-  passes: any
-  tackles: any
-  duels: any
-  dribbles: any
-  fouls: any
-  cards: any
-  penalty: any
+  team: {
+    id: number
+    name: string
+    logo: string
+  }
+  league: LeagueType & { country: string; season: number }
+  games: {
+    appearences: number
+    lineups: number
+    minutes: number
+    number: number | null
+    position: string
+    rating: number
+    captain: boolean
+  }
+  substitutes: {
+    in: number
+    out: number
+    bench: number
+  }
+  shots: {
+    total: number
+    on: number
+  }
+  goals: {
+    total: number
+    conceded: boolean
+    assist: number
+    saves: number | null
+  }
+  passes: {
+    total: number
+    key: number
+    accuracy: number
+  }
+  tackles: {
+    total: number
+    blocks: number
+    interceptions: number
+  }
+  duels: {
+    total: number | null
+    won: number | null
+  }
+  dribbles: {
+    attempts: number
+    success: number
+    past: number | null
+  }
+  fouls: {
+    drawn: number
+    committed: number
+  }
+  cards: {
+    yellow: 1
+    yellowred: 0
+    red: 0
+  }
+  penalty: {
+    won: number | null
+    commited: number | null
+    scored: number
+    missed: number
+    saved: number | null
+  }
 }
 
 export type PlayerDataType = {
