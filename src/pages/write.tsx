@@ -1,12 +1,13 @@
 import { OutputData } from '@editorjs/editorjs'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import { savePostRequestAction } from '@/store/actions/postAction'
+import { useRouter } from 'next/router'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -23,7 +24,16 @@ const WritePage: NextPage = () => {
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
+  const { savePostSuccess, savePostLoading, currentPost } = useSelector((state: RootState) => state.postReducer)
   const dispatch = useDispatch()
+  const router = useRouter()
+
+  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
+    if(!me || savePostLoading ){
+      router.replace('/')
+    }
+  }, [me])  
+  
   const savePost = useCallback(() => {
     console.log(data)
     if (me) {
@@ -67,6 +77,12 @@ const WritePage: NextPage = () => {
       dispatch(savePostRequestAction(post))
     }
   }, [data, title, me])
+
+  useEffect(() => { // redirect after save
+    if(savePostSuccess && currentPost){
+      router.replace(`/post/${currentPost.id}`)
+    }
+  }, [savePostLoading])
 
   const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') e.preventDefault()

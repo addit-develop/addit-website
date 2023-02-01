@@ -1,4 +1,4 @@
-import { LOG_OUT_REQUEST, CHECK_USER_REQUEST, LOG_IN_FAILURE } from '../types'
+import { LOG_OUT_REQUEST, CHECK_USER_REQUEST, LOG_IN_FAILURE, LOAD_MY_POST_REQUEST } from '../types'
 import backAxios from '../configureBackAxios'
 
 
@@ -29,5 +29,18 @@ export const oauthResponseSuccessAction = (data : {code:string | string[], state
 export const logoutRequestAction = () => {
   return {
     type: LOG_OUT_REQUEST,
+  }
+}
+
+export const loadMyPostRequestAction = (constraint : any) => {
+  return {
+    type:LOAD_MY_POST_REQUEST,
+    constraint:{
+      summary : constraint.summary || true, // load posts summary or not
+      writers : constraint.writers || null, // load posts of specific users 
+      hashtags : constraint.hashtags || null, // load posts with specific hashtags
+      amount : constraint.amount || 5, // how many to load
+      ids : constraint.ids || null, // load posts with specific ids
+    },
   }
 }

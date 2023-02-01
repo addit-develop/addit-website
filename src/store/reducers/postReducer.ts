@@ -1,41 +1,44 @@
-import { BlockDataType, PostSummary } from '@/types'
+import { BlockDataType, Post, PostSummary } from '@/types'
 import produce from 'immer'
-import {
-  MAKE_BLOCK_DATA,
-  SAVE_POST_REQUEST,
-  SAVE_POST_ERROR,
-  SAVE_POST_SUCCESS,
-  SET_BLOCK_DATA,
-  SET_BLOCK_READY,
-  SET_BLOCK_TYPE,
-  LOAD_POST_REQUEST,
-  LOAD_POST_SUCCESS,
-  LOAD_POST_ERROR,
-} from '../types'
+import { LOAD_MAIN_POST_ERROR, LOAD_MAIN_POST_REQUEST, LOAD_MAIN_POST_SUCCESS, MAKE_BLOCK_DATA, SAVE_POST_REQUEST, SAVE_POST_ERROR, SAVE_POST_SUCCESS, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_ERROR } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
-  savePostLoading: boolean
-  savePostSuccess: boolean
-  savePostError: any | null
-  loadPostLoading: boolean
-  loadPostSuccess: boolean
-  loadPostError: any | null
 
-  mainPosts: PostSummary[]
+  savePostLoading : boolean
+  savePostSuccess : boolean
+  savePostError : any | null
+  currentPost : Post | null
+
+  loadPostLoading : boolean
+  loadPostSuccess : boolean
+  loadPostError : any | null
+  post : Post | null
+
+  loadMainPostLoading : boolean
+  loadMainPostSuccess : boolean
+  loadMainPostError : any | null
+  mainPosts : PostSummary[]
 }
 
 export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
-  savePostLoading: false,
-  savePostSuccess: false,
-  savePostError: null,
-  loadPostLoading: false,
-  loadPostSuccess: false,
-  loadPostError: null,
 
+  savePostLoading : false,
+  savePostSuccess : false,
+  savePostError : null,
+  currentPost : null,
+
+  loadPostLoading : false,
+  loadPostSuccess : false,
+  loadPostError : null,
+  post : null,
+
+  loadMainPostLoading : false,
+  loadMainPostSuccess : false,
+  loadMainPostError : null,
   mainPosts: [],
 }
 
@@ -68,10 +71,12 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.savePostLoading = true
         draft.savePostError = null
         draft.savePostSuccess = false
+        draft.currentPost = null
         break
       case SAVE_POST_SUCCESS:
         draft.savePostLoading = false
         draft.savePostSuccess = true
+        draft.currentPost = action.data
         break
       case SAVE_POST_ERROR:
         draft.savePostLoading = false
@@ -81,21 +86,32 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.loadPostLoading = true
         draft.loadPostSuccess = false
         draft.loadPostError = null
-        draft.mainPosts = []
+        draft.post = null
         break
       case LOAD_POST_SUCCESS:
         draft.loadPostLoading = false
         draft.loadPostSuccess = true
-        draft.mainPosts = action.data.map((x: PostSummary) => {
-          const covertedTime = new Date(x.time).toString().split(' ')
-          x.time = `${covertedTime[1]} ${covertedTime[2]} ${covertedTime[3]}`
-          return x
-        })
+        draft.post = action.data[0]
         break
       case LOAD_POST_ERROR:
         draft.loadPostLoading = false
         draft.loadPostError = action.error
         break
+      case LOAD_MAIN_POST_REQUEST:
+        draft.loadMainPostLoading = true
+        draft.loadMainPostSuccess = false
+        draft.loadMainPostError = null
+        draft.mainPosts = []
+        break
+      case LOAD_MAIN_POST_SUCCESS:
+        draft.loadMainPostLoading = false
+        draft.loadMainPostSuccess = true
+        draft.mainPosts = action.data
+        break
+      case LOAD_MAIN_POST_ERROR:
+        draft.loadMainPostLoading = false
+        draft.loadMainPostError = action.error
+      break
       default:
         break
     }

@@ -1,3 +1,4 @@
+import { PostSummary } from '@/types'
 import { all, fork, call, put, takeLatest} from 'redux-saga/effects'
 import backAxios from '../configureBackAxios'
 
@@ -11,6 +12,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  LOAD_MY_POST_SUCCESS,
+  LOAD_MY_POST_ERROR,
+  LOAD_MY_POST_REQUEST,
 } from '../types'
 
 function loadUserAPI() {
@@ -67,6 +71,22 @@ function* logOut() {
   }
 }
 
+
+function* loadPost(action : any){
+  try{
+      const result : {data:PostSummary[]} = yield call(loatPostAPI, action.constraint)
+      yield put({
+          type:LOAD_MY_POST_SUCCESS,
+          data:result.data,
+      })
+  }catch(err : any){
+      yield put({
+          type:LOAD_MY_POST_ERROR,
+          error:err.response.data,
+      })
+  }
+}
+
 // take('LOG_IN', logIn)은 'LOG_IN' action이 실행될 때까지 기다린 후 logIn 함수를 실행
 // 이벤트 리스너와 유사한 역할
 // logIn 함수를 실행할 때 'LOG_IN_REQUEST' action이 매개변수로 전달된다
@@ -84,8 +104,16 @@ function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut)
 }
 
+function loatPostAPI(constraint : {}){
+  return backAxios.post("/post/load", constraint)
+}
+
+function* watchLoadPostRequestActrion(){
+  yield takeLatest(LOAD_MY_POST_REQUEST, loadPost)
+}
+
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
 export default function* userSaga() {
-  yield all([fork(watchLoadUser), fork(watchOauth2Response), fork(watchLogOut)])
+  yield all([fork(watchLoadUser), fork(watchOauth2Response), fork(watchLogOut), fork(watchLoadPostRequestActrion)])
 }
