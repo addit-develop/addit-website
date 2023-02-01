@@ -3,7 +3,7 @@ import { NextPage } from 'next/types'
 import { parser } from 'editorjs-viewer'
 import styles from '@/styles/post.module.css'
 import { useRouter } from 'next/router'
-import FixtureListByLeague from '../../components/block/fixtureListByLeague'
+import FootballBlockRead from '../../components/block/read'
 import { renderToString } from 'react-dom/server'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -197,13 +197,13 @@ const example = {
   ],
 }
 
-const conf = {
-  footballTool: {
-    onReturn(value: any) {
-      return `<div className='footballTool' id=${value.id} />`
-    },
-  },
-}
+// const conf = {
+//   footballTool: {
+//     onReturn(value: any) {
+//       return renderToString(<FootballBlockRead blockData={value.data} />)
+//     },
+//   },
+// }
 
 const PostPage: NextPage = () => {
   const [data, setData] = useState<OutputData>({
@@ -214,6 +214,9 @@ const PostPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
   const convertedTime = new Date(example.time)
+
+  // // turn json to html
+  // const result = parser.toHTML(example.blocks, conf)
 
   return (
     <>
@@ -234,6 +237,7 @@ const PostPage: NextPage = () => {
               holder="editorjs-container"
               readonly={true}
             />
+            {/* <div className={styles.content} dangerouslySetInnerHTML={{ __html: result }} /> */}
           </div>
         </div>
       </main>

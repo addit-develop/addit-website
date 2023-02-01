@@ -19,7 +19,7 @@ interface Props {
   blockId: string
 }
 
-const FootballBlock = ({ blockId }: Props) => {
+const FootballBlockEdit = ({ blockId }: Props) => {
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [blockData, setBlockData] = useState<BlockDataType | undefined>()
 
@@ -48,4 +48,4 @@ const FootballBlock = ({ blockId }: Props) => {
   )
 }
 
-export default FootballBlock
+export default FootballBlockEdit
