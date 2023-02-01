@@ -1,9 +1,7 @@
 import { COLORS } from '@/constants/constants'
 import { default as React, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
 import { BlockDataType } from '@/types'
-import rootReducer, { RootState } from '@/store/reducers'
 
 import EmptyBlock from './emptyBlock'
 import FixtureListByLeague from './fixtureListByLeague'
@@ -16,26 +14,17 @@ const BlockContainer = styled.div`
 `
 
 interface Props {
-  blockId: string
+  blockData: BlockDataType
 }
 
-const FootballBlock = ({ blockId }: Props) => {
-  const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const [blockData, setBlockData] = useState<BlockDataType | undefined>(
-    blockDataList.find((x: BlockDataType) => x.id === blockId)
-  )
-
-  useEffect(() => {
-    setBlockData(blockDataList.find((x: BlockDataType) => x.id === blockId))
-  }, [blockDataList])
-
+const FootballBlockRead = ({ blockData }: Props) => {
   const getBlockElement = useCallback(
     (type: string) => {
       switch (type) {
         case 'Fixture_List_By_Date':
-          return <FixtureListByLeague data={blockData?.data} />
+          return <FixtureListByLeague data={blockData.data} />
         case 'Match_Detail':
-          return <MatchDetailBlock data={blockData?.data} />
+          return <MatchDetailBlock data={blockData.data} />
       }
     },
     [blockData]
@@ -44,10 +33,10 @@ const FootballBlock = ({ blockId }: Props) => {
   return (
     <React.Fragment>
       <BlockContainer>
-        {blockData && blockData.isReady ? getBlockElement(blockData.type) : <EmptyBlock />}
+        {blockData.data ? getBlockElement(blockData.type) : <EmptyBlock />}
       </BlockContainer>
     </React.Fragment>
   )
 }
 
-export default FootballBlock
+export default FootballBlockRead

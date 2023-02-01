@@ -195,28 +195,48 @@ export const LineupContainer = styled.div`
   background-color: ${COLORS.white};
 `
 
-export const Lineup = styled.div`
+export const Lineup = styled.div<{ forBlock?: boolean }>`
   flex-shrink: 0;
   width: 100%;
   aspect-ratio: 451/783;
   display: flex;
   flex-direction: column;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 539 935' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1714_118)'%3E%3Crect width='539' height='935' fill='%2301935C'/%3E%3Cline y1='466.5' x2='539' y2='466.5' stroke='%230D9F68' stroke-width='3'/%3E%3Ccircle cx='269' cy='468' r='48.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M175 934.5V851C175 848.239 177.239 846 180 846H358C360.761 846 363 848.239 363 851V934.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M226 935V906C226 903.239 228.239 901 231 901H307C309.761 901 312 903.239 312 906V935' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M236 846.039C260.62 829.914 277 830.061 301.5 846.039' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M363 0.5V84C363 86.7614 360.761 89 358 89H180C177.239 89 175 86.7614 175 84V0.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M312 5.96046e-07V29C312 31.7614 309.761 34 307 34H231C228.239 34 226 31.7614 226 29V5.96046e-07' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M302 88.9612C277.38 105.086 261 104.939 236.5 88.9612' stroke='%230D9F68' stroke-width='3'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1714_118'%3E%3Crect width='539' height='935' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+  ${(props) =>
+    props.forBlock
+      ? `@media only screen and (min-width: 810px) {
+    aspect-ratio: 783/451;
+    flex-direction: row;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 935 539' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_1718_117)'%3E%3Crect width='539' height='935' transform='matrix(0 -1 1 0 0 539)' fill='%2301935C'/%3E%3Cline x1='466.5' y1='539' x2='466.5' stroke='%230D9F68' stroke-width='3'/%3E%3Ccircle cx='468' cy='270' r='48.5' transform='rotate(-90 468 270)' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M934.5 364H851C848.239 364 846 361.761 846 359V181C846 178.239 848.239 176 851 176H934.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M935 313H906C903.239 313 901 310.761 901 308V232C901 229.239 903.239 227 906 227H935' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M846.039 303C829.914 278.38 830.061 262 846.039 237.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M0.5 176H84C86.7614 176 89 178.239 89 181L89 359C89 361.761 86.7614 364 84 364H0.5' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M5.96046e-07 227H29C31.7614 227 34 229.239 34 232L34 308C34 310.761 31.7614 313 29 313H5.96046e-07' stroke='%230D9F68' stroke-width='3'/%3E%3Cpath d='M88.9612 237C105.086 261.62 104.939 278 88.9612 302.5' stroke='%230D9F68' stroke-width='3'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_1718_117'%3E%3Crect width='539' height='935' fill='white' transform='matrix(0 -1 1 0 0 539)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+  }`
+      : null};
 `
 
-export const startingXI = styled.div<{ reverse?: boolean }>`
+export const startingXI = styled.div<{ reverse?: boolean; forBlock?: boolean }>`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: ${(props) => (props.reverse ? 'column-reverse' : 'column')};
+  ${(props) =>
+    props.forBlock
+      ? `@media only screen and (min-width: 810px) {
+    flex-direction: ${props.reverse ? 'row-reverse' : 'row'};
+  }`
+      : null};
 `
 
-export const startingXIRow = styled.div`
+export const startingXIRow = styled.div<{ forBlock?: boolean }>`
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  ${(props) =>
+    props.forBlock
+      ? `@media only screen and (min-width: 810px) {
+        flex-direction: column;
+      }`
+      : null};
 `
 
 export const playerStarting = styled.div`

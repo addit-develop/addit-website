@@ -1,10 +1,11 @@
 import { default as React } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from '../../store/configureStore'
 import SearchModal from './searchModal/searchModal'
 
-import FootballBlock from '../block/index'
+import FootballBlockEdit from '../block/edit'
+import FootballBlockRead from '../block/read'
 
 export default class FootballTool {
   static get toolbox() {
@@ -21,7 +22,7 @@ export default class FootballTool {
   constructor({ data, config, api, readOnly }) {
     this.api = api
     this.readOnly = readOnly
-    this.data = {}
+    this.data = data
 
     this.CSS = {
       baseClass: this.api.styles.block,
@@ -35,16 +36,26 @@ export default class FootballTool {
     this.id = 'id' + Math.random().toString(16).slice(4)
   }
 
+  saveData(data) {
+    this.data = data
+  }
+
   render() {
     const rootNode = document.createElement('div')
     rootNode.classList.add(this.CSS.baseClass, this.CSS.wrapper)
     this.nodes.wrapper = rootNode
 
-    ReactDOM.createRoot(rootNode).render(
+    createRoot(rootNode).render(
       <Provider store={store}>
         <React.StrictMode>
-          <FootballBlock blockId={this.id} />
-          <SearchModal blockId={this.id} />
+          {this.readOnly ? (
+            <FootballBlockRead blockData={this.data} />
+          ) : (
+            <FootballBlockEdit blockId={this.id} />
+          )}
+          {this.readOnly ? null : (
+            <SearchModal blockId={this.id} saveData={(data) => this.saveData(data)} />
+          )}
         </React.StrictMode>
       </Provider>
     )

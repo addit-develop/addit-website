@@ -43,7 +43,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
   }>({ timeline: false, lineUp: false, stats: false, matchData: matchData })
 
   useEffect(() => {
-    dispatch(setBlockData(blockId, matchBlockData))
+    if (matchBlockData) dispatch(setBlockData(blockId, matchBlockData))
   }, [matchBlockData])
 
   const axios = useAxios()

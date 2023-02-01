@@ -76,7 +76,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
   useEffect(() => {
     const myBlockData = blockDataList.find((x: BlockDataType) => x.id === blockId)
     const newBlockData =
-      myBlockData &&
+      myBlockData?.type === 'Fixture_List_By_Date' &&
       myBlockData.data.map((x: LeagueBlockType) =>
         x.id === league.id
           ? {

@@ -22,15 +22,15 @@ import LeagueDetail from '../league/leagueDetail'
 
 interface Props {
   blockId: string
+  saveData: any
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ blockId }: Props) => {
+const SearchModal = ({ blockId, saveData }: Props) => {
   const dispatch = useDispatch()
-  // const searchRef = useRef()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps } = useSelector(
     (state: RootState) => state.pageReducer
@@ -65,10 +65,12 @@ const SearchModal = ({ blockId }: Props) => {
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
       const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
+      var dataforSave = { type: myBlock?.type, data: myBlock?.data }
       if (myBlock?.type === 'Fixture_List_By_Date') {
-        const filterData = myBlock?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
-        dispatch(setBlockData(blockId, filterData))
+        dataforSave.data = myBlock?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+        dispatch(setBlockData(blockId, dataforSave.data))
       }
+      saveData(dataforSave)
       dispatch(setBlockReady(blockId))
       setModalClosed(true)
     }
