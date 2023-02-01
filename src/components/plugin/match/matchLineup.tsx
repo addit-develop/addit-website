@@ -4,6 +4,7 @@ import { MatchDetailDataType } from '@/types'
 
 interface PropsType {
   matchData: MatchDetailDataType | undefined
+  forBlock?: boolean
 }
 
 interface lineupPlayerType {
@@ -16,7 +17,7 @@ interface lineupPlayerType {
   }
 }
 
-const MatchLineup = ({ matchData }: PropsType) => {
+const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
   const [startXIData, setStartXIData] = useState<[lineupPlayerType[][], lineupPlayerType[][]]>([
     [],
     [],
@@ -26,7 +27,7 @@ const MatchLineup = ({ matchData }: PropsType) => {
     const newStartXIData: [lineupPlayerType[][], lineupPlayerType[][]] = [[], []]
     var i: number = 0
     while (i < 2) {
-      const rawData = matchData?.lineups[i].startXI
+      const rawData = matchData?.lineups[i].startXI.slice()
       const formationArray = matchData?.lineups[i].formation.split('-')
       formationArray?.forEach((x: number) => {
         newStartXIData[i].push(rawData?.splice(1, x))
@@ -62,21 +63,25 @@ const MatchLineup = ({ matchData }: PropsType) => {
     <React.Fragment>
       <Styles.LineupContainer>
         <Styles.SubTitle>Lineup</Styles.SubTitle>
-        <Styles.Lineup>
-          <Styles.startingXI>
-            <Styles.startingXIRow>
+        <Styles.Lineup forBlock={forBlock}>
+          <Styles.startingXI forBlock={forBlock}>
+            <Styles.startingXIRow forBlock={forBlock}>
               {getPlayerElement(0, matchData?.lineups[0]?.startXI[0])}
             </Styles.startingXIRow>
             {startXIData[0].map((x) => (
-              <Styles.startingXIRow>{x.map((y) => getPlayerElement(0, y))}</Styles.startingXIRow>
+              <Styles.startingXIRow forBlock={forBlock}>
+                {x.map((y) => getPlayerElement(0, y))}
+              </Styles.startingXIRow>
             ))}
           </Styles.startingXI>
-          <Styles.startingXI reverse>
-            <Styles.startingXIRow>
+          <Styles.startingXI reverse forBlock={forBlock}>
+            <Styles.startingXIRow forBlock={forBlock}>
               {getPlayerElement(1, matchData?.lineups[1].startXI[0])}
             </Styles.startingXIRow>
             {startXIData[1].map((x) => (
-              <Styles.startingXIRow>{x.map((y) => getPlayerElement(1, y))}</Styles.startingXIRow>
+              <Styles.startingXIRow forBlock={forBlock}>
+                {x.map((y) => getPlayerElement(1, y))}
+              </Styles.startingXIRow>
             ))}
           </Styles.startingXI>
         </Styles.Lineup>

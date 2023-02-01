@@ -96,7 +96,7 @@ const MatchDetail = ({ data }: PropsType) => {
       <BlockContainer>
         <MatchHeader matchData={data.matchData} scorerList={scorerList} />
         {data.timeline ? <MatchTimeline matchData={data.matchData} eventList={eventList} /> : null}
-        {data.lineUp ? <MatchLineup matchData={data.matchData} /> : null}
+        {data.lineUp ? <MatchLineup matchData={data.matchData} forBlock={true} /> : null}
         {data.stats ? <MatchStats matchData={data.matchData} /> : null}
       </BlockContainer>
     </React.Fragment>

@@ -17,11 +17,10 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
 
 const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
-  var exPost : Post | null = null
-  const [data, setData] = useState<OutputData>(exPost? exPost.data : {
-    time:0,
-    blocks:[],
-    version:'2.26.4',
+  const [data, setData] = useState<OutputData>({
+    time: 0,
+    blocks: [],
+    version: '2.26.4',
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
@@ -36,36 +35,34 @@ const WritePage: NextPage = () => {
   }, [me])  
   
   const savePost = useCallback(() => {
-    if(me){
+    console.log(data)
+    if (me) {
       const hashtagRegex = /#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g
-      var hashtags : string[] = (title.match(hashtagRegex)||[]).map((e)=>e.slice(1).toLowerCase())
-      var snippet : string | null = null;
-      
-      var mainImage : string | null = null;
-      for(const index in data.blocks){
-        const block = data.blocks[index];
-        if(block.type === 'paragraph'){
-          if(!snippet){
-            if(block.data.text.length>50){
-              snippet = block.data.text.substr(0, 50)+'...'
-            } else{
+      var hashtags: string[] = (title.match(hashtagRegex) || []).map((e) =>
+        e.slice(1).toLowerCase()
+      )
+      var snippet: string | null = null
+
+      var mainImage: string | null = null
+      for (const index in data.blocks) {
+        const block = data.blocks[index]
+        if (block.type === 'paragraph') {
+          if (!snippet) {
+            if (block.data.text.length > 50) {
+              snippet = block.data.text.substr(0, 50) + '...'
+            } else {
               snippet = block.data.text
             }
           }
-          hashtags = hashtags.concat((block.data.text.match(hashtagRegex)||[]).map((e:string)=>e.slice(1).toLowerCase()));
-        }
-        else if(block.type === 'image' && !mainImage){
+          hashtags = hashtags.concat(
+            (block.data.text.match(hashtagRegex) || []).map((e: string) => e.slice(1).toLowerCase())
+          )
+        } else if (block.type === 'image' && !mainImage) {
           console.log(block.data)
           mainImage = block.data.file.url
         }
       }
-      const post : Post = exPost? {...exPost,
-        title: title,
-        hashtags: hashtags,
-        data: data,
-        snippet: snippet || '',
-        mainImage : mainImage,
-      } : {
+      const post: Post = {
         id: 0,
         title: title,
         hashtags: hashtags,
@@ -75,7 +72,7 @@ const WritePage: NextPage = () => {
         comments: [],
         likes: 0,
         views: 0,
-        mainImage : mainImage,
+        mainImage: mainImage,
       }
       dispatch(savePostRequestAction(post))
     }
@@ -107,7 +104,7 @@ const WritePage: NextPage = () => {
             onInput={(e) => saveTitle(e)}
           />
         </div>
-        <Editor data={data} onChange={setData} holder="editorjs-container" />
+        <Editor data={data} onChange={setData} holder="editorjs-container" readonly={false} />
         <button className={styles.publish} onClick={savePost}>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
             <path

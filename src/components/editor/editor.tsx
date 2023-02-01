@@ -6,9 +6,10 @@ interface Props {
   data?: OutputData
   onChange(val: OutputData): void
   holder: string
+  readonly: boolean
 }
 
-const Editor = ({ data, onChange, holder }: Props) => {
+const Editor = ({ data, onChange, holder, readonly }: Props) => {
   const ref = useRef<EditorJS>() //add a reference to editor
 
   //initialize editorjs
@@ -18,6 +19,7 @@ const Editor = ({ data, onChange, holder }: Props) => {
       const editor = new EditorJS({
         holder: holder,
         tools: tools,
+        readOnly: readonly,
         data,
         async onChange(api, event) {
           const data = await api.saver.save()

@@ -51,7 +51,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
             id: action.id,
             type: action.blockType,
             isReady: false,
-            data: [],
+            data: null,
           })
         }
         break
@@ -61,7 +61,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
         break
       case SET_BLOCK_TYPE:
         const findBlock = draft.blockDataList.find((x) => x.id === action.id)
-        if (findBlock) findBlock.type = action.data
+        if (findBlock && !findBlock.isReady) findBlock.type = action.data
         break
       case SET_BLOCK_READY:
         const readyBlock = draft.blockDataList.find((x) => x.id === action.id)

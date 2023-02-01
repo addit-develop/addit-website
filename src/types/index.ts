@@ -194,9 +194,9 @@ export type LeagueBlockType = {
 }
 
 export type BlockDataType = {
-  id: string
+  id?: string
   type: string
-  isReady: boolean
+  isReady?: boolean
   data: any
 }
 
@@ -234,7 +234,7 @@ export type Post = {
   hashtags: string[]
   data: OutputData
   snippet: string
-  mainImage : string | null
+  mainImage: string | null
   comments: Comment[]
   likes: number
   views: number

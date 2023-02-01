@@ -76,7 +76,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
   useEffect(() => {
     const myBlockData = blockDataList.find((x: BlockDataType) => x.id === blockId)
     const newBlockData =
-      myBlockData &&
+      myBlockData?.type === 'Fixture_List_By_Date' &&
       myBlockData.data.map((x: LeagueBlockType) =>
         x.id === league.id
           ? {
@@ -131,7 +131,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
             <Flag src={league.logo} />
             {league.name}
           </LeagueName>
-          {forBlock ? null : menuState ? (
+          {menuState ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
               <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
             </svg>
