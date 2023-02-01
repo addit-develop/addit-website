@@ -8,6 +8,7 @@ import rootReducer, { RootState } from '@/store/reducers'
 import EmptyBlock from './emptyBlock'
 import FixtureListByLeague from './fixtureListByLeague'
 import MatchDetailBlock from './matchDetailBlock'
+import MatchPredictionBlock from './matchPredictionBlock'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -34,6 +35,8 @@ const FootballBlockEdit = ({ blockId }: Props) => {
           return <FixtureListByLeague data={blockData?.data} />
         case 'Match_Detail':
           return <MatchDetailBlock data={blockData?.data} />
+        case 'Match_Prediction':
+          return <MatchPredictionBlock data={blockData?.data} />
       }
     },
     [blockData]

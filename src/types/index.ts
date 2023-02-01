@@ -99,7 +99,7 @@ export type StatisticsType = {
   goals: {
     total: number
     conceded: boolean
-    assist: number
+    assists: number
     saves: number | null
   }
   passes: {

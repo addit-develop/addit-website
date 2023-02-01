@@ -9,6 +9,7 @@ const Container = styled.div`
   background-color: ${COLORS.white};
   padding: 0px 8px;
   margin-top: 2px;
+  border-radius: 10px;
 `
 const Index = styled.div`
   font-size: 16px;
@@ -64,14 +65,7 @@ const LeagueStats = ({ league, season }: PropsType) => {
       <Container>
         <Index>Top Scorer</Index>
         {topScorerList.slice(0, topScorerOpen ? 10 : 3).map((p) => {
-          return (
-            <PlayerInfoBox
-              player={p.player}
-              club={p.statistics[0].team}
-              key={p.player.name}
-              stat={p.statistics[0].goals.total}
-            />
-          )
+          return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.total} />
         })}
         <ViewMore onClick={() => setTopScorerOpen(!topScorerOpen)}>
           {topScorerOpen ? 'View Less' : 'View More'}
@@ -80,14 +74,7 @@ const LeagueStats = ({ league, season }: PropsType) => {
       <Container>
         <Index>Top Assist</Index>
         {topAssistList.slice(0, topAssistOpen ? 10 : 3).map((p) => {
-          return (
-            <PlayerInfoBox
-              player={p.player}
-              club={p.statistics[0].team}
-              key={p.player.name}
-              stat={p.statistics[0].goals.assists}
-            />
-          )
+          return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.assists} />
         })}
         <ViewMore onClick={() => setTopAssistOpen(!topAssistOpen)}>
           {topAssistOpen ? 'View Less' : 'View More'}
@@ -96,14 +83,7 @@ const LeagueStats = ({ league, season }: PropsType) => {
       <Container>
         <Index>Top Yellow Cards</Index>
         {topYellowCardList.slice(0, topYellowCardOpen ? 10 : 3).map((p) => {
-          return (
-            <PlayerInfoBox
-              player={p.player}
-              club={p.statistics[0].team}
-              key={p.player.name}
-              stat={p.statistics[0].cards.yellow}
-            />
-          )
+          return <PlayerInfoBox playerData={p} stat={p.statistics[0].cards.yellow} />
         })}
         <ViewMore onClick={() => setTopYellowCardOpen(!topYellowCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}

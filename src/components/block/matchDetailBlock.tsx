@@ -1,4 +1,3 @@
-import * as Styles from '../plugin/match/matchDetail-st'
 import { default as React, useEffect, useCallback, useState } from 'react'
 import { MatchDetailDataType } from '@/types'
 import MatchHeader from '../plugin/match/matchHeader'
@@ -31,7 +30,7 @@ interface eventListType {
   penalty?: any[]
 }
 
-export const BlockContainer = styled.div`
+const BlockContainer = styled.div`
   width: 100%;
   height: fit-content;
   display: flex;
@@ -48,7 +47,7 @@ export const BlockContainer = styled.div`
     0px 15px 45px -2.5px rgba(0, 0, 0, 0.05);
 `
 
-const MatchDetail = ({ data }: PropsType) => {
+const MatchDetailBlock = ({ data }: PropsType) => {
   const [scorerList, setScorerList] = useState<scorerListType>()
   const [eventList, setEventList] = useState<eventListType>()
 
@@ -103,4 +102,4 @@ const MatchDetail = ({ data }: PropsType) => {
   )
 }
 
-export default MatchDetail
+export default MatchDetailBlock

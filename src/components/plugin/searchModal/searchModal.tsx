@@ -84,12 +84,12 @@ const SearchModal = ({ blockId, saveData }: Props) => {
         dispatch(setBlockType(blockId, 'Fixture_List_By_Date'))
         return <MatchHome selectMode={selectMode} blockId={blockId} />
       case 'matchDetail':
-        console.log(blockId)
         dispatch(setBlockType(blockId, 'Match_Detail'))
         if (pageProps)
           return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
         else break
       case 'matchPrediction':
+        dispatch(setBlockType(blockId, 'Match_Prediction'))
         if (pageProps)
           return (
             <MatchPrediction selectMode={selectMode} blockId={blockId} fixtureData={pageProps} />
