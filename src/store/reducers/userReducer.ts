@@ -11,6 +11,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  LOAD_MY_POST_REQUEST,
+  LOAD_MY_POST_SUCCESS,
+  LOAD_MY_POST_ERROR,
 } from '../types'
 
 type StateType = {
@@ -21,13 +24,16 @@ type StateType = {
   logInError: any | null
   checkingUser: boolean | null
   logInDone: boolean
-
   me: string | null
-  myPosts: PostSummary[]
 
   logOutDone: boolean
-  logOutLoading: boolean //로그아웃 시도 중
+  logOutLoading: boolean 
   logOutError: any | null
+
+  loadMyPostLoading : boolean
+  loadMyPostSuccess : boolean
+  loadMyPostError : any | null
+  myPosts: PostSummary[]
 }
 
 export const initialState: StateType = {
@@ -40,11 +46,15 @@ export const initialState: StateType = {
   logInDone: false,
 
   me: null,
-  myPosts: [],
 
   logOutDone: false,
   logOutLoading: false, //로그아웃 시도 중
   logOutError: null,
+
+  loadMyPostLoading : false,
+  loadMyPostSuccess : false,
+  loadMyPostError : null,
+  myPosts: [],
 }
 
 const userReducer = (state = initialState, action: any) =>
@@ -87,11 +97,27 @@ const userReducer = (state = initialState, action: any) =>
         draft.logOutLoading = false
         draft.logOutDone = true
         draft.me = null
+        draft.myPosts = []
         break
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false
         draft.logOutError = action.error
         break
+      case LOAD_MY_POST_REQUEST:
+        draft.loadMyPostLoading = true
+        draft.loadMyPostSuccess = false
+        draft.loadMyPostError = null
+        draft.myPosts = []
+        break
+      case LOAD_MY_POST_SUCCESS:
+        draft.loadMyPostLoading = false
+        draft.loadMyPostSuccess = true
+        draft.myPosts = action.data
+        break
+      case LOAD_MY_POST_ERROR:
+        draft.loadMyPostLoading = false
+        draft.loadMyPostError = action.error
+        break  
       default:
         break
     }

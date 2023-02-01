@@ -223,7 +223,7 @@ import { OutputData } from '@editorjs/editorjs'
 export type Comment = {
   content: string
   email: string
-  time: number | string
+  time: number
   like: number
 }
 
@@ -245,6 +245,6 @@ export type PostSummary = {
   title: string
   email: string
   snippet: string
-  time: number | string
+  time: number
   mainImage: string | null
 }

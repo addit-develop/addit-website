@@ -13,6 +13,7 @@ const CheckLogInMiddleware = () => {
   const {code, state, error} = router.query;
   const { me, logInDone } = useSelector((state: RootState) => state.userReducer)
 
+
   useEffect(() => {
     if(error){
       console.log('access denied')
@@ -30,9 +31,9 @@ const CheckLogInMiddleware = () => {
   }, [logInDone])
   
   return(
-    <>
+    <div>
       Loading...
-    </>
+    </div>
   )
 }
 

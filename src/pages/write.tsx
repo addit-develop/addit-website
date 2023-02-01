@@ -1,12 +1,13 @@
 import { OutputData } from '@editorjs/editorjs'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import { savePostRequestAction } from '@/store/actions/postAction'
+import { useRouter } from 'next/router'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -16,14 +17,24 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
 
 const WritePage: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
-  const [data, setData] = useState<OutputData>({
+  var exPost : Post | null = null
+  const [data, setData] = useState<OutputData>(exPost? exPost.data : {
     time:0,
     blocks:[],
     version:'2.26.4',
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
+  const { savePostSuccess, savePostLoading, currentPost } = useSelector((state: RootState) => state.postReducer)
   const dispatch = useDispatch()
+  const router = useRouter()
+
+  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
+    if(!me || savePostLoading ){
+      router.replace('/')
+    }
+  }, [me])  
+  
   const savePost = useCallback(() => {
     if(me){
       const hashtagRegex = /#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g
@@ -48,7 +59,13 @@ const WritePage: NextPage = () => {
           mainImage = block.data.file.url
         }
       }
-      const post : Post = {
+      const post : Post = exPost? {...exPost,
+        title: title,
+        hashtags: hashtags,
+        data: data,
+        snippet: snippet || '',
+        mainImage : mainImage,
+      } : {
         id: 0,
         title: title,
         hashtags: hashtags,
@@ -63,6 +80,12 @@ const WritePage: NextPage = () => {
       dispatch(savePostRequestAction(post))
     }
   }, [data, title, me])
+
+  useEffect(() => { // redirect after save
+    if(savePostSuccess && currentPost){
+      router.replace(`/post/${currentPost.id}`)
+    }
+  }, [savePostLoading])
 
   const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') e.preventDefault()
