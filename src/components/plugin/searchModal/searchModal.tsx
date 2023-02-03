@@ -1,7 +1,6 @@
 import * as Styles from './style'
 import { default as React, useCallback, useEffect, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
-import PlayerHome from '../player/playerHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
@@ -19,6 +18,9 @@ import MatchPrediction from '../match/matchPrediction'
 import { changeModalPage } from '@/store/actions/pageAction'
 import TeamHome from '../team/teamHome'
 import LeagueDetail from '../league/leagueDetail'
+import SearchModalInput from './searchModalInput'
+import SearchHome from '../search/searchHome'
+import PlayerHome from '../player/playerHome'
 
 interface Props {
   blockId: string
@@ -80,6 +82,10 @@ const SearchModal = ({ blockId, saveData }: Props) => {
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
+      case 'searchHome':
+        if (pageProps) {
+          return <SearchHome searchKey={pageProps} />
+        }
       case 'matchHome':
         dispatch(setBlockType(blockId, 'Fixture_List_By_Date'))
         return <MatchHome selectMode={selectMode} blockId={blockId} />
@@ -109,36 +115,18 @@ const SearchModal = ({ blockId, saveData }: Props) => {
           )
         else break
       case 'playerHome':
-        return <PlayerHome />
+        return <PlayerHome leagueId={pageProps.leagueId} searchKey={pageProps.searchKey} />
       case 'playerDetail':
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
         else break
     }
-  }, [currentPage, selectMode, blockId])
+  }, [currentPage, selectMode, blockId, pageProps])
 
   return (
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
         <Styles.DragLine />
-        <Styles.SearchContainer>
-          <Styles.SearchInput placeholder="Search players, teams, leagues" />
-          <Styles.ClearButton>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
-              <path
-                d="M5.648 11.2 8 8.847l2.352 2.351.847-.847L8.848 8l2.351-2.352-.847-.847L8 7.152 5.648 4.801l-.847.847L7.152 8l-2.351 2.352ZM8 14.397a6.192 6.192 0 0 1-2.484-.5 6.366 6.366 0 0 1-2.04-1.375 6.366 6.366 0 0 1-1.374-2.039A6.192 6.192 0 0 1 1.602 8c0-.89.164-1.719.5-2.492.332-.774.789-1.45 1.375-2.031a6.366 6.366 0 0 1 2.039-1.375A6.192 6.192 0 0 1 8 1.602c.89 0 1.719.164 2.492.5.774.332 1.45.789 2.031 1.375a6.375 6.375 0 0 1 1.375 2.03c.336.774.5 1.602.5 2.493 0 .879-.164 1.707-.5 2.484a6.366 6.366 0 0 1-1.375 2.04 6.375 6.375 0 0 1-2.03 1.374c-.774.336-1.602.5-2.493.5Zm0 0"
-                fill="#8a8a8a"
-              />
-            </svg>
-          </Styles.ClearButton>
-          <Styles.SearchButton>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path
-                d="m19.6 21-6.3-6.3q-.75.6-1.725.95Q10.6 16 9.5 16q-2.725 0-4.612-1.887Q3 12.225 3 9.5q0-2.725 1.888-4.613Q6.775 3 9.5 3t4.613 1.887Q16 6.775 16 9.5q0 1.1-.35 2.075-.35.975-.95 1.725l6.3 6.3ZM9.5 14q1.875 0 3.188-1.312Q14 11.375 14 9.5q0-1.875-1.312-3.188Q11.375 5 9.5 5 7.625 5 6.312 6.312 5 7.625 5 9.5q0 1.875 1.312 3.188Q7.625 14 9.5 14Z"
-                fill="#8a8a8a"
-              />
-            </svg>
-          </Styles.SearchButton>
-        </Styles.SearchContainer>
+        <SearchModalInput />
         <Styles.SearchMenuContainer>
           {menu.map((m, i) => {
             return (

@@ -43,50 +43,6 @@ export const DragLine = styled.div`
   }
 `
 
-export const SearchContainer = styled.div`
-  order: 1;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 48px;
-  background: ${COLORS.white};
-  align-items: center;
-  justify-content: start;
-  padding: 0 8px 0 16px;
-  @media only screen and (max-width: 600px) {
-    order: 5;
-    height: 48px;
-    padding: 8px 16px;
-  }
-`
-
-export const SearchInput = styled.input`
-  border-radius: 10px 0 0 0;
-  width: 100%;
-  height: 24px;
-  margin: 12px 0;
-  line-height: 24px;
-  font-size: 16px;
-  &::placeholder {
-    color: ${COLORS.gray};
-  }
-`
-
-export const ClearButton = styled.button`
-  display: none;
-  width: 20px;
-  height: 20px;
-`
-
-export const SearchButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 100%;
-  margin-left: 8px;
-`
-
 export const SearchMenuContainer = styled.div`
   order: 2;
   display: flex;

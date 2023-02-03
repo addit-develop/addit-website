@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { PlayerDataType, PlayerType, StatisticsType } from '@/types'
+import useAxios from '@/hooks/useAxios'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
 import { useDispatch } from 'react-redux'
-import useAxios from '@/hooks/useAxios'
-import { PlayerDataType } from '@/types'
-import { changeModalPage } from '@/store/actions/pageAction'
 import PlayerInfoBox from '../common/playerInfoBox'
+import { changeModalPage } from '@/store/actions/pageAction'
+
 export const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -28,21 +29,17 @@ const SearchAny = styled.div`
   justify-content: center;
 `
 interface PropsType {
-  leagueId?: number
-  searchKey?: string
+  searchKey: string
 }
 
-const PlayerHome = ({ leagueId, searchKey }: PropsType) => {
+const SearchHome = ({ searchKey }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [playerList, setPlayerList] = useState<PlayerDataType[]>([])
 
   const searchPlayer = async () => {
-    setIsLoading(true)
-    const response = await axios.get('/players', {
-      params: { league: leagueId, search: searchKey },
-    })
+    const response = await axios.get('/players', { params: { league: 39, search: searchKey } })
     console.log(response.data)
     if (response) {
       setIsLoading(false)
@@ -51,20 +48,15 @@ const PlayerHome = ({ leagueId, searchKey }: PropsType) => {
   }
 
   useEffect(() => {
-    if (leagueId && searchKey) {
-      searchPlayer()
-    }
-  }, [leagueId, searchKey])
+    console.log(searchKey)
+    searchPlayer()
+  }, [])
 
   if (isLoading) return null
   return (
     <React.Fragment>
       <Container>
-        {!searchKey || !leagueId ? (
-          <SearchAny>Search player</SearchAny>
-        ) : searchKey.length < 4 ? (
-          <SearchAny>Search keyword must be at least 4 characters.</SearchAny>
-        ) : playerList.length === 0 ? (
+        {playerList.length === 0 ? (
           <SearchAny>{`Cannot find player with name '${searchKey}'.`}</SearchAny>
         ) : (
           <>
@@ -85,4 +77,4 @@ const PlayerHome = ({ leagueId, searchKey }: PropsType) => {
   )
 }
 
-export default PlayerHome
+export default SearchHome

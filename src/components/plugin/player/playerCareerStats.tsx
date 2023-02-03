@@ -5,6 +5,7 @@ interface PropsType {
   playerData: PlayerDataType
 }
 const PlayerCareerStats = ({ playerData }: PropsType) => {
+  const statistics = playerData.statistics
   return (
     <React.Fragment>
       {playerData.statistics.map((s) => {
