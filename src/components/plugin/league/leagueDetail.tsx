@@ -9,6 +9,8 @@ import LeagueFixtures from './leagueFixtures'
 import LeagueStanding from './leagueStanding'
 import LeagueStats from './leagueStats'
 import dayjs from 'dayjs'
+import { useDispatch } from 'react-redux'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 const Container = styled.div`
   overflow-y: scroll;
@@ -29,6 +31,7 @@ type LeagueDataType = {
 }
 
 const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
+  const dispatch = useDispatch()
   const axios = useAxios()
   const menu = ['Table', 'Fixtures', 'Stats']
   const today = useMemo(() => dayjs(), [])
@@ -38,8 +41,10 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const [season, setSeason] = useState<number>(today.year() - 1)
 
   const getLeagueDetail = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/leagues', { params: { id: leagueId } })
     setLeagueData(res.data.response[0])
+    dispatch(loadDataFinish())
   }
 
   useEffect(() => {

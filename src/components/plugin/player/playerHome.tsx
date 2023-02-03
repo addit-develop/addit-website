@@ -4,7 +4,7 @@ import { COLORS } from '@/constants/constants'
 import { useDispatch } from 'react-redux'
 import useAxios from '@/hooks/useAxios'
 import { PlayerDataType } from '@/types'
-import { changeModalPage } from '@/store/actions/pageAction'
+import { changeModalPage, loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import PlayerInfoBox from '../common/playerInfoBox'
 export const Container = styled.div`
   width: 100%;
@@ -40,14 +40,16 @@ const PlayerHome = ({ leagueId, searchKey }: PropsType) => {
 
   const searchPlayer = async () => {
     setIsLoading(true)
+    dispatch(loadDataStart())
     const response = await axios.get('/players', {
       params: { league: leagueId, search: searchKey },
     })
     console.log(response.data)
     if (response) {
+      setPlayerList(response.data.response)
+      dispatch(loadDataFinish())
       setIsLoading(false)
     }
-    setPlayerList(response.data.response)
   }
 
   useEffect(() => {

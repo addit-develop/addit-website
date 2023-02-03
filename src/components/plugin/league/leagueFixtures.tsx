@@ -5,6 +5,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import FixtureTable from '../common/fixtureTable'
 import DateGroupedFixtures from './dateGroupedFixtures'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 interface PropsType {
   league: LeagueType
@@ -21,12 +23,14 @@ const Container = styled.div`
 `
 
 const LeagueFixtures = ({ league, season }: PropsType) => {
+  const dispatch = useDispatch()
   const axios = useAxios()
   const today = useMemo(() => dayjs(), [])
   const [fixtures, setFixtures] = useState<FixtureType[]>([])
   const [dateList, setDateList] = useState<string[]>([])
 
   const getFixturesData = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/fixtures', {
       params: {
         league: league.id,
@@ -44,6 +48,7 @@ const LeagueFixtures = ({ league, season }: PropsType) => {
       }
     })
     setDateList(temp.reverse())
+    dispatch(loadDataFinish())
   }
 
   useEffect(() => {

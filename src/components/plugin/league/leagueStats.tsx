@@ -1,7 +1,9 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { LeagueType, PlayerDataType, PlayerType, StatisticsType } from '@/types'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
 
@@ -28,6 +30,7 @@ interface PropsType {
 }
 
 const LeagueStats = ({ league, season }: PropsType) => {
+  const dispatch = useDispatch()
   const axios = useAxios()
 
   const [topScorerList, setTopScorerList] = useState<PlayerDataType[]>([])
@@ -39,8 +42,10 @@ const LeagueStats = ({ league, season }: PropsType) => {
   const [topYellowCardOpen, setTopYellowCardOpen] = useState<boolean>(false)
 
   const getTopScorer = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/players/topscorers', { params: { league: league.id, season } })
     setTopScorerList(res.data.response)
+    dispatch(loadDataFinish())
   }
 
   const getTopAssist = async () => {

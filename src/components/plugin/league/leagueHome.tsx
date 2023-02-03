@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { changeModalPage } from '@/store/actions/pageAction'
+import { changeModalPage, loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { useDispatch } from 'react-redux'
 
 const Container = styled.div`
@@ -54,9 +54,11 @@ const LeagueHome = () => {
   const [leagueList, setLeagueList] = useState<leagueDataType[]>([])
 
   const getLeagueData = async () => {
+    dispatch(loadDataStart())
     const response = await axios.get('/leagues', { params: { season: 2023, current: true } })
     console.log(response)
     setLeagueList(response.data.response)
+    dispatch(loadDataFinish())
   }
 
   const navigateLeagueDetail = (leagueId: number) => {

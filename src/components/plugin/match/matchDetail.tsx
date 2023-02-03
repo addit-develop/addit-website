@@ -9,6 +9,7 @@ import MatchLineup from './matchLineup'
 import MatchTimeline from './matchTimeline'
 import MatchStats from './matchStats'
 import SelectBox from '../common/selectBox'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 interface PropsType {
   fixtureId: number | undefined
@@ -48,6 +49,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
 
   const axios = useAxios()
   const getMatchData = useCallback(async () => {
+    dispatch(loadDataStart())
     const response = await axios
       .get('/fixtures', {
         params: { id: fixtureId, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
@@ -93,6 +95,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
           stats: false,
           matchData: response.data.response[0],
         })
+        dispatch(loadDataFinish())
       })
       .catch((error) => {
         console.error(error)

@@ -10,6 +10,7 @@ import HeadToHead from './headToHead'
 import { useDispatch } from 'react-redux'
 import { setBlockData } from '@/store/actions/postAction'
 import SelectBox from '../common/selectBox'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 interface PropsType {
   fixtureData: FixtureType | undefined
@@ -40,6 +41,7 @@ const MatchPrediction = ({ fixtureData, selectMode, blockId }: PropsType) => {
 
   const axios = useAxios()
   const getPredictionData = useCallback(async () => {
+    dispatch(loadDataStart())
     const response = await axios
       .get('/predictions', { params: { fixture: fixtureData?.fixture.id } })
       .then((response) => {
@@ -51,6 +53,7 @@ const MatchPrediction = ({ fixtureData, selectMode, blockId }: PropsType) => {
           fixtureData: fixtureData,
           predictionData: response.data.response[0],
         })
+        dispatch(loadDataFinish())
       })
       .catch((error) => {
         console.error(error)

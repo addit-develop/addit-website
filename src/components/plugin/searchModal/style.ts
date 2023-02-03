@@ -77,6 +77,7 @@ export const SearchMenu = styled.div<{ selected?: boolean }>`
 
 export const ContentContainer = styled.div`
   order: 3;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: start;

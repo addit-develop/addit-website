@@ -1,7 +1,9 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { LeagueType, StandingDataType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import LeagueStandingTeam from './leagueStandingTeam'
 
@@ -31,11 +33,16 @@ interface PropsType {
 
 const LeagueStanding = ({ league, season }: PropsType) => {
   const [standingData, setStandingData] = useState<StandingDataType[]>([])
+  const dispatch = useDispatch()
   const axios = useAxios()
 
   const getStandingData = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/standings', { params: { league: league.id, season } })
-    if (res.data.response) setStandingData(res.data.response[0].league.standings[0])
+    if (res.data.response) {
+      setStandingData(res.data.response[0].league.standings[0])
+      dispatch(loadDataFinish())
+    }
   }
 
   useEffect(() => {

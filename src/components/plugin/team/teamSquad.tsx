@@ -1,7 +1,9 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { PlayerType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
 
@@ -36,10 +38,12 @@ interface PropsType {
 }
 
 const TeamSquad = ({ team }: PropsType) => {
+  const dispatch = useDispatch()
   const axios = useAxios()
   const [squadData, setSquadData] = useState<PlayerType[]>([])
   const [positionList, setPositionList] = useState<string[]>([])
   const getSquadData = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/players/squads', {
       params: {
         team: team.id,
@@ -52,6 +56,7 @@ const TeamSquad = ({ team }: PropsType) => {
       if (s.position && !temp.includes(s.position)) temp.push(s.position)
     })
     setPositionList(temp)
+    dispatch(loadDataFinish())
   }
 
   useEffect(() => {
@@ -68,7 +73,28 @@ const TeamSquad = ({ team }: PropsType) => {
               {squadData
                 .filter((player) => player.position === p)
                 .map((player) => {
-                  return <PlayerInfoBox key={player.id} player={player} club={team} />
+                  return (
+                    <PlayerInfoBox
+                      key={player.id}
+                      playerData={{
+                        player: {
+                          id: player.id,
+                          name: player.name,
+                          photo: player.photo,
+                          nationality: player.nationality,
+                        },
+                        statistics: [
+                          {
+                            team: {
+                              id: team.id,
+                              logo: team.logo,
+                              name: team.name,
+                            },
+                          },
+                        ],
+                      }}
+                    />
+                  )
                 })}
             </Position>
           )

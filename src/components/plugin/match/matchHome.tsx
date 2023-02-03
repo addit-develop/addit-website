@@ -10,6 +10,7 @@ import useAxios from '@/hooks/useAxios'
 import { useDispatch } from 'react-redux'
 import { makeBlockData, setBlockData } from '@/store/actions/postAction'
 import LeagueGroupedFixtures from './leagueGroupedFixtures'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 dayjs.extend(relativeTime)
 
@@ -45,6 +46,7 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
 
   // 해당 날짜에 있는 경기 정보 불러오기, 불러온 경기 데이터를 리그 별로 분류, 경기가 있는 리그들의 정보를 reducer blockData에 반영
   const getFixtureData = async () => {
+    dispatch(loadDataStart())
     await axios
       .get('/fixtures', {
         params: { date, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone },
@@ -52,6 +54,7 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
       .then((response) => {
         setFixtureData(response.data.response)
         makeFixtureBlock(response.data.response)
+        dispatch(loadDataFinish())
       })
       .catch((err) => {
         setFixtureData([])

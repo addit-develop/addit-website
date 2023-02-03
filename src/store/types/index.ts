@@ -6,7 +6,7 @@ export const SET_BLOCK_READY = 'SET_BLOCK_READY' as const
 export const SET_MODAL_PAGE = 'SET_MODAL_PAGE' as const
 export const PLAYER_DETAIL_PAGE = 'PLAYER_DETAIL_PAGE' as const
 export const TEAM_DETAIL_PAGE = 'TEAM_DETAIL_PAGE' as const
-//loadPostReducer 
+//loadPostReducer
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST' as const
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS' as const
 export const LOAD_POST_ERROR = 'LOAD_POST_ERROR' as const
@@ -36,3 +36,7 @@ export const WRITE_POST_RESET_ACTION = 'WRITE_POST_RESET_ACTION' as const
 export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST' as const
 export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS' as const
 export const SAVE_POST_ERROR = 'SAVE_POST_ERROR' as const
+
+//loadDataReducer
+export const LOAD_DATA_FINISH = 'LOAD_DATA_FINISH' as const
+export const LOAD_DATA_START = 'LOAD_DATA_START' as const

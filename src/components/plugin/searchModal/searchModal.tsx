@@ -22,6 +22,7 @@ import SearchModalInput from './searchModalInput'
 import SearchHome from '../search/searchHome'
 import PlayerHome from '../player/playerHome'
 import PlayerMatchDetail from '../player/playerMatchDetail'
+import Loading from '../common/loading'
 
 interface Props {
   blockId: string
@@ -35,7 +36,7 @@ type MenuType = {
 const SearchModal = ({ blockId, saveData }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu, pageProps } = useSelector(
+  const { currentPage, currentMenu, pageProps, loadingData } = useSelector(
     (state: RootState) => state.pageReducer
   )
   const menu: MenuType[] = [
@@ -146,7 +147,10 @@ const SearchModal = ({ blockId, saveData }: Props) => {
             )
           })}
         </Styles.SearchMenuContainer>
-        <Styles.ContentContainer>{showCurrentModalPage()}</Styles.ContentContainer>
+        <Styles.ContentContainer>
+          {loadingData ? <Loading /> : null}
+          {showCurrentModalPage()}
+        </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
           <Styles.AddButton disabled={false} onClick={selectContent}>
             {selectMode ? 'Add Block' : 'Select'}

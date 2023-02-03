@@ -1,6 +1,8 @@
 import useAxios from '@/hooks/useAxios'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import MenuBar from '../common/menuBar'
 import TeamDetailTitle from './teamDetailTitle'
@@ -22,6 +24,7 @@ interface PropsType {
 }
 
 const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
+  const dispatch = useDispatch()
   const axios = useAxios()
   const menu = ['Fixtures', 'Table', 'Squad', 'Stats', 'Transfer']
 
@@ -29,9 +32,11 @@ const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('Fixtures')
 
   const getTeamData = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/teams', { params: { id: teamId } })
     console.log(res)
     setTeam(res.data.response[0].team)
+    dispatch(loadDataFinish())
   }
 
   useEffect(() => {

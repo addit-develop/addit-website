@@ -17,8 +17,7 @@ const Container = styled.div`
   flex-direction: row;
   gap: 10px;
   background-color: ${COLORS.white};
-  overflow-y: scroll;
-  overflow-x: hidden;
+  cursor: pointer;
 `
 
 const PlayerInfo = styled.div`
