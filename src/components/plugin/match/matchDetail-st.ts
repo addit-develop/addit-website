@@ -251,6 +251,7 @@ export const playerStarting = styled.div`
   color: ${COLORS.lightgray};
   overflow: visible;
   white-space: nowrap;
+  cursor: pointer;
 `
 
 export const playerImage = styled.img`
@@ -305,6 +306,7 @@ export const playerSub = styled.div`
   font-size: 15px;
   gap: 6px;
   padding: 2px 8px;
+  cursor: pointer;
   & div:first-child {
     flex-shrink: 0;
     width: 18px;

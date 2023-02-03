@@ -21,6 +21,7 @@ import LeagueDetail from '../league/leagueDetail'
 import SearchModalInput from './searchModalInput'
 import SearchHome from '../search/searchHome'
 import PlayerHome from '../player/playerHome'
+import PlayerMatchDetail from '../player/playerMatchDetail'
 
 interface Props {
   blockId: string
@@ -101,6 +102,8 @@ const SearchModal = ({ blockId, saveData }: Props) => {
             <MatchPrediction selectMode={selectMode} blockId={blockId} fixtureData={pageProps} />
           )
         else break
+      case 'playerMatchDetail':
+        return <PlayerMatchDetail data={pageProps} selectMode={selectMode} blockId={blockId} />
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
