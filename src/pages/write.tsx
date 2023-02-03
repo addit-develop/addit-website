@@ -25,35 +25,20 @@ const WritePage: NextPage = () => {
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
-<<<<<<< HEAD
   const { savePostSuccess, savePostLoading, savedPostId } = useSelector((state: RootState) => state.postReducer)
   const dispatch = useDispatch()
   const router = useRouter()
 
-  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-      async function redirectToLoginPageOrResetReducer() {
-        if(!me){
-          const loginUrl = await loginRequestAction()
-          if(loginUrl){router.replace(loginUrl)}
-        }
-    }
-    redirectToLoginPageOrResetReducer()
-  }, [])
-  
-=======
-  const { savePostSuccess, savePostLoading, currentPost } = useSelector(
-    (state: RootState) => state.postReducer
-  )
-  const dispatch = useDispatch()
-  const router = useRouter()
-
   // useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-  //   if(!me || savePostLoading ){
-  //     router.replace('/')
+  //     async function redirectToLoginPageOrResetReducer() {
+  //       if(!me){
+  //         const loginUrl = await loginRequestAction()
+  //         if(loginUrl){router.replace(loginUrl)}
+  //       }
   //   }
-  // }, [me])
-
->>>>>>> 871df9e3ed9678d4c236a6daf0f7f37d4936a4dd
+  //   redirectToLoginPageOrResetReducer()
+  // }, [])
+  
   const savePost = useCallback(() => {
     console.log(data)
     if (me) {
@@ -99,16 +84,10 @@ const WritePage: NextPage = () => {
   }, [data, title, me])
 
   useEffect(() => {
-<<<<<<< HEAD
     if(!savePostLoading && savePostSuccess && savedPostId){
       const id = savedPostId
       dispatch(writePostResetReducerAction()) // reset post save reducers for later new post writing
       router.replace(`/post/${id}`)
-=======
-    // redirect after save
-    if (savePostSuccess && currentPost) {
-      router.replace(`/post/${currentPost.id}`)
->>>>>>> 871df9e3ed9678d4c236a6daf0f7f37d4936a4dd
     }
   }, [savePostLoading])
 
