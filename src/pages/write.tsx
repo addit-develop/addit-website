@@ -24,16 +24,19 @@ const WritePage: NextPage = () => {
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, currentPost } = useSelector((state: RootState) => state.postReducer)
+  const { savePostSuccess, savePostLoading, currentPost } = useSelector(
+    (state: RootState) => state.postReducer
+  )
   const dispatch = useDispatch()
   const router = useRouter()
 
-  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-    if(!me || savePostLoading ){
-      router.replace('/')
-    }
-  }, [me])  
-  
+  useEffect(() => {
+    // redirect to main if not logged in or other post is yet saving.
+    // if(!me || savePostLoading ){
+    //   router.replace('/')
+    // }
+  }, [me])
+
   const savePost = useCallback(() => {
     console.log(data)
     if (me) {
@@ -78,8 +81,9 @@ const WritePage: NextPage = () => {
     }
   }, [data, title, me])
 
-  useEffect(() => { // redirect after save
-    if(savePostSuccess && currentPost){
+  useEffect(() => {
+    // redirect after save
+    if (savePostSuccess && currentPost) {
       router.replace(`/post/${currentPost.id}`)
     }
   }, [savePostLoading])
