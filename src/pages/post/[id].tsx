@@ -251,23 +251,9 @@ const PostPage: NextPage = () => {
             </div>
           ) : (
             <div>
-              This post does not exist or has been deleted.(수완이 작업 중.. 무시하고 작업하면 돼
-              진수야)
+              This post does not exist or has been deleted.
             </div>
           )}
-          <div className={styles.postContainer} id="postContainer">
-            <div className={styles.title}>{example.title}</div>
-            <div className={styles.detail}>{`${
-              example.email
-            }${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${timeConverter(example.time)}`}</div>
-            <Editor
-              data={{ time: example.time, version: example.version, blocks: example.blocks }}
-              onChange={setData}
-              holder="editorjs-container"
-              readonly={true}
-            />
-          </div>
-          {/* <div className={styles.content} dangerouslySetInnerHTML={{ __html: result }} /> */}
         </div>
       </main>
     </>

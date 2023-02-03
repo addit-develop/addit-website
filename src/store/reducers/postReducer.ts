@@ -121,7 +121,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case LOAD_MAIN_POST_SUCCESS:
         draft.loadMainPostLoading = false
         draft.loadMainPostSuccess = true
-        draft.mainPosts = action.data
+        draft.mainPosts = action.data.concat(draft.mainPosts)
         break
       case LOAD_MAIN_POST_ERROR:
         draft.loadMainPostLoading = false
