@@ -1,6 +1,21 @@
 import { BlockDataType, Post, PostSummary } from '@/types'
 import produce from 'immer'
-import { LOAD_MAIN_POST_ERROR, LOAD_MAIN_POST_REQUEST, LOAD_MAIN_POST_SUCCESS, MAKE_BLOCK_DATA, SAVE_POST_REQUEST, SAVE_POST_ERROR, SAVE_POST_SUCCESS, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_ERROR } from '../types'
+import {
+  LOAD_MAIN_POST_ERROR,
+  LOAD_MAIN_POST_REQUEST,
+  LOAD_MAIN_POST_SUCCESS,
+  MAKE_BLOCK_DATA,
+  SAVE_POST_REQUEST,
+  SAVE_POST_ERROR, 
+  SAVE_POST_SUCCESS, 
+  SET_BLOCK_DATA, 
+  SET_BLOCK_READY, 
+  SET_BLOCK_TYPE, 
+  LOAD_POST_REQUEST, 
+  LOAD_POST_SUCCESS, 
+  LOAD_POST_ERROR,
+  WRITE_POST_RESET_ACTION
+ } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
@@ -9,7 +24,7 @@ type StateType = {
   savePostLoading : boolean
   savePostSuccess : boolean
   savePostError : any | null
-  currentPost : Post | null
+  savedPostId : number | null
 
   loadPostLoading : boolean
   loadPostSuccess : boolean
@@ -29,7 +44,7 @@ export const initialState: StateType = {
   savePostLoading : false,
   savePostSuccess : false,
   savePostError : null,
-  currentPost : null,
+  savedPostId : null,
 
   loadPostLoading : false,
   loadPostSuccess : false,
@@ -71,12 +86,12 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.savePostLoading = true
         draft.savePostError = null
         draft.savePostSuccess = false
-        draft.currentPost = null
+        draft.savedPostId = null
         break
       case SAVE_POST_SUCCESS:
         draft.savePostLoading = false
         draft.savePostSuccess = true
-        draft.currentPost = action.data
+        draft.savedPostId = action.data
         break
       case SAVE_POST_ERROR:
         draft.savePostLoading = false
@@ -111,6 +126,10 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case LOAD_MAIN_POST_ERROR:
         draft.loadMainPostLoading = false
         draft.loadMainPostError = action.error
+      break
+      case WRITE_POST_RESET_ACTION:
+        draft.savedPostId = null
+        draft.savePostSuccess = false
       break
       default:
         break

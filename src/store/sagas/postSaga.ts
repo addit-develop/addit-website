@@ -1,7 +1,8 @@
 import { all, fork, call, put, takeLatest } from 'redux-saga/effects'
 import { Post, PostSummary } from '@/types'
 import backAxios from '../configureBackAxios'
-import {  LOAD_MAIN_POST_ERROR, LOAD_MAIN_POST_REQUEST, LOAD_MAIN_POST_SUCCESS, LOAD_POST_ERROR, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, SAVE_POST_ERROR, SAVE_POST_REQUEST, SAVE_POST_SUCCESS } from '../types'
+import {  LOAD_MAIN_POST_ERROR, LOAD_MAIN_POST_REQUEST, LOAD_MAIN_POST_SUCCESS, LOAD_POST_ERROR, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, SAVE_POST_ERROR, SAVE_POST_REQUEST, SAVE_POST_SUCCESS, WRITE_POST_RESET_ACTION } from '../types'
+import axios from 'axios'
 
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
