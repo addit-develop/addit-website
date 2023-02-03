@@ -12,19 +12,36 @@ import { useState } from 'react'
 
 const HomePage: NextPage = () => {
   const dispatch = useDispatch()
-  const { mainPosts } = useSelector((state: RootState) => state.postReducer)
-  const { me, myPosts } = useSelector((state: RootState) => state.userReducer)
+  const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
+  const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
   const [ toExposePosts, setToExposePosts ] = useState<PostSummary[]>([])
   
   useEffect(() => {
-    dispatch(loadMainPostRequestAction({summary : true, amount : 5}))
+    dispatch(loadMainPostRequestAction({summary : true, amount : 16}))
   }, [])
 
   useEffect(() => {
     if(me){
-      dispatch(loadMyPostRequestAction({summary : true, amount : 5, writers : [me]}))
+      dispatch(loadMyPostRequestAction({summary : true, amount : 16, writers : [me]}))
     }
   }, [me])
+
+  // useEffect(() => { // infinite scroll
+  //   function onScroll() {
+  //     if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
+  //       const box = document.getElementById('showMineCheckBox') as HTMLInputElement;
+  //       if(box && box.checked && !loadMyPostLoading){
+  //         dispatch(loadMyPostRequestAction({summary : true, amount : 10, writers : [me]}))
+  //       }else if(!loadMainPostLoading){
+  //         dispatch(loadMainPostRequestAction({summary : true, amount : 10}))
+  //       }
+  //     }
+  //   }
+  //   window.addEventListener('scroll', onScroll)
+  //   return () => {
+  //     window.removeEventListener('scroll', onScroll)
+  //   }
+  // }, [])
     
   function timeConverter(UNIX_timestamp : number){
     var a = new Date(UNIX_timestamp);

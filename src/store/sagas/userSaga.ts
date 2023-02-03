@@ -1,5 +1,5 @@
 import { PostSummary } from '@/types'
-import { all, fork, call, put, takeLatest} from 'redux-saga/effects'
+import { all, fork, call, put, takeLatest, throttle} from 'redux-saga/effects'
 import backAxios from '../configureBackAxios'
 
 import {
@@ -18,7 +18,7 @@ import {
 } from '../types'
 
 function loadUserAPI() {
-  return backAxios.get('/')
+  return backAxios.get('/auth')
 }
 function* loadUser() {
   try {
@@ -72,9 +72,13 @@ function* logOut() {
 }
 
 
+function loadPostAPI(constraint : {}){
+  return backAxios.post("/post/load", constraint)
+}
+
 function* loadPost(action : any){
   try{
-      const result : {data:PostSummary[]} = yield call(loatPostAPI, action.constraint)
+      const result : {data:PostSummary[]} = yield call(loadPostAPI, action.constraint)
       yield put({
           type:LOAD_MY_POST_SUCCESS,
           data:result.data,
@@ -104,12 +108,8 @@ function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut)
 }
 
-function loatPostAPI(constraint : {}){
-  return backAxios.post("/post/load", constraint)
-}
-
 function* watchLoadPostRequestActrion(){
-  yield takeLatest(LOAD_MY_POST_REQUEST, loadPost)
+  yield throttle(3000, LOAD_MY_POST_REQUEST, loadPost)
 }
 
 // all은 배열 안에 있는 것들을 모두 동시에 실행
