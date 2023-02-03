@@ -1,6 +1,8 @@
 import * as Styles from './matchDetail-st'
 import { default as React, useCallback, useState, useEffect } from 'react'
-import { MatchDetailDataType } from '@/types'
+import { MatchDetailDataType, PlayerMatchStatsType } from '@/types'
+import { useDispatch } from 'react-redux'
+import { changeModalPage } from '@/store/actions/pageAction'
 
 interface PropsType {
   matchData: MatchDetailDataType | undefined
@@ -15,38 +17,59 @@ interface lineupPlayerType {
     number: number
     pos: string
   }
+  statistics?: PlayerMatchStatsType
 }
 
 const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
+  const dispatch = useDispatch()
+
   const [startXIData, setStartXIData] = useState<[lineupPlayerType[][], lineupPlayerType[][]]>([
+    [],
+    [],
+  ])
+  const [substituesData, SetSubstitutesData] = useState<[lineupPlayerType[], lineupPlayerType[]]>([
     [],
     [],
   ])
 
   useEffect(() => {
-    const newStartXIData: [lineupPlayerType[][], lineupPlayerType[][]] = [[], []]
+    const newStartXIData: [lineupPlayerType[], lineupPlayerType[]] = [[], []]
+    const newSubstituesData: [lineupPlayerType[], lineupPlayerType[]] = [[], []]
+    const StartXIFormationData: [lineupPlayerType[][], lineupPlayerType[][]] = [[], []]
+    const getStatistics = (teamId: number, playerId: number) => {
+      return matchData?.players[teamId].players.find(
+        (x: PlayerMatchStatsType) => x.player.id === playerId
+      )
+    }
+
     var i: number = 0
     while (i < 2) {
-      const rawData = matchData?.lineups[i].startXI.slice()
+      matchData?.lineups[i].startXI.forEach((x: lineupPlayerType) => {
+        newStartXIData[i].push({ ...x, statistics: getStatistics(i, x.player.id) })
+      })
+      matchData?.lineups[i].substitutes.forEach((x: lineupPlayerType) => {
+        newSubstituesData[i].push({ ...x, statistics: getStatistics(i, x.player.id) })
+      })
       const formationArray = matchData?.lineups[i].formation.split('-')
       formationArray?.forEach((x: number) => {
-        newStartXIData[i].push(rawData?.splice(1, x))
+        StartXIFormationData[i].push(newStartXIData[i].splice(1, x))
       })
       i++
     }
-    setStartXIData(newStartXIData)
+    SetSubstitutesData(newSubstituesData)
+    setStartXIData(StartXIFormationData)
   }, [matchData])
 
   const getPlayerRating = useCallback(
     (teamIndex: number, playerId: number) =>
-      matchData?.players[teamIndex].players.find((x: any) => x.player.id === playerId).statistics[0]
-        .games.rating,
+      matchData?.players[teamIndex].players.find((x: any) => x.player.id === playerId)
+        ?.statistics[0].games.rating,
     [matchData]
   )
 
   const getPlayerElement = useCallback(
     (teamIndex: number, data: lineupPlayerType) => (
-      <Styles.playerStarting>
+      <Styles.playerStarting onClick={() => moveToPlayerMatchStat(data.statistics, teamIndex)}>
         <Styles.playerRating starting>
           {getPlayerRating(teamIndex, data?.player.id)}
         </Styles.playerRating>
@@ -56,6 +79,25 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         {`${data?.player.number} ${data?.player.name.split(' ').at(-1)}`}
       </Styles.playerStarting>
     ),
+    [matchData]
+  )
+
+  const moveToPlayerMatchStat = useCallback(
+    (playerData: PlayerMatchStatsType | undefined, teamId: number) => {
+      dispatch(
+        changeModalPage('playerMatchDetail', 'Matches', {
+          playerData: playerData,
+          fixtureData: {
+            fixture: matchData?.fixture,
+            league: matchData?.league,
+            teams: matchData?.teams,
+            goals: matchData?.goals,
+            score: matchData?.score,
+          },
+          teamData: matchData?.lineups[teamId].team,
+        })
+      )
+    },
     [matchData]
   )
 
@@ -87,8 +129,8 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         </Styles.Lineup>
         <Styles.SubPlayerContainer>
           <Styles.SubPlayerList>
-            {matchData?.lineups[0]?.substitutes.map((x: lineupPlayerType) => (
-              <Styles.playerSub>
+            {substituesData[0].map((x: lineupPlayerType) => (
+              <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 0)}>
                 <div>{x.player.number}</div>
                 <div>{x.player.name}</div>
               </Styles.playerSub>
@@ -96,8 +138,8 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
           </Styles.SubPlayerList>
           <Styles.SubPlayerList>
             <Styles.SubPlayerList>
-              {matchData?.lineups[1]?.substitutes.map((x: lineupPlayerType) => (
-                <Styles.playerSub>
+              {substituesData[1].map((x: lineupPlayerType) => (
+                <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 1)}>
                   <div>{x.player.number}</div>
                   <div>{x.player.name}</div>
                 </Styles.playerSub>

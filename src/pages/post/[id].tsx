@@ -237,7 +237,7 @@ const PostPage: NextPage = () => {
       <main>
         <div className={styles.page}>
           {post ? (
-            <div className={styles.postContainer}>
+            <div className={styles.postContainer} id="postContainer">
               <div className={styles.title}>{post.title}</div>
               <div className={styles.detail}>{`${
                 post.email
