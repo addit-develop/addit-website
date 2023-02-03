@@ -1,4 +1,13 @@
-import { MAKE_BLOCK_DATA, SET_BLOCK_DATA, SET_BLOCK_READY, SET_BLOCK_TYPE, SAVE_POST_REQUEST, LOAD_POST_REQUEST, LOAD_MAIN_POST_REQUEST } from '../types'
+import {
+  MAKE_BLOCK_DATA,
+  SET_BLOCK_DATA,
+  SET_BLOCK_READY, 
+  SET_BLOCK_TYPE,
+  SAVE_POST_REQUEST,
+  LOAD_POST_REQUEST,
+  LOAD_MAIN_POST_REQUEST,
+  WRITE_POST_RESET_ACTION,
+} from '../types'
 import { Post } from '@/types'
 
 export const makeBlockData = (id: string, blockType: string) => {
@@ -62,5 +71,11 @@ export const loadMainPostRequestAction = (constraint : any) => {
       amount : constraint.amount || 5, // how many to load
       ids : constraint.ids || null, // load posts with specific ids
     },
+  }
+}
+
+export const writePostResetReducerAction = () => {
+  return {
+    type: WRITE_POST_RESET_ACTION,
   }
 }

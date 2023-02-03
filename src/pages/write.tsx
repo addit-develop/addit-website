@@ -6,8 +6,9 @@ import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
-import { savePostRequestAction } from '@/store/actions/postAction'
+import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
+import { loginRequestAction } from '@/store/actions/userAction'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -24,18 +25,20 @@ const WritePage: NextPage = () => {
   })
   const [title, setTitle] = useState<string>('')
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, currentPost } = useSelector(
-    (state: RootState) => state.postReducer
-  )
+  const { savePostSuccess, savePostLoading, savedPostId } = useSelector((state: RootState) => state.postReducer)
   const dispatch = useDispatch()
   const router = useRouter()
 
   // useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-  //   if(!me || savePostLoading ){
-  //     router.replace('/')
+  //     async function redirectToLoginPageOrResetReducer() {
+  //       if(!me){
+  //         const loginUrl = await loginRequestAction()
+  //         if(loginUrl){router.replace(loginUrl)}
+  //       }
   //   }
-  // }, [me])
-
+  //   redirectToLoginPageOrResetReducer()
+  // }, [])
+  
   const savePost = useCallback(() => {
     console.log(data)
     if (me) {
@@ -81,9 +84,10 @@ const WritePage: NextPage = () => {
   }, [data, title, me])
 
   useEffect(() => {
-    // redirect after save
-    if (savePostSuccess && currentPost) {
-      router.replace(`/post/${currentPost.id}`)
+    if(!savePostLoading && savePostSuccess && savedPostId){
+      const id = savedPostId
+      dispatch(writePostResetReducerAction()) // reset post save reducers for later new post writing
+      router.replace(`/post/${id}`)
     }
   }, [savePostLoading])
 

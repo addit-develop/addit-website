@@ -30,6 +30,8 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE' as const
 export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST' as const
 export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS' as const
 export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE' as const
+//resetPostReducer
+export const WRITE_POST_RESET_ACTION = 'WRITE_POST_RESET_ACTION' as const
 //savePostReducer
 export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST' as const
 export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS' as const
