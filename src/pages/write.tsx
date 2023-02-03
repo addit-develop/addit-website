@@ -30,12 +30,11 @@ const WritePage: NextPage = () => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  useEffect(() => {
-    // redirect to main if not logged in or other post is yet saving.
-    // if(!me || savePostLoading ){
-    //   router.replace('/')
-    // }
-  }, [me])
+  // useEffect(() => { // redirect to main if not logged in or other post is yet saving.
+  //   if(!me || savePostLoading ){
+  //     router.replace('/')
+  //   }
+  // }, [me])
 
   const savePost = useCallback(() => {
     console.log(data)

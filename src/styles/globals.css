@@ -124,3 +124,11 @@ input:focus {
 #addit-modal path {
   stroke: none !important;
 }
+
+#postContainer path {
+  stroke: none !important;
+}
+
+#postContainer .ce-block__content {
+  max-width: 762px;
+}
