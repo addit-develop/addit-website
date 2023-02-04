@@ -213,12 +213,12 @@ const PostPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch()
-  const { post, loadPostSuccess } = useSelector((state: RootState) => state.postReducer)
+  const { post, loadPostLoading } = useSelector((state: RootState) => state.postReducer)
 
   const timeConverter = useCallback((UNIX_timestamp: number) => {
-    return dayjs(new Date(example.time))
+    return dayjs(new Date(UNIX_timestamp))
       .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
-      .format('D MMM YYYY')
+      .format('D MMM YYYY | HH:mm')
       .toString()
   }, [])
 
@@ -236,7 +236,8 @@ const PostPage: NextPage = () => {
       </Head>
       <main>
         <div className={styles.page}>
-          {post ? (
+          {loadPostLoading?(<div> Loading Post... </div>):(<></>)}
+          {(!loadPostLoading && post)? (
             <div className={styles.postContainer} id="postContainer">
               <div className={styles.title}>{post.title}</div>
               <div className={styles.detail}>{`${

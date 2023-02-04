@@ -112,7 +112,7 @@ const userReducer = (state = initialState, action: any) =>
       case LOAD_MY_POST_SUCCESS:
         draft.loadMyPostLoading = false
         draft.loadMyPostSuccess = true
-        draft.myPosts = action.data.concat(draft.myPosts)
+        draft.myPosts = action.data
         break
       case LOAD_MY_POST_ERROR:
         draft.loadMyPostLoading = false

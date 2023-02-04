@@ -9,12 +9,19 @@ import { loadMyPostRequestAction } from '@/store/actions/userAction'
 import { PostSummary } from '@/types'
 import { RootState } from '@/store/reducers'
 import { useState } from 'react'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const HomePage: NextPage = () => {
   const dispatch = useDispatch()
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [ toExposePosts, setToExposePosts ] = useState<PostSummary[]>([])
+  const [ toExposePosts, setToExposePosts ] = useState<PostSummary[]>(me?myPosts:mainPosts)
+  const [ loadToExposePosts, setLoadToExposePosts ] = useState<boolean>(true)
   
   useEffect(() => {
     dispatch(loadMainPostRequestAction({summary : true, amount : 16}))
@@ -43,38 +50,36 @@ const HomePage: NextPage = () => {
   //   }
   // }, [])
     
-  function timeConverter(UNIX_timestamp : number){
-    var a = new Date(UNIX_timestamp);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = '00'+a.getHours();
-    var min = '00'+a.getMinutes();
-    var sec = '00'+a.getSeconds();
-    var time = date + ' ' + month + ' ' + year + ' ' + hour.slice(-2) + ':' + min.slice(-2) + ':' + sec.slice(-2) ;
-    return time;
-  }
+  const timeConverter = useCallback((UNIX_timestamp: number) => {
+    return dayjs(new Date(UNIX_timestamp))
+      .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+      .format('D MMM YYYY | HH:mm')
+      .toString()
+  }, [])
 
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement;
     if(box && box.checked){
       setToExposePosts(myPosts)
+      setLoadToExposePosts(loadMyPostLoading)
     }else{
       setToExposePosts(mainPosts)
+      setLoadToExposePosts(loadMainPostLoading)
     }
-  }, [myPosts, mainPosts])
+  }, [myPosts, mainPosts, loadMyPostLoading, loadMainPostLoading])
 
   const exposeMine = useCallback(()=>{
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement;
     if(box && box.checked){
       setToExposePosts(myPosts)
+      setLoadToExposePosts(loadMyPostLoading)
       console.log('show mine')
     }else{
       setToExposePosts(mainPosts)
+      setLoadToExposePosts(loadMainPostLoading)
       console.log('show all')
     }
-  }, [myPosts, mainPosts])
+  }, [myPosts, mainPosts, loadMyPostLoading, loadMainPostLoading])
 
   return (
     <>
@@ -89,7 +94,8 @@ const HomePage: NextPage = () => {
           My posts
         </div>) : (<></>)
         }
-        {(toExposePosts.length === 0)? (<div>No Post</div>) : (
+        {loadToExposePosts? (<div>Loading Posts...</div>):(<></>)}
+        {(!loadToExposePosts && toExposePosts.length === 0)? (<div>No Post.</div>) : (
           <div className={styles.postsContainer}>
             {toExposePosts.map((x) => (
               <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
