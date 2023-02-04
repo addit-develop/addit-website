@@ -68,7 +68,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
           draft.blockDataList.push({
             id: action.id,
             type: action.blockType,
-            isReady: false,
+            isReady: action.blockData ? true : false,
             data: action.blockData,
           })
         }
