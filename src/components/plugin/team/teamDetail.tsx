@@ -35,7 +35,7 @@ const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
     dispatch(loadDataStart())
     const res = await axios.get('/teams', { params: { id: teamId } })
     console.log(res)
-    setTeam(res.data.response[0]?.team)
+    setTeam(res.data.response[0].team)
     dispatch(loadDataFinish())
   }
 

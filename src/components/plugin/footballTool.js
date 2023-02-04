@@ -54,7 +54,11 @@ export default class FootballTool {
             <FootballBlockEdit blockId={this.id} savedblockData={this.data} />
           )}
           {this.readOnly ? null : (
-            <SearchModal blockId={this.id} saveData={(data) => this.saveData(data)} />
+            <SearchModal
+              blockId={this.id}
+              saveData={(data) => this.saveData(data)}
+              savedblockData={this.data}
+            />
           )}
         </React.StrictMode>
       </Provider>
