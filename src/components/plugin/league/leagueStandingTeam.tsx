@@ -34,9 +34,10 @@ const TeamStat = styled.div<{ points?: boolean }>`
 
 interface PropsType {
   team: StandingDataType
+  leagueId: number
 }
 
-const LeagueStandingTeam = ({ team }: PropsType) => {
+const LeagueStandingTeam = ({ team, leagueId }: PropsType) => {
   const dispatch = useDispatch()
   const { currentPage, currentMenu, pageProps } = useSelector(
     (state: RootState) => state.pageReducer
@@ -46,7 +47,9 @@ const LeagueStandingTeam = ({ team }: PropsType) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          dispatch(changeModalPage('teamDetail', 'Teams', team.team.id))
+          dispatch(
+            changeModalPage('teamDetail', 'Teams', { teamId: team.team.id, leagueId: leagueId })
+          )
         }}
       >
         <Rank>{team.rank}</Rank>

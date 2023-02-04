@@ -18,7 +18,6 @@ const Position = styled.div`
   background-color: ${COLORS.white};
   border-radius: 10px;
   margin-top: 2px;
-  /* border-bottom: ${(props) => (props.forBlock ? '1px solid ${COLORS.gray}' : 'none')}; */
 `
 
 const PositionName = styled.div`

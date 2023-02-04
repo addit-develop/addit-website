@@ -1,5 +1,5 @@
 import * as Styles from './matchDetail-st'
-import { default as React, useState, useEffect } from 'react'
+import { default as React, useState, useEffect, useMemo } from 'react'
 import { MatchPredictionDataType } from '@/types'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
@@ -69,14 +69,24 @@ const HeadToHead = ({ predictionData }: PropsType) => {
     draw: 0,
     away: 0,
   })
+  const slicedh2hData = useMemo(
+    () =>
+      predictionData?.h2h.length && predictionData?.h2h.length > 5
+        ? predictionData.h2h.slice(0, 5)
+        : predictionData?.h2h.slice(),
+    [predictionData]
+  )
 
   useEffect(() => {
-    predictionData?.h2h.forEach((x) => {
-      if (x.teams.home.winner) setResultCount({ ...resultCount, home: resultCount.home + 1 })
-      else if (x.teams.away.winner) setResultCount({ ...resultCount, away: resultCount.away + 1 })
-      else setResultCount({ ...resultCount, draw: resultCount.draw + 1 })
+    var newHome = 0
+    var newDraw = 0
+    var newAway = 0
+    slicedh2hData?.forEach((x) => {
+      if (x.teams.home.winner) newHome++
+      else if (x.teams.away.winner) newAway++
+      else newDraw++
     })
-    console.log(resultCount)
+    setResultCount({ home: newHome, draw: newDraw, away: newAway })
   }, [predictionData])
 
   return (
@@ -98,7 +108,7 @@ const HeadToHead = ({ predictionData }: PropsType) => {
           </ResultConatiner>
         </SubContainer>
         <FixturesContainer>
-          {predictionData?.h2h.map((x) => (
+          {slicedh2hData?.map((x) => (
             <FixtureTable fixture={x} />
           ))}
         </FixturesContainer>

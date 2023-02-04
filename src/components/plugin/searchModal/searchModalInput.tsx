@@ -7,16 +7,16 @@ import majorLeagues from '@/data/majorLeaguesData.json'
 import { LeagueType } from '@/types'
 import DropDownMenu from '../common/dropDownMenu'
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.div<{ display: boolean }>`
   order: 1;
-  display: flex;
+  display: ${(props) => (props.display ? 'flex' : 'none')};
   flex-direction: row;
   width: 100%;
   height: 48px;
   background: ${COLORS.white};
   align-items: center;
   justify-content: start;
-  padding: 0 8px 0 16px;
+  padding-right: 8px;
   @media only screen and (max-width: 600px) {
     order: 5;
     height: 48px;
@@ -51,17 +51,18 @@ export const SearchButton = styled.button`
   margin-left: 8px;
 `
 
-const SearchModalInput = () => {
+interface PropsType {
+  display: boolean
+}
+
+const SearchModalInput = ({ display }: PropsType) => {
   const dispatch = useDispatch()
   const [value, setValue] = useState<string>('')
   const [league, setLeague] = useState<LeagueType>(majorLeagues[0])
   return (
-    <SearchContainer>
+    <SearchContainer display={display}>
       <DropDownMenu selectedLeague={league} setSelectedLeague={setLeague} />
-      <SearchInput
-        placeholder="Search players, teams, leagues"
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <SearchInput placeholder="Search players" onChange={(e) => setValue(e.target.value)} />
       <ClearButton>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
           <path

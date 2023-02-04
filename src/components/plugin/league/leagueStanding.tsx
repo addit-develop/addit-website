@@ -62,7 +62,7 @@ const LeagueStanding = ({ league, season }: PropsType) => {
           <Index>PTS</Index>
         </StandingIndex>
         {standingData.map((team, i) => {
-          return <LeagueStandingTeam team={team} key={i} />
+          return <LeagueStandingTeam team={team} leagueId={league.id} key={i} />
         })}
       </Container>
     </React.Fragment>

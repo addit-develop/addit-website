@@ -6,54 +6,54 @@ import {
   LOAD_MAIN_POST_SUCCESS,
   MAKE_BLOCK_DATA,
   SAVE_POST_REQUEST,
-  SAVE_POST_ERROR, 
-  SAVE_POST_SUCCESS, 
-  SET_BLOCK_DATA, 
-  SET_BLOCK_READY, 
-  SET_BLOCK_TYPE, 
-  LOAD_POST_REQUEST, 
-  LOAD_POST_SUCCESS, 
+  SAVE_POST_ERROR,
+  SAVE_POST_SUCCESS,
+  SET_BLOCK_DATA,
+  SET_BLOCK_READY,
+  SET_BLOCK_TYPE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
   LOAD_POST_ERROR,
-  WRITE_POST_RESET_ACTION
- } from '../types'
+  WRITE_POST_RESET_ACTION,
+} from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
-  savePostLoading : boolean
-  savePostSuccess : boolean
-  savePostError : any | null
-  savedPostId : number | null
+  savePostLoading: boolean
+  savePostSuccess: boolean
+  savePostError: any | null
+  savedPostId: number | null
 
-  loadPostLoading : boolean
-  loadPostSuccess : boolean
-  loadPostError : any | null
-  post : Post | null
+  loadPostLoading: boolean
+  loadPostSuccess: boolean
+  loadPostError: any | null
+  post: Post | null
 
-  loadMainPostLoading : boolean
-  loadMainPostSuccess : boolean
-  loadMainPostError : any | null
-  mainPosts : PostSummary[]
+  loadMainPostLoading: boolean
+  loadMainPostSuccess: boolean
+  loadMainPostError: any | null
+  mainPosts: PostSummary[]
 }
 
 export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
-  savePostLoading : false,
-  savePostSuccess : false,
-  savePostError : null,
-  savedPostId : null,
+  savePostLoading: false,
+  savePostSuccess: false,
+  savePostError: null,
+  savedPostId: null,
 
-  loadPostLoading : false,
-  loadPostSuccess : false,
-  loadPostError : null,
-  post : null,
+  loadPostLoading: false,
+  loadPostSuccess: false,
+  loadPostError: null,
+  post: null,
 
-  loadMainPostLoading : false,
-  loadMainPostSuccess : false,
-  loadMainPostError : null,
+  loadMainPostLoading: false,
+  loadMainPostSuccess: false,
+  loadMainPostError: null,
   mainPosts: [],
 }
 
@@ -66,7 +66,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
             id: action.id,
             type: action.blockType,
             isReady: false,
-            data: null,
+            data: action.blockData,
           })
         }
         break
@@ -92,6 +92,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.savePostLoading = false
         draft.savePostSuccess = true
         draft.savedPostId = action.data
+        draft.blockDataList = []
         break
       case SAVE_POST_ERROR:
         draft.savePostLoading = false
@@ -126,11 +127,11 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case LOAD_MAIN_POST_ERROR:
         draft.loadMainPostLoading = false
         draft.loadMainPostError = action.error
-      break
+        break
       case WRITE_POST_RESET_ACTION:
         draft.savedPostId = null
         draft.savePostSuccess = false
-      break
+        break
       default:
         break
     }
