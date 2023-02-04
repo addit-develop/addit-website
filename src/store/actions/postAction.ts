@@ -7,6 +7,7 @@ import {
   LOAD_POST_REQUEST,
   LOAD_MAIN_POST_REQUEST,
   WRITE_POST_RESET_ACTION,
+  EDIT_POST_ACTION,
 } from '../types'
 import { Post } from '@/types'
 
@@ -78,5 +79,11 @@ export const loadMainPostRequestAction = (constraint: any) => {
 export const writePostResetReducerAction = () => {
   return {
     type: WRITE_POST_RESET_ACTION,
+  }
+}
+
+export const editPostAction = () => {
+  return {
+    type: EDIT_POST_ACTION,
   }
 }

@@ -15,12 +15,14 @@ import {
   LOAD_POST_SUCCESS,
   LOAD_POST_ERROR,
   WRITE_POST_RESET_ACTION,
+  EDIT_POST_ACTION,
 } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
+  exPost: Post | null
   savePostLoading: boolean
   savePostSuccess: boolean
   savePostError: any | null
@@ -41,6 +43,7 @@ export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
+  exPost: null,
   savePostLoading: false,
   savePostSuccess: false,
   savePostError: null,
@@ -122,7 +125,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case LOAD_MAIN_POST_SUCCESS:
         draft.loadMainPostLoading = false
         draft.loadMainPostSuccess = true
-        draft.mainPosts = action.data.concat(draft.mainPosts)
+        draft.mainPosts = action.data
         break
       case LOAD_MAIN_POST_ERROR:
         draft.loadMainPostLoading = false
@@ -131,6 +134,10 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case WRITE_POST_RESET_ACTION:
         draft.savedPostId = null
         draft.savePostSuccess = false
+        draft.exPost = null
+        break
+      case EDIT_POST_ACTION:
+        draft.exPost = draft.post
         break
       default:
         break
