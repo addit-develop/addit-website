@@ -8,13 +8,19 @@ import {
 
 export type modalPageAction = ReturnType<typeof changeModalPage>
 
-export const changeModalPage = (page: string, menu: string, pageProps?: any) => {
+export const changeModalPage = (
+  page: string,
+  menu: string,
+  pageProps?: any,
+  movedBack?: boolean
+) => {
   return {
     type: SET_MODAL_PAGE,
     data: {
       page,
       menu,
       pageProps,
+      movedBack,
     },
   }
 }

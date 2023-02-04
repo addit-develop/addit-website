@@ -22,7 +22,7 @@ interface PropsType {
 const SelectBox = ({ selectMode, selected, onClick }: PropsType) => {
   return (
     <React.Fragment>
-      <Box selectMode={selectMode} selected={selected} onClick={onClick} />
+      <Box id="selectbox" selectMode={selectMode} selected={selected} onClick={onClick} />
     </React.Fragment>
   )
 }

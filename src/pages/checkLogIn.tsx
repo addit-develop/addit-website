@@ -32,7 +32,7 @@ const CheckLogInMiddleware = () => {
   
   return(
     <div>
-      Loading...
+      LogIn Loading...
     </div>
   )
 }

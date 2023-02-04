@@ -64,7 +64,12 @@ const LeagueStanding = ({ league, season, selectedTeam }: PropsType) => {
         </StandingIndex>
         {standingData.map((team, i) => {
           return (
-            <LeagueStandingTeam team={team} key={i} selected={team.team.id === selectedTeam?.id} />
+            <LeagueStandingTeam
+              team={team}
+              leagueId={league.id}
+              key={i}
+              selected={team.team.id === selectedTeam?.id}
+            />
           )
         })}
       </Container>

@@ -43,18 +43,48 @@ export const DragLine = styled.div`
   }
 `
 
-export const SearchMenuContainer = styled.div`
+export const HeaderConatiner = styled.div<{ input: boolean }>`
+  display: flex;
+  flex-direction: ${(props) => (props.input ? 'column' : 'row')};
+  width: 100%;
+  height: fit-content;
+  padding-left: 8px;
+  align-items: center;
+  justify-content: center;
+`
+
+export const backButton = styled.button`
+  flex-shrink: 0;
+  display: flex;
+  width: 32px;
+  height: 24px;
+  justify-content: center;
+`
+
+export const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  justify-content: center;
+`
+
+export const SearchMenuContainer = styled.div<{ big: boolean }>`
+  flex-shrink: 0;
   order: 2;
   display: flex;
   width: 100%;
-  height: 44px;
+  height: ${(props) => (props.big ? '48px' : '44px')};
   background-color: ${COLORS.white};
   flex-direction: row;
   align-items: center;
   justify-content: start;
   gap: 24px;
-  overflow: scroll;
-  padding: 8px 0 8px 16px;
+  overflow-x: scroll;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-top: ${(props) => (props.big ? '12px' : '8px')};
   &::-webkit-scrollbar {
     display: none;
   }
@@ -99,7 +129,7 @@ export const ModalMenuContainer = styled.div`
   flex-direction: row;
   width: 100%;
   height: fit-content;
-  background: ${COLORS.white}fff;
+  background: ${COLORS.white};
   align-items: center;
   justify-content: start;
   gap: 8px;
@@ -111,11 +141,13 @@ export const ModalMenuContainer = styled.div`
 `
 
 export const AddButton = styled.button`
+  position: relative;
   display: flex;
   text-align: center;
   line-height: 40px;
   width: 100%;
   height: 40px;
+  align-items: center;
   border-radius: 20px;
   background-color: ${COLORS.blue};
   padding: 2px 0;
@@ -125,11 +157,25 @@ export const AddButton = styled.button`
   &:disabled {
     background-color: ${COLORS.gray};
   }
+  & span {
+    width: 100%;
+  }
   @media only screen and (max-height: 720px) {
     height: 36px;
     border-radius: 18px;
     line-height: 36px;
   }
+`
+
+export const CancelButton = styled.button`
+  flex-shrink: 0;
+  width: 56px;
+  height: 32px;
+  line-height: 32px;
+  color: ${COLORS.lightgray};
+  font-size: 12px;
+  font-weight: 500;
+  border-left: 1px solid ${COLORS.lightgray};
 `
 
 export const CloseButton = styled.button`

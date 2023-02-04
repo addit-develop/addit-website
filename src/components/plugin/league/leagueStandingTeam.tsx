@@ -35,17 +35,20 @@ const TeamStat = styled.div<{ points?: boolean }>`
 
 interface PropsType {
   team: StandingDataType
+  leagueId: number
   selected?: boolean
 }
 
-const LeagueStandingTeam = ({ team, selected }: PropsType) => {
+const LeagueStandingTeam = ({ team, leagueId, selected }: PropsType) => {
   const dispatch = useDispatch()
 
   return (
     <React.Fragment>
       <Container
         onClick={() => {
-          dispatch(changeModalPage('teamDetail', 'Teams', team.team.id))
+          dispatch(
+            changeModalPage('teamDetail', 'Teams', { teamId: team.team.id, leagueId: leagueId })
+          )
         }}
         selected={selected}
       >

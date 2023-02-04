@@ -27,9 +27,9 @@ const PlayerInfo = styled.div`
   gap: 8px;
 `
 
-const PlayerName = styled.div`
-  width: 300px;
-  font-size: 20px;
+const PlayerName = styled.div<{ smallFont: boolean }>`
+  width: 100%;
+  font-size: ${(props) => (props.smallFont ? '16px' : '20px')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -73,7 +73,7 @@ const PlayerInfoBox = ({ playerData, stat }: PropsType) => {
       >
         <Image src={player.photo} width={72} height={72} alt={player.name} />
         <PlayerInfo>
-          <PlayerName>{player.name}</PlayerName>
+          <PlayerName smallFont={player.name.length > 25}>{player.name}</PlayerName>
           <PlayerTeamRow>
             {player.nationality && (
               <PlayerTeam>

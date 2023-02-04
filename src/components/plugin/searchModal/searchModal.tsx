@@ -27,16 +27,18 @@ import Loading from '../common/loading'
 interface Props {
   blockId: string
   saveData: any
+  savedblockData: BlockDataType
+  setBlockAdded: any
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ blockId, saveData }: Props) => {
+const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu, pageProps, loadingData } = useSelector(
+  const { currentPage, currentMenu, pageProps, loadingData, history } = useSelector(
     (state: RootState) => state.pageReducer
   )
   const menu: MenuType[] = [
@@ -54,10 +56,17 @@ const SearchModal = ({ blockId, saveData }: Props) => {
     dispatch(changeModalPage('matchHome', 'Matches'))
   }, [])
 
+  // 블록이 추가된 경우 modal 창 없애기
+  useEffect(() => {
+    const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
+    if (myBlock?.isReady) setBlockAdded()
+  }, [blockDataList])
+
   // 새로운 blockdata 생성
   useEffect(() => {
     console.log(blockId)
-    dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
+    if (savedblockData) dispatch(makeBlockData(blockId, savedblockData.type, savedblockData.data))
+    else dispatch(makeBlockData(blockId, 'Fixture_List_By_Date'))
   }, [blockId])
 
   const closeModal = useCallback(() => {
@@ -126,34 +135,59 @@ const SearchModal = ({ blockId, saveData }: Props) => {
     }
   }, [currentPage, selectMode, blockId, pageProps])
 
+  const cancelSelectMode = useCallback(() => {
+    setSelectMode(false)
+  }, [selectMode])
+
+  const moveBack = useCallback(() => {
+    if (history?.length) {
+      const prevPage = history.slice(-1)[0]
+      dispatch(changeModalPage(prevPage.page, prevPage.menu, prevPage.props, true))
+    }
+  }, [history])
+
   return (
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
         <Styles.DragLine />
-        {currentPage === 'playerHome' && <SearchModalInput />}
-        <Styles.SearchMenuContainer>
-          {menu.map((m, i) => {
-            return (
-              <Styles.SearchMenu
-                id={m.title}
-                key={i}
-                selected={currentMenu === m.title}
-                onClick={() => {
-                  dispatch(changeModalPage(m.page, m.title))
-                }}
-              >
-                {m.title}
-              </Styles.SearchMenu>
-            )
-          })}
-        </Styles.SearchMenuContainer>
+        <Styles.HeaderConatiner input={currentMenu === 'Players'}>
+          <Styles.InputContainer>
+            {history?.length ? (
+              <Styles.backButton onClick={moveBack}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                  <path d="m12 20-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825l5.6 5.6Z" fill="#8a8a8a" />
+                </svg>
+              </Styles.backButton>
+            ) : null}
+            <SearchModalInput display={currentMenu === 'Players'} />
+          </Styles.InputContainer>
+          <Styles.SearchMenuContainer big={currentMenu !== 'Players'}>
+            {menu.map((m, i) => {
+              return (
+                <Styles.SearchMenu
+                  id={m.title}
+                  key={i}
+                  selected={currentMenu === m.title}
+                  onClick={() => {
+                    dispatch(changeModalPage(m.page, m.title))
+                  }}
+                >
+                  {m.title}
+                </Styles.SearchMenu>
+              )
+            })}
+          </Styles.SearchMenuContainer>
+        </Styles.HeaderConatiner>
         <Styles.ContentContainer>
           {loadingData ? <Loading /> : null}
           {showCurrentModalPage()}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
-          <Styles.AddButton disabled={false} onClick={selectContent}>
-            {selectMode ? 'Add Block' : 'Select'}
+          <Styles.AddButton disabled={false}>
+            <span onClick={selectContent}>{selectMode ? 'Add Block' : 'Select'}</span>
+            {selectMode ? (
+              <Styles.CancelButton onClick={cancelSelectMode}>Cancel</Styles.CancelButton>
+            ) : null}
           </Styles.AddButton>
           <Styles.CloseButton onClick={closeModal}>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
