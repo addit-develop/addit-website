@@ -119,7 +119,7 @@ const SearchModal = ({ blockId, saveData }: Props) => {
           )
         else break
       case 'playerHome':
-        return <PlayerHome leagueId={pageProps.leagueId} searchKey={pageProps.searchKey} />
+        return <PlayerHome leagueId={pageProps?.leagueId} searchKey={pageProps?.searchKey} />
       case 'playerDetail':
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
         else break
@@ -130,7 +130,7 @@ const SearchModal = ({ blockId, saveData }: Props) => {
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
         <Styles.DragLine />
-        <SearchModalInput />
+        {currentPage === 'playerHome' && <SearchModalInput />}
         <Styles.SearchMenuContainer>
           {menu.map((m, i) => {
             return (

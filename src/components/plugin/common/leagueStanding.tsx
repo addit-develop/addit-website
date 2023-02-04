@@ -5,7 +5,7 @@ import { LeagueType, StandingDataType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import LeagueStandingTeam from './leagueStandingTeam'
+import LeagueStandingTeam from '../league/leagueStandingTeam'
 
 const Container = styled.div`
   margin-top: 2px;
@@ -29,9 +29,10 @@ const Index = styled.div`
 interface PropsType {
   league: LeagueType
   season: number
+  selectedTeam?: TeamType
 }
 
-const LeagueStanding = ({ league, season }: PropsType) => {
+const LeagueStanding = ({ league, season, selectedTeam }: PropsType) => {
   const [standingData, setStandingData] = useState<StandingDataType[]>([])
   const dispatch = useDispatch()
   const axios = useAxios()
@@ -62,7 +63,9 @@ const LeagueStanding = ({ league, season }: PropsType) => {
           <Index>PTS</Index>
         </StandingIndex>
         {standingData.map((team, i) => {
-          return <LeagueStandingTeam team={team} key={i} />
+          return (
+            <LeagueStandingTeam team={team} key={i} selected={team.team.id === selectedTeam?.id} />
+          )
         })}
       </Container>
     </React.Fragment>

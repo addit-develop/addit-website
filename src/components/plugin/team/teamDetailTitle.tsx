@@ -1,5 +1,5 @@
 import { COLORS } from '@/constants/constants'
-import { TeamType } from '@/types'
+import { LeagueType, TeamType } from '@/types'
 import Image from 'next/image'
 import styled from 'styled-components'
 
@@ -17,15 +17,22 @@ const TeamName = styled.div`
   font-weight: bold;
   margin-left: 8px;
 `
+const LeagueName = styled.div`
+  font-size: 14px;
+  color: ${COLORS.gray};
+  margin-left: auto;
+`
 interface PropsType {
   team: TeamType
+  league: LeagueType
 }
 
-const TeamDetailTitle = ({ team }: PropsType) => {
+const TeamDetailTitle = ({ team, league }: PropsType) => {
   return (
     <Container>
       <Image src={team.logo} width={40} height={40} alt={team.name} />
       <TeamName>{team.name}</TeamName>
+      <LeagueName>{league.name}</LeagueName>
     </Container>
   )
 }

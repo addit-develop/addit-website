@@ -1,11 +1,11 @@
-import { TeamType } from '@/types'
+import { TeamStatisticType, TeamType } from '@/types'
 import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div``
 
 interface PropsType {
-  team: TeamType
+  team: TeamStatisticType
 }
 const TeamFixtures = ({ team }: PropsType) => {
   return (

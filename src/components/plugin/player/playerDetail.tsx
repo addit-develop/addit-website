@@ -2,7 +2,7 @@ import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import { PlayerDataType, PlayerType, TeamType } from '@/types'
+import { PlayerDataType, PlayerShortType, PlayerType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -35,6 +35,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
   const { currentSeason } = useCurrentSeason()
   const [season, setSeason] = useState<number>(currentSeason)
   const [playerData, setPlayerData] = useState<PlayerDataType | null>(null)
+  const [playerTeam, setPlayerTeam] = useState<{ team: TeamType; players: PlayerShortType[] }[]>([])
 
   const getPlayerDetail = async () => {
     dispatch(loadDataStart())
@@ -43,8 +44,14 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
     dispatch(loadDataFinish())
   }
 
+  const getPlayerTeam = async () => {
+    const res = await axios.get('/players/squads', { params: { player: playerId } })
+    setPlayerTeam(res.data.response)
+  }
+
   useEffect(() => {
     getPlayerDetail()
+    getPlayerTeam()
   }, [])
 
   if (!playerData) return null
@@ -52,8 +59,8 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
     <React.Fragment>
       <Container>
         <PlayerInfoBox playerData={playerData} />
-        <PlayerStatBox playerData={playerData} />
-        <PlayerRecentMatches />
+        <PlayerStatBox playerData={playerData} playerTeam={playerTeam} />
+        <PlayerRecentMatches playerData={playerData} playerTeam={playerTeam} />
         <PlayerCareerStats playerData={playerData} />
       </Container>
     </React.Fragment>
