@@ -18,33 +18,43 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
 
 const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
+  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
+    (state: RootState) => state.postReducer
+  )
   //state to hold output data. we'll use this for rendering later
-  const [data, setData] = useState<OutputData>(exPost?exPost.data:{
-    time: 0,
-    blocks: [],
-    version: '2.26.4',
-  })
+  const [data, setData] = useState<OutputData>(
+    exPost
+      ? exPost.data
+      : {
+          time: 0,
+          blocks: [],
+          version: '2.26.4',
+        }
+  )
   const [title, setTitle] = useState<string>('')
   const dispatch = useDispatch()
   const router = useRouter()
 
-  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-      async function redirectToLoginPageOrResetReducer() {
-        if(!me){
-          const loginUrl = await loginRequestAction()
-          if(loginUrl){router.replace(loginUrl)}
+  useEffect(() => {
+    // redirect to main if not logged in or other post is yet saving.
+    async function redirectToLoginPageOrResetReducer() {
+      if (!me) {
+        const loginUrl = await loginRequestAction()
+        if (loginUrl) {
+          router.replace(loginUrl)
         }
+      }
     }
     redirectToLoginPageOrResetReducer()
   }, [])
 
-  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-    if(exPost){
+  useEffect(() => {
+    // redirect to main if not logged in or other post is yet saving.
+    if (exPost) {
       setData(exPost.data)
     }
-}, [exPost])
-  
+  }, [exPost])
+
   const savePost = useCallback(() => {
     if (me) {
       const hashtagRegex = /#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g
@@ -73,15 +83,15 @@ const WritePage: NextPage = () => {
         }
       }
       const post: Post = {
-        id: exPost?exPost.id : 0,
+        id: exPost ? exPost.id : 0,
         title: title,
         hashtags: hashtags,
         email: me,
         data: data,
         snippet: snippet || '',
-        comments: exPost?exPost.comments : [],
-        likes: exPost?exPost.likes : 0,
-        views: exPost?exPost.views : 0,
+        comments: exPost ? exPost.comments : [],
+        likes: exPost ? exPost.likes : 0,
+        views: exPost ? exPost.views : 0,
         mainImage: mainImage,
       }
       dispatch(savePostRequestAction(post))
@@ -89,7 +99,7 @@ const WritePage: NextPage = () => {
   }, [data, title, me])
 
   useEffect(() => {
-    if(!savePostLoading && savePostSuccess && savedPostId){
+    if (!savePostLoading && savePostSuccess && savedPostId) {
       const id = savedPostId
       dispatch(writePostResetReducerAction()) // reset post save reducers for later new post writing
       router.replace(`/post/${id}`)
@@ -106,7 +116,7 @@ const WritePage: NextPage = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.editor__backgroundImage}>+ Add background image</div>
+      {/* <div className={styles.editor__backgroundImage}>+ Add background image</div> */}
       <div className={styles.editor}>
         <div className={styles.title}>
           <div

@@ -28,13 +28,14 @@ interface Props {
   blockId: string
   saveData: any
   savedblockData: BlockDataType
+  setBlockAdded: any
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
+const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps, loadingData, history } = useSelector(
@@ -54,6 +55,12 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
   useEffect(() => {
     dispatch(changeModalPage('matchHome', 'Matches'))
   }, [])
+
+  // 블록이 추가된 경우 modal 창 없애기
+  useEffect(() => {
+    const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
+    if (myBlock?.isReady) setBlockAdded()
+  }, [blockDataList])
 
   // 새로운 blockdata 생성
   useEffect(() => {
