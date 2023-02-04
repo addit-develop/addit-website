@@ -17,30 +17,35 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
 })
 
 const WritePage: NextPage = () => {
+  const { me } = useSelector((state: RootState) => state.userReducer)
+  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
   //state to hold output data. we'll use this for rendering later
-  const [data, setData] = useState<OutputData>({
+  const [data, setData] = useState<OutputData>(exPost?exPost.data:{
     time: 0,
     blocks: [],
     version: '2.26.4',
   })
   const [title, setTitle] = useState<string>('')
-  const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId } = useSelector((state: RootState) => state.postReducer)
   const dispatch = useDispatch()
   const router = useRouter()
 
-  // useEffect(() => { // redirect to main if not logged in or other post is yet saving.
-  //     async function redirectToLoginPageOrResetReducer() {
-  //       if(!me){
-  //         const loginUrl = await loginRequestAction()
-  //         if(loginUrl){router.replace(loginUrl)}
-  //       }
-  //   }
-  //   redirectToLoginPageOrResetReducer()
-  // }, [])
+  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
+      async function redirectToLoginPageOrResetReducer() {
+        if(!me){
+          const loginUrl = await loginRequestAction()
+          if(loginUrl){router.replace(loginUrl)}
+        }
+    }
+    redirectToLoginPageOrResetReducer()
+  }, [])
+
+  useEffect(() => { // redirect to main if not logged in or other post is yet saving.
+    if(exPost){
+      setData(exPost.data)
+    }
+}, [exPost])
   
   const savePost = useCallback(() => {
-    console.log(data)
     if (me) {
       const hashtagRegex = /#[\d|A-Z|a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/g
       var hashtags: string[] = (title.match(hashtagRegex) || []).map((e) =>
@@ -68,15 +73,15 @@ const WritePage: NextPage = () => {
         }
       }
       const post: Post = {
-        id: 0,
+        id: exPost?exPost.id : 0,
         title: title,
         hashtags: hashtags,
         email: me,
         data: data,
         snippet: snippet || '',
-        comments: [],
-        likes: 0,
-        views: 0,
+        comments: exPost?exPost.comments : [],
+        likes: exPost?exPost.likes : 0,
+        views: exPost?exPost.views : 0,
         mainImage: mainImage,
       }
       dispatch(savePostRequestAction(post))
