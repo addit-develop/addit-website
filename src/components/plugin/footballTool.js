@@ -45,6 +45,10 @@ export default class FootballTool {
     this.blockAdded = true
   }
 
+  deleteBlock() {
+    this.api.blocks.delete()
+  }
+
   render() {
     const rootNode = document.createElement('div')
     rootNode.classList.add(this.CSS.baseClass, this.CSS.wrapper)
@@ -63,7 +67,8 @@ export default class FootballTool {
               blockId={this.id}
               saveData={(data) => this.saveData(data)}
               savedblockData={this.data}
-              setBlockAdded={() => this.setBlockAdded}
+              setBlockAdded={() => this.setBlockAdded()}
+              deleteBlock={() => this.deleteBlock()}
             />
           )}
         </React.StrictMode>

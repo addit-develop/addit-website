@@ -29,13 +29,14 @@ interface Props {
   saveData: any
   savedblockData: BlockDataType
   setBlockAdded: any
+  deleteBlock: any
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded }: Props) => {
+const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteBlock }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps, loadingData, history } = useSelector(
@@ -71,6 +72,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded }: Props
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
+    deleteBlock()
   }, [])
 
   const selectContent = useCallback(() => {
