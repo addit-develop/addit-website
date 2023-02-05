@@ -120,6 +120,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
+        dispatch(setBlockType(blockId, 'League_Detail'))
         if (pageProps) return <LeagueDetail blockId={blockId} leagueId={pageProps} />
         else break
       case 'teamHome':

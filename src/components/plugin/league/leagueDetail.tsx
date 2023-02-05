@@ -2,6 +2,7 @@ import useAxios from '@/hooks/useAxios'
 import {
   CountryType,
   FixtureType,
+  LeagueBlockDataType,
   LeagueType,
   PlayerDataType,
   SeasonType,
@@ -40,15 +41,13 @@ type LeagueDataType = {
   seasons: SeasonType[]
 }
 
-type LeagueBlockDataType = {
-  league: LeagueType | undefined
-  season: number | undefined
-  data: StandingDataType[] | FixtureType[] | { type: string; data: PlayerDataType[] }[] | undefined
-}
+type specificDataType =
+  | StandingDataType[]
+  | FixtureType[]
+  | { type: string; data: PlayerDataType[] }[]
 
 const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const dispatch = useDispatch()
-  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const axios = useAxios()
   const menu = ['Table', 'Fixtures', 'Stats']
   const today = useMemo(() => dayjs(), [])
@@ -57,24 +56,22 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('Table')
   const [season, setSeason] = useState<number>(today.year() - 1)
 
-  const [leagueBlockData, setLeagueBlockData] = useState<{
-    tab: string
-    leagueData: LeagueBlockDataType | undefined
-  }>({
+  const [leagueBlockData, setLeagueBlockData] = useState<LeagueBlockDataType>({
     tab: selectedMenu,
-    leagueData: { league: leagueData?.league, season: season, data: undefined },
+    leagueData: undefined,
   })
 
   const setDataInLeagueBlockData = useCallback(
-    (data: StandingDataType[] | FixtureType[] | { type: string; data: PlayerDataType[] }[]) => {
-      const oldData = leagueBlockData.leagueData
+    (data: specificDataType) => {
       const newData = {
-        ...leagueBlockData,
-        leagueData: { league: oldData?.league, season: oldData?.season, data: data },
+        tab: selectedMenu,
+        leagueData: leagueData
+          ? { league: leagueData.league, season: season, data: data }
+          : undefined,
       }
       setLeagueBlockData(newData)
     },
-    [leagueBlockData]
+    [leagueBlockData, leagueData, season, selectedMenu]
   )
 
   useEffect(() => {
@@ -104,11 +101,23 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
         />
         <MenuBar menu={menu} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
         {selectedMenu === 'Table' ? (
-          <LeagueStanding league={leagueData.league} season={season} />
+          <LeagueStanding
+            league={leagueData.league}
+            season={season}
+            setData={(data: specificDataType) => setDataInLeagueBlockData(data)}
+          />
         ) : selectedMenu === 'Fixtures' ? (
-          <LeagueFixtures league={leagueData.league} season={season} />
+          <LeagueFixtures
+            league={leagueData.league}
+            season={season}
+            setData={(data: specificDataType) => setDataInLeagueBlockData(data)}
+          />
         ) : (
-          <LeagueStats league={leagueData.league} season={season} />
+          <LeagueStats
+            league={leagueData.league}
+            season={season}
+            setData={(data: specificDataType) => setDataInLeagueBlockData(data)}
+          />
         )}
       </Container>
     </React.Fragment>

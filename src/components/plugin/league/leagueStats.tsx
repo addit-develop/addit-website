@@ -1,9 +1,10 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 import { LeagueType, PlayerDataType, PlayerType, StatisticsType } from '@/types'
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
 
@@ -27,11 +28,13 @@ const ViewMore = styled.div`
 interface PropsType {
   league: LeagueType
   season: number
+  setData?: any
 }
 
-const LeagueStats = ({ league, season }: PropsType) => {
+const LeagueStats = ({ league, season, setData }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
 
   const [topScorerList, setTopScorerList] = useState<PlayerDataType[]>([])
   const [topAssistList, setTopAssistList] = useState<PlayerDataType[]>([])

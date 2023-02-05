@@ -5,12 +5,15 @@ import React, { useEffect, useMemo, useState } from 'react'
 import FixtureTable from '../common/fixtureTable'
 import DateGroupedFixtures from './dateGroupedFixtures'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
+import SelectBox, { ElementContainer } from '../common/selectBox'
 
 interface PropsType {
   league: LeagueType
   season: number
+  setData?: any
 }
 
 const Container = styled.div`
@@ -22,8 +25,9 @@ const Container = styled.div`
   margin-top: 2px;
 `
 
-const LeagueFixtures = ({ league, season }: PropsType) => {
+const LeagueFixtures = ({ league, season, setData }: PropsType) => {
   const dispatch = useDispatch()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const axios = useAxios()
   const today = useMemo(() => dayjs(), [])
   const [fixtures, setFixtures] = useState<FixtureType[]>([])
@@ -63,11 +67,13 @@ const LeagueFixtures = ({ league, season }: PropsType) => {
         ) : (
           dateList.map((d) => {
             return (
-              <DateGroupedFixtures
-                key={d}
-                fixtures={fixtures.filter((f) => f.fixture.date.substring(0, 10) === d)}
-                selectMode={false}
-              />
+              <ElementContainer>
+                <SelectBox selectMode={selectMode} selected={false} onClick={() => {}} />
+                <DateGroupedFixtures
+                  key={d}
+                  fixtures={fixtures.filter((f) => f.fixture.date.substring(0, 10) === d)}
+                />
+              </ElementContainer>
             )
           })
         )}

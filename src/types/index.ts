@@ -138,6 +138,17 @@ export type LeagueType = {
   logo: string
 }
 
+export type LeagueBlockDataType = {
+  tab: string
+  leagueData:
+    | {
+        league: LeagueType
+        season: number
+        data: StandingDataType[] | FixtureType[] | { type: string; data: PlayerDataType[] }[]
+      }
+    | undefined
+}
+
 export type MatchDetailDataType = {
   fixture: any
   league: any
