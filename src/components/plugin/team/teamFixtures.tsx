@@ -58,7 +58,6 @@ const TeamFixtures = ({ team }: PropsType) => {
     dispatch(loadDataStart())
     const res = await axios.get('/fixtures', {
       params: {
-        league: team.league.id,
         team: team.team.id,
         season: currentSeason,
         last: 5 * page,
