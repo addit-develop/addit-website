@@ -5,32 +5,16 @@ import { PlayerType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import BoldTitleBox from '../common/boldTitleBox'
 import PlayerInfoBox from '../common/playerInfoBox'
-
-const Container = styled.div``
 
 const Position = styled.div`
   width: 100%;
-  height: fit-content;
+  background-color: ${COLORS.white};
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
-  background-color: ${COLORS.white};
+  padding: 8px;
   border-radius: 10px;
-  margin-top: 2px;
-`
-
-const PositionName = styled.div`
-  position: relative;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 16px;
-  font-weight: bold;
-  color: ${COLORS.black};
-  cursor: pointer;
 `
 
 interface PropsType {
@@ -77,69 +61,67 @@ const TeamSquad = ({ team }: PropsType) => {
 
   return (
     <React.Fragment>
-      <Container>
-        <Position>
-          <PositionName>Coach</PositionName>
-          {coachData.length &&
-            coachData.map((c) => {
-              return (
-                <PlayerInfoBox
-                  key={c.id}
-                  playerData={{
-                    player: {
-                      id: c.id,
-                      name: c.name,
-                      photo: c.photo,
-                      nationality: c.nationality,
-                    },
-                    statistics: [
-                      {
-                        team: {
-                          id: team.id,
-                          logo: team.logo,
-                          name: team.name,
-                        },
+      <Position>
+        <BoldTitleBox>Coach</BoldTitleBox>
+        {coachData.length > 0 &&
+          coachData.map((c) => {
+            return (
+              <PlayerInfoBox
+                key={c.id}
+                playerData={{
+                  player: {
+                    id: c.id,
+                    name: c.name,
+                    photo: c.photo,
+                    nationality: c.nationality,
+                  },
+                  statistics: [
+                    {
+                      team: {
+                        id: team.id,
+                        logo: team.logo,
+                        name: team.name,
                       },
-                    ],
-                  }}
-                />
-              )
-            })}
-        </Position>
-        {positionList.map((p) => {
-          return (
-            <Position key={p}>
-              <PositionName>{p}s</PositionName>
-              {squadData
-                .filter((player) => player.position === p)
-                .map((player) => {
-                  return (
-                    <PlayerInfoBox
-                      key={player.id}
-                      playerData={{
-                        player: {
-                          id: player.id,
-                          name: player.name,
-                          photo: player.photo,
-                          nationality: player.nationality,
-                        },
-                        statistics: [
-                          {
-                            team: {
-                              id: team.id,
-                              logo: team.logo,
-                              name: team.name,
-                            },
+                    },
+                  ],
+                }}
+              />
+            )
+          })}
+      </Position>
+      {positionList.map((p) => {
+        return (
+          <Position key={p}>
+            <BoldTitleBox>{p}s</BoldTitleBox>
+            {squadData
+              .filter((player) => player.position === p)
+              .map((player) => {
+                return (
+                  <PlayerInfoBox
+                    key={player.id}
+                    playerData={{
+                      player: {
+                        id: player.id,
+                        name: player.name,
+                        photo: player.photo,
+                        nationality: player.nationality,
+                      },
+                      statistics: [
+                        {
+                          team: {
+                            id: team.id,
+                            logo: team.logo,
+                            name: team.name,
                           },
-                        ],
-                      }}
-                    />
-                  )
-                })}
-            </Position>
-          )
-        })}
-      </Container>
+                        },
+                      ],
+                    }}
+                  />
+                )
+              })}
+          </Position>
+        )
+      })}
     </React.Fragment>
   )
 }

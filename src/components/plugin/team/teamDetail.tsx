@@ -15,7 +15,17 @@ import TeamTransfer from './teamTransfer'
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 100%;
 `
 
 interface PropsType {
@@ -51,17 +61,19 @@ const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
       <Container>
         <TeamDetailTitle team={team.team} league={team.league} />
         <MenuBar menu={menu} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
-        {selectedMenu === 'Fixtures' ? (
-          <TeamFixtures team={team} />
-        ) : selectedMenu === 'Table' ? (
-          <TeamTable team={team} season={currentSeason} />
-        ) : selectedMenu === 'Squad' ? (
-          <TeamSquad team={team.team} />
-        ) : selectedMenu === 'Stats' ? (
-          <TeamStats team={team} />
-        ) : (
-          <TeamTransfer team={team} />
-        )}
+        <Content>
+          {selectedMenu === 'Fixtures' ? (
+            <TeamFixtures team={team} />
+          ) : selectedMenu === 'Table' ? (
+            <TeamTable team={team} season={currentSeason} />
+          ) : selectedMenu === 'Squad' ? (
+            <TeamSquad team={team.team} />
+          ) : selectedMenu === 'Stats' ? (
+            <TeamStats team={team} />
+          ) : (
+            <TeamTransfer team={team} />
+          )}
+        </Content>
       </Container>
     </React.Fragment>
   )

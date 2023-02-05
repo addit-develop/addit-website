@@ -284,6 +284,29 @@ export type TeamStatType = {
   }
 }
 
+export type TransferType = {
+  player: {
+    id: number
+    name: string
+  }
+  update: string
+  transfers: {
+    date: string
+    type: string
+    teams: {
+      in: {
+        id: number
+        name: string
+        logo: string
+      }
+      out: {
+        id: number
+        name: string
+        logo: string
+      }
+    }
+  }[]
+}
 type HomeAwayTotal = {
   home: number
   away: number
@@ -302,9 +325,9 @@ export type TeamStatisticType = {
   }
   goals: any
   biggest: any
-  cleansheet: HomeAwayTotal
+  clean_sheet: HomeAwayTotal
   failed_to_score: HomeAwayTotal
   penalty: any
-  lineups: any
+  lineups: { formation: string; played: number }[]
   cards: any
 }
