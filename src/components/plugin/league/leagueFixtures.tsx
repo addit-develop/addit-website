@@ -1,7 +1,7 @@
 import useAxios from '@/hooks/useAxios'
 import { FixtureType, LeagueType } from '@/types'
 import dayjs from 'dayjs'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import FixtureTable from '../common/fixtureTable'
 import DateGroupedFixtures from './dateGroupedFixtures'
 import styled from 'styled-components'
@@ -30,8 +30,9 @@ const LeagueFixtures = ({ league, season, setData }: PropsType) => {
   const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const axios = useAxios()
   const today = useMemo(() => dayjs(), [])
-  const [fixtures, setFixtures] = useState<FixtureType[]>([])
-  const [dateList, setDateList] = useState<string[]>([])
+  const [fixturesByDate, setFixturesByDate] = useState<
+    { date: string; fixtures: FixtureType[]; selected: boolean }[]
+  >([])
 
   const getFixturesData = async () => {
     dispatch(loadDataStart())
@@ -44,14 +45,15 @@ const LeagueFixtures = ({ league, season, setData }: PropsType) => {
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
     })
-    setFixtures(res.data.response)
-    let temp: string[] = []
+    const dateList: string[] = []
+    const temp: { date: string; fixtures: FixtureType[]; selected: boolean }[] = []
     res.data.response.forEach((f: FixtureType) => {
-      if (!temp.includes(f.fixture.date.substring(0, 10))) {
-        temp.push(f.fixture.date.substring(0, 10))
-      }
+      if (!dateList.includes(f.fixture.date.substring(0, 10))) {
+        temp.push({ date: f.fixture.date.substring(0, 10), fixtures: [f], selected: false })
+        dateList.push(f.fixture.date.substring(0, 10))
+      } else temp[dateList.findIndex((x) => x === f.fixture.date.substring(0, 10))].fixtures.push(f)
     })
-    setDateList(temp.reverse())
+    setFixturesByDate(temp.reverse())
     dispatch(loadDataFinish())
   }
 
@@ -59,20 +61,31 @@ const LeagueFixtures = ({ league, season, setData }: PropsType) => {
     getFixturesData()
   }, [season])
 
+  const onSelect = useCallback(
+    (index: number) => {
+      const temp = fixturesByDate.slice()
+      temp[index].selected = !temp[index].selected
+      setData(temp.filter((x) => x.selected).map((x) => x.fixtures))
+      setFixturesByDate(temp)
+    },
+    [fixturesByDate]
+  )
+
   return (
     <React.Fragment>
       <Container>
-        {!dateList ? (
+        {!fixturesByDate ? (
           <div>There was no game during recent 7 days.</div>
         ) : (
-          dateList.map((d) => {
+          fixturesByDate.map((d, i) => {
             return (
               <ElementContainer>
-                <SelectBox selectMode={selectMode} selected={false} onClick={() => {}} />
-                <DateGroupedFixtures
-                  key={d}
-                  fixtures={fixtures.filter((f) => f.fixture.date.substring(0, 10) === d)}
+                <SelectBox
+                  selectMode={selectMode}
+                  selected={d.selected}
+                  onClick={() => onSelect(i)}
                 />
+                <DateGroupedFixtures key={i} fixtures={d.fixtures} />
               </ElementContainer>
             )
           })

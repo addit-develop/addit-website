@@ -1,11 +1,12 @@
 import { COLORS } from '@/constants/constants'
 import { LeagueBlockDataType } from '@/types'
-import { default as React } from 'react'
+import { default as React, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import LeagueStanding from '../plugin/common/leagueStanding'
+import LeagueStanding from './leagueStandingForBlock'
 import LeagueDetailTitle from '../plugin/league/leagueDetailTitle'
-import LeagueFixtures from '../plugin/league/leagueFixtures'
-import LeagueStats from '../plugin/league/leagueStats'
+
+import DateGroupedFixtures from '../plugin/league/dateGroupedFixtures'
+import LeagueStats from './leagueStatsForBlock'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -31,11 +32,15 @@ const LeagueDetailBlock = ({ data }: Props) => {
       <BlockContainer>
         <LeagueDetailTitle league={data.leagueData.league} season={data.leagueData.season} />
         {data.tab === 'Table' ? (
-          <LeagueStanding league={data.leagueData.league} season={data.leagueData.season} />
+          <LeagueStanding
+            standingData={data.leagueData.data.standingData}
+            leagueId={data.leagueData.league.id}
+            selectedTeamId={data.leagueData.data.selectedTeamId}
+          />
         ) : data.tab === 'Fixtures' ? (
-          <LeagueFixtures league={data.leagueData.league} season={data.leagueData.season} />
+          data.leagueData.data.map((d, i: number) => <DateGroupedFixtures key={i} fixtures={d} />)
         ) : (
-          <LeagueStats league={data.leagueData.league} season={data.leagueData.season} />
+          <LeagueStats data={data.leagueData.data} />
         )}
       </BlockContainer>
     </React.Fragment>

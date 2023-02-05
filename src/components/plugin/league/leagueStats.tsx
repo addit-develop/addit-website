@@ -7,19 +7,21 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
+import SelectBox from '../common/selectBox'
 
-const Container = styled.div`
+export const Container = styled.div`
+  position: relative;
   background-color: ${COLORS.white};
   padding: 0px 8px;
   margin-top: 2px;
   border-radius: 10px;
 `
-const Index = styled.div`
+export const Index = styled.div`
   font-size: 16px;
   font-weight: bold;
   padding: 12px 0px;
 `
-const ViewMore = styled.div`
+export const ViewMore = styled.div`
   padding: 10px 8px;
   font-size: 14px;
   color: ${COLORS.darkgray};
@@ -39,10 +41,17 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
   const [topScorerList, setTopScorerList] = useState<PlayerDataType[]>([])
   const [topAssistList, setTopAssistList] = useState<PlayerDataType[]>([])
   const [topYellowCardList, setTopYellowCardList] = useState<PlayerDataType[]>([])
+  const [topRedCardList, setTopRedCardList] = useState<PlayerDataType[]>([])
 
   const [topScorerOpen, setTopScorerOpen] = useState<boolean>(false)
   const [topAssistOpen, setTopAssistOpen] = useState<boolean>(false)
   const [topYellowCardOpen, setTopYellowCardOpen] = useState<boolean>(false)
+  const [topRedCardOpen, setTopRedCardOpen] = useState<boolean>(false)
+
+  const [topScorerSelected, setTopScorerSelected] = useState<boolean>(false)
+  const [topAssistSelected, setTopAssistSelected] = useState<boolean>(false)
+  const [topYellowCardSelected, setTopYellowCardSelected] = useState<boolean>(false)
+  const [topRedCardSelected, setTopRedCardSelected] = useState<boolean>(false)
 
   const getTopScorer = async () => {
     dispatch(loadDataStart())
@@ -61,16 +70,46 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
     })
     setTopYellowCardList(res.data.response)
   }
+  const getTopRedCard = async () => {
+    const res = await axios.get('/players/topredcards', {
+      params: { league: league.id, season },
+    })
+    setTopRedCardList(res.data.response)
+  }
 
   useEffect(() => {
     getTopScorer()
     getTopAssist()
     getTopYellowCard()
+    getTopRedCard()
   }, [season])
+
+  useEffect(() => {
+    const temp = []
+    if (topScorerSelected) temp.push({ type: 'Top Scorer', data: topScorerList })
+    if (topAssistSelected) temp.push({ type: 'Top Assists', data: topAssistList })
+    if (topYellowCardSelected) temp.push({ type: 'Top Yellow Cards', data: topYellowCardList })
+    if (topRedCardSelected) temp.push({ type: 'Top Red Cards', data: topRedCardList })
+    setData(temp)
+  }, [
+    topScorerSelected,
+    topAssistSelected,
+    topYellowCardSelected,
+    topRedCardSelected,
+    topScorerList,
+    topAssistList,
+    topYellowCardList,
+    topRedCardList,
+  ])
 
   return (
     <React.Fragment>
       <Container>
+        <SelectBox
+          selectMode={selectMode}
+          selected={topScorerSelected}
+          onClick={() => setTopScorerSelected(!topScorerSelected)}
+        />
         <Index>Top Scorer</Index>
         {topScorerList.slice(0, topScorerOpen ? 10 : 3).map((p) => {
           return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.total} />
@@ -80,7 +119,12 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         </ViewMore>
       </Container>
       <Container>
-        <Index>Top Assist</Index>
+        <SelectBox
+          selectMode={selectMode}
+          selected={topAssistSelected}
+          onClick={() => setTopAssistSelected(!topAssistSelected)}
+        />
+        <Index>Top Assists</Index>
         {topAssistList.slice(0, topAssistOpen ? 10 : 3).map((p) => {
           return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.assists} />
         })}
@@ -89,11 +133,30 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         </ViewMore>
       </Container>
       <Container>
+        <SelectBox
+          selectMode={selectMode}
+          selected={topYellowCardSelected}
+          onClick={() => setTopYellowCardSelected(!topYellowCardSelected)}
+        />
         <Index>Top Yellow Cards</Index>
         {topYellowCardList.slice(0, topYellowCardOpen ? 10 : 3).map((p) => {
           return <PlayerInfoBox playerData={p} stat={p.statistics[0].cards.yellow} />
         })}
         <ViewMore onClick={() => setTopYellowCardOpen(!topYellowCardOpen)}>
+          {topYellowCardOpen ? 'View Less' : 'View More'}
+        </ViewMore>
+      </Container>
+      <Container>
+        <SelectBox
+          selectMode={selectMode}
+          selected={topRedCardSelected}
+          onClick={() => setTopRedCardSelected(!topRedCardSelected)}
+        />
+        <Index>Top Red Cards</Index>
+        {topRedCardList.slice(0, topRedCardOpen ? 10 : 3).map((p) => {
+          return <PlayerInfoBox playerData={p} stat={p.statistics[0].cards.red} />
+        })}
+        <ViewMore onClick={() => setTopRedCardOpen(!topRedCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}
         </ViewMore>
       </Container>

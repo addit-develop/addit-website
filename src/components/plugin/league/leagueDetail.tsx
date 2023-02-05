@@ -42,8 +42,8 @@ type LeagueDataType = {
 }
 
 type specificDataType =
-  | StandingDataType[]
-  | FixtureType[]
+  | { standingData: StandingDataType[]; selectedTeamId: number | undefined }
+  | FixtureType[][]
   | { type: string; data: PlayerDataType[] }[]
 
 const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
