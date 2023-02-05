@@ -3,9 +3,8 @@ import { default as React, useCallback, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import TeamDetail from '../team/teamDetail'
-import { setBlockType } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import MatchPrediction from '../match/matchPrediction'
@@ -25,13 +24,11 @@ type MenuType = {
 }
 
 const InfoModal = ({ blockId }: Props) => {
-  const dispatch = useDispatch()
   const { currentPage, pageProps, loadingData } = useSelector(
     (state: RootState) => state.pageReducer
   )
 
   const [modalClosed, setModalClosed] = useState<boolean>(true)
-  const [selectMode, setSelectMode] = useState<boolean>(false)
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
@@ -44,22 +41,17 @@ const InfoModal = ({ blockId }: Props) => {
           return <SearchHome searchKey={pageProps} />
         }
       case 'matchHome':
-        dispatch(setBlockType(blockId, 'Fixture_List_By_Date'))
-        return <MatchHome selectMode={selectMode} blockId={blockId} />
+        return <MatchHome blockId={blockId} />
       case 'matchDetail':
-        dispatch(setBlockType(blockId, 'Match_Detail'))
         if (pageProps)
-          return <MatchDetail selectMode={selectMode} blockId={blockId} fixtureId={pageProps} />
+          return <MatchDetail selectMode={false} blockId={blockId} fixtureId={pageProps} />
         else break
       case 'matchPrediction':
-        dispatch(setBlockType(blockId, 'Match_Prediction'))
         if (pageProps)
-          return (
-            <MatchPrediction selectMode={selectMode} blockId={blockId} fixtureData={pageProps} />
-          )
+          return <MatchPrediction selectMode={false} blockId={blockId} fixtureData={pageProps} />
         else break
       case 'playerMatchDetail':
-        return <PlayerMatchDetail data={pageProps} selectMode={selectMode} blockId={blockId} />
+        return <PlayerMatchDetail data={pageProps} selectMode={false} blockId={blockId} />
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
@@ -79,7 +71,7 @@ const InfoModal = ({ blockId }: Props) => {
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
         else break
     }
-  }, [currentPage, selectMode, blockId, pageProps])
+  }, [currentPage, blockId, pageProps])
 
   return (
     <React.Fragment>

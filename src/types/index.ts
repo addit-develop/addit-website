@@ -61,6 +61,13 @@ export type FixtureType = {
   }
 }
 
+export type FixtureListBlockType = {
+  id: number
+  name: string
+  logo: string
+  fixtures: FixtureType[]
+}
+
 export type FixtureStatsType = {
   games: {
     appearences?: number
@@ -129,13 +136,6 @@ export type LeagueType = {
   name: string
   type: string
   logo: string
-}
-
-export type LeagueBlockType = {
-  id: number
-  name: string
-  logo: string
-  fixtures: FixtureType[]
 }
 
 export type MatchDetailDataType = {
