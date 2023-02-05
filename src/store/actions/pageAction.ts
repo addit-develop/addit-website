@@ -4,6 +4,7 @@ import {
   TEAM_DETAIL_PAGE,
   LOAD_DATA_START,
   LOAD_DATA_FINISH,
+  CHANGE_SELECT_MODE,
 } from '../types'
 
 export type modalPageAction = ReturnType<typeof changeModalPage>
@@ -34,5 +35,12 @@ export const loadDataStart = () => {
 export const loadDataFinish = () => {
   return {
     type: LOAD_DATA_FINISH,
+  }
+}
+
+export const changeSelectMode = (mode: boolean) => {
+  return {
+    type: CHANGE_SELECT_MODE,
+    data: mode,
   }
 }

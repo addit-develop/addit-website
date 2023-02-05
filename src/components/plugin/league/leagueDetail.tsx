@@ -1,5 +1,12 @@
 import useAxios from '@/hooks/useAxios'
-import { CountryType, LeagueType, SeasonType } from '@/types'
+import {
+  CountryType,
+  FixtureType,
+  LeagueType,
+  PlayerDataType,
+  SeasonType,
+  StandingDataType,
+} from '@/types'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import LeagueDetailTitle from './leagueDetailTitle'
 
@@ -9,8 +16,10 @@ import LeagueFixtures from './leagueFixtures'
 import LeagueStanding from '../common/leagueStanding'
 import LeagueStats from './leagueStats'
 import dayjs from 'dayjs'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { setBlockData } from '@/store/actions/postAction'
+import { RootState } from '@/store/reducers'
 
 const Container = styled.div`
   overflow-y: scroll;
@@ -19,6 +28,7 @@ const Container = styled.div`
     display: none;
   }
 `
+
 interface PropsType {
   leagueId: number
   blockId: string
@@ -30,8 +40,15 @@ type LeagueDataType = {
   seasons: SeasonType[]
 }
 
+type LeagueBlockDataType = {
+  league: LeagueType | undefined
+  season: number | undefined
+  data: StandingDataType[] | FixtureType[] | { type: string; data: PlayerDataType[] }[] | undefined
+}
+
 const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const dispatch = useDispatch()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const axios = useAxios()
   const menu = ['Table', 'Fixtures', 'Stats']
   const today = useMemo(() => dayjs(), [])
@@ -39,6 +56,30 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const [leagueData, setLeagueData] = useState<LeagueDataType>()
   const [selectedMenu, setSelectedMenu] = useState<string>('Table')
   const [season, setSeason] = useState<number>(today.year() - 1)
+
+  const [leagueBlockData, setLeagueBlockData] = useState<{
+    tab: string
+    leagueData: LeagueBlockDataType | undefined
+  }>({
+    tab: selectedMenu,
+    leagueData: { league: leagueData?.league, season: season, data: undefined },
+  })
+
+  const setDataInLeagueBlockData = useCallback(
+    (data: StandingDataType[] | FixtureType[] | { type: string; data: PlayerDataType[] }[]) => {
+      const oldData = leagueBlockData.leagueData
+      const newData = {
+        ...leagueBlockData,
+        leagueData: { league: oldData?.league, season: oldData?.season, data: data },
+      }
+      setLeagueBlockData(newData)
+    },
+    [leagueBlockData]
+  )
+
+  useEffect(() => {
+    if (leagueBlockData) dispatch(setBlockData(blockId, leagueBlockData))
+  }, [leagueBlockData])
 
   const getLeagueDetail = async () => {
     dispatch(loadDataStart())

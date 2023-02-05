@@ -7,6 +7,7 @@ import {
   TEAM_DETAIL_PAGE,
   LOAD_DATA_START,
   LOAD_DATA_FINISH,
+  CHANGE_SELECT_MODE,
 } from '../types'
 
 type StateType = {
@@ -15,6 +16,7 @@ type StateType = {
   pageProps?: any
   loadingData: boolean
   history: { menu: string; page: string; props?: any }[]
+  selectMode: boolean
 }
 
 export const initialState: StateType = {
@@ -22,6 +24,7 @@ export const initialState: StateType = {
   currentPage: 'matchHome',
   loadingData: false,
   history: [],
+  selectMode: false,
 }
 
 const pageReducer = (state: StateType = initialState, action: any) =>
@@ -51,6 +54,9 @@ const pageReducer = (state: StateType = initialState, action: any) =>
         break
       case LOAD_DATA_FINISH:
         draft.loadingData = false
+        break
+      case CHANGE_SELECT_MODE:
+        draft.selectMode = action.data
         break
       default:
         break

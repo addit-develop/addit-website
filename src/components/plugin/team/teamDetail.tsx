@@ -25,7 +25,6 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-height: 100%;
 `
 
 interface PropsType {

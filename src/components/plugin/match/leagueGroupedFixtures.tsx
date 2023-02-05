@@ -1,7 +1,7 @@
 import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
-import { LeagueBlockType, BlockDataType, FixtureType } from '@/types'
+import { FixtureListBlockType, BlockDataType, FixtureType } from '@/types'
 import FixtureTable from '../common/fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer, { RootState } from '@/store/reducers'
@@ -56,14 +56,14 @@ const FixtureContainer = styled.div`
 
 interface PropsType {
   fixtures: FixtureType[]
-  selectMode: boolean
   forBlock?: boolean
   blockId?: string
 }
 
-const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId }: PropsType) => {
+const LeagueGroupedFixtures = ({ fixtures, forBlock = false, blockId }: PropsType) => {
   const league = fixtures && fixtures[0].league
   const dispatch = useDispatch()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const [selectedFixtureBoolean, setSelectedFixtureBoolean] = useState<boolean[]>(
     fixtures.map(() => false)
@@ -77,7 +77,7 @@ const LeagueGroupedFixtures = ({ fixtures, selectMode, forBlock = false, blockId
     const myBlockData = blockDataList.find((x: BlockDataType) => x.id === blockId)
     const newBlockData =
       myBlockData?.type === 'Fixture_List_By_Date' &&
-      myBlockData.data.map((x: LeagueBlockType) =>
+      myBlockData.data.map((x: FixtureListBlockType) =>
         x.id === league.id
           ? {
               id: league.id,

@@ -5,21 +5,21 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { COLORS } from '@/constants/constants'
 import MatchFixtures from './leagueGroupedFixtures'
 import MajorLeagues from '@/data/majorLeaguesData.json'
-import { FixtureType, LeagueBlockType } from '@/types'
+import { FixtureType, FixtureListBlockType } from '@/types'
 import useAxios from '@/hooks/useAxios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { makeBlockData, setBlockData } from '@/store/actions/postAction'
 import LeagueGroupedFixtures from './leagueGroupedFixtures'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 
 dayjs.extend(relativeTime)
 
 interface PropsType {
-  selectMode: boolean
   blockId: string
 }
 
-const MatchHome = ({ selectMode, blockId }: PropsType) => {
+const MatchHome = ({ blockId }: PropsType) => {
   const dispatch = useDispatch()
   const TodayDate = useMemo(() => dayjs(), [])
   const [date, setDate] = useState<string>(TodayDate.format('YYYY-MM-DD'))
@@ -28,7 +28,7 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
   const axios = useAxios()
 
   const makeFixtureBlock = (fixtures: FixtureType[]) => {
-    const emptyFixtureList: LeagueBlockType[] = []
+    const emptyFixtureList: FixtureListBlockType[] = []
     let leagueIdList: number[] = []
     fixtures.forEach((x) => {
       if (!leagueIdList.includes(x.league.id)) {
@@ -152,7 +152,6 @@ const MatchHome = ({ selectMode, blockId }: PropsType) => {
                 return (
                   <LeagueGroupedFixtures
                     fixtures={leagueFixtureData}
-                    selectMode={selectMode}
                     blockId={blockId}
                     key={league.id}
                   />

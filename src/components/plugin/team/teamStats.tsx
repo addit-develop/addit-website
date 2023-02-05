@@ -97,7 +97,7 @@ const TeamStats = ({ team }: PropsType) => {
       </Container>
       <Container>
         <BoldTitleBox style={{ padding: '8px' }}>
-          Averge Goals
+          Average Goals
           <div>
             <span style={{ color: COLORS.blue }}>for</span>
             {' / '}
