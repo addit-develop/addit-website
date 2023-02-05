@@ -12,7 +12,7 @@ const MatchStats = ({ matchData }: PropsType) => {
       <Styles.StatsContainer>
         <Styles.SubTitle>Stats</Styles.SubTitle>
         {matchData?.statistics[0].statistics.map((x: { type: string; value: any }, i: number) => (
-          <Styles.Stat>
+          <Styles.Stat key={i}>
             <div>{x.value ? x.value : 0}</div>
             <div>{x.type}</div>
             <div>

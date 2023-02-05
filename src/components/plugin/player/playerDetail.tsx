@@ -52,7 +52,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
   useEffect(() => {
     getPlayerDetail()
     getPlayerTeam()
-  }, [])
+  }, [playerId])
 
   if (!playerData) return null
   return (
@@ -61,7 +61,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
         <PlayerInfoBox playerData={playerData} />
         <PlayerStatBox playerData={playerData} playerTeam={playerTeam} />
         <PlayerRecentMatches playerData={playerData} playerTeam={playerTeam} />
-        <PlayerCareerStats playerData={playerData} />
+        <PlayerCareerStats player={playerData.player} setSeason={setSeason} season={season} />
       </Container>
     </React.Fragment>
   )

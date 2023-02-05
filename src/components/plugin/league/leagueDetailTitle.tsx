@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
+import SeasonDropDown from '../common/seasonDropDown'
 
 const Container = styled.div`
   background-color: ${COLORS.white};
@@ -66,48 +67,17 @@ interface PropsType {
 }
 
 const LeagueDetailTitle = ({ league, seasonList, season, setSeason }: PropsType) => {
-  const [selectorOpen, setSelectorOpen] = useState<boolean>(false)
-
   return (
     <React.Fragment>
       <Container>
         <Image src={league.logo} height={40} width={40} alt={league.name} />
         <LeagueTitle>{league.name}</LeagueTitle>
-        {season && (
-          <SeasonContainer onClick={() => setSelectorOpen(!selectorOpen)}>
-            <Season>
-              {season}-{season + 1}
-              {selectorOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                  <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                  <path
-                    d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z"
-                    fill={COLORS.darkgray}
-                  />
-                </svg>
-              )}
-            </Season>
-            {seasonList && setSeason && selectorOpen && (
-              <SeasonSelector>
-                {seasonList.map((s) => {
-                  return (
-                    <SeasonItem
-                      key={s.year}
-                      onClick={() => {
-                        setSeason(s.year)
-                        setSelectorOpen(false)
-                      }}
-                    >
-                      {s.year} - {s.year + 1}
-                    </SeasonItem>
-                  )
-                })}
-              </SeasonSelector>
-            )}
-          </SeasonContainer>
+        {season && seasonList && setSeason && (
+          <SeasonDropDown
+            season={season}
+            seasonList={seasonList.map((s) => s.year)}
+            setSeason={setSeason}
+          />
         )}
       </Container>
     </React.Fragment>

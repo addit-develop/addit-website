@@ -53,7 +53,7 @@ interface PropsType {
   setSelectedLeague: (menu: LeagueType) => void
 }
 
-const DropDownMenu = ({ selectedLeague, setSelectedLeague }: PropsType) => {
+const LeagueDropDown = ({ selectedLeague, setSelectedLeague }: PropsType) => {
   const [dropDownOpen, setDropDownOpen] = useState<boolean>(false)
   return (
     <React.Fragment>
@@ -97,4 +97,4 @@ const DropDownMenu = ({ selectedLeague, setSelectedLeague }: PropsType) => {
   )
 }
 
-export default DropDownMenu
+export default LeagueDropDown
