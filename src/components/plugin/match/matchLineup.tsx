@@ -110,15 +110,15 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         <Styles.SubTitle>Lineup</Styles.SubTitle>
         <Styles.Lineup forBlock={forBlock}>
           <Styles.startingXI forBlock={forBlock}>
-            {startXIData[0].map((x) => (
-              <Styles.startingXIRow forBlock={forBlock}>
+            {startXIData[0].map((x, i) => (
+              <Styles.startingXIRow forBlock={forBlock} key={i}>
                 {x.map((y) => getPlayerElement(0, y))}
               </Styles.startingXIRow>
             ))}
           </Styles.startingXI>
           <Styles.startingXI reverse forBlock={forBlock}>
-            {startXIData[1].map((x) => (
-              <Styles.startingXIRow forBlock={forBlock}>
+            {startXIData[1].map((x, i) => (
+              <Styles.startingXIRow forBlock={forBlock} key={i}>
                 {x.map((y) => getPlayerElement(1, y))}
               </Styles.startingXIRow>
             ))}
@@ -127,7 +127,10 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         <Styles.SubPlayerContainer>
           <Styles.SubPlayerList>
             {substituesData[0].map((x: lineupPlayerType) => (
-              <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 0)}>
+              <Styles.playerSub
+                key={x.player.id}
+                onClick={() => moveToPlayerMatchStat(x.statistics, 0)}
+              >
                 <div>{x.player.number}</div>
                 <div>{x.player.name}</div>
               </Styles.playerSub>
@@ -136,7 +139,10 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
           <Styles.SubPlayerList>
             <Styles.SubPlayerList>
               {substituesData[1].map((x: lineupPlayerType) => (
-                <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 1)}>
+                <Styles.playerSub
+                  key={x.player.id}
+                  onClick={() => moveToPlayerMatchStat(x.statistics, 1)}
+                >
                   <div>{x.player.number}</div>
                   <div>{x.player.name}</div>
                 </Styles.playerSub>

@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import majorLeagues from '@/data/majorLeaguesData.json'
 import { LeagueType } from '@/types'
-import DropDownMenu from '../common/dropDownMenu'
+import LeagueDropDown from '../common/leagueDropDown'
 
 export const SearchContainer = styled.div<{ display: boolean }>`
   order: 1;
@@ -95,7 +95,7 @@ const SearchModalInput = ({ display }: PropsType) => {
 
   return (
     <SearchContainer display={display}>
-      <DropDownMenu selectedLeague={league} setSelectedLeague={setLeague} />
+      <LeagueDropDown selectedLeague={league} setSelectedLeague={setLeague} />
       <SearchInput
         placeholder="Search players"
         ref={inputRef}

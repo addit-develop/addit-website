@@ -139,7 +139,7 @@ const PlayerMatchStats = ({ data }: PropsType) => {
       <StatsContainer>
         <SubTitle>Match Stats</SubTitle>
         {processedData.map((x) => (
-          <Stat>
+          <Stat key={x.name}>
             <div id="name">{x.name}</div>
             <div id="value">{x.value ? x.value : 0}</div>
           </Stat>

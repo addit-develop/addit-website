@@ -50,7 +50,6 @@ interface PropsType {
 const TeamFixtures = ({ team }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
-  const { currentSeason } = useCurrentSeason()
   const [fixtures, setFixtures] = useState<FixtureType[]>([])
   const [page, setPage] = useState<number>(1)
 
@@ -59,7 +58,6 @@ const TeamFixtures = ({ team }: PropsType) => {
     const res = await axios.get('/fixtures', {
       params: {
         team: team.team.id,
-        season: currentSeason,
         last: 5 * page,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
