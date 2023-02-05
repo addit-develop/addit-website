@@ -1,6 +1,7 @@
 import useAxios from '@/hooks/useAxios'
+import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import { TeamType } from '@/types'
+import { TeamStatisticType, TeamType } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -27,34 +28,35 @@ const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const menu = ['Fixtures', 'Table', 'Squad', 'Stats', 'Transfer']
-
-  const [team, setTeam] = useState<TeamType | null>(null)
+  const { currentSeason } = useCurrentSeason()
+  const [team, setTeam] = useState<TeamStatisticType | null>(null)
   const [selectedMenu, setSelectedMenu] = useState<string>('Fixtures')
 
   const getTeamData = async () => {
     dispatch(loadDataStart())
-    const res = await axios.get('/teams', { params: { id: teamId } })
-    console.log(res)
-    setTeam(res.data.response[0].team)
+    const res = await axios.get('/teams/statistics', {
+      params: { team: teamId, league: leagueId, season: currentSeason },
+    })
+    setTeam(res.data.response)
     dispatch(loadDataFinish())
   }
 
   useEffect(() => {
     getTeamData()
-  }, [])
+  }, [teamId, leagueId])
 
   if (!team) return null
   return (
     <React.Fragment>
       <Container>
-        <TeamDetailTitle team={team} />
+        <TeamDetailTitle team={team.team} league={team.league} />
         <MenuBar menu={menu} selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
         {selectedMenu === 'Fixtures' ? (
           <TeamFixtures team={team} />
         ) : selectedMenu === 'Table' ? (
-          <TeamTable team={team} leagueId={leagueId} />
+          <TeamTable team={team} season={currentSeason} />
         ) : selectedMenu === 'Squad' ? (
-          <TeamSquad team={team} />
+          <TeamSquad team={team.team} />
         ) : selectedMenu === 'Stats' ? (
           <TeamStats team={team} />
         ) : (

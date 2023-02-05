@@ -177,6 +177,15 @@ export type PlayerType = {
   position?: string
 }
 
+export type PlayerShortType = {
+  id: number
+  name: string
+  age: number
+  number: number
+  position: string
+  photo: string
+}
+
 export type PlayerDataType = {
   player: PlayerType
   statistics: StatisticsType[]
@@ -273,4 +282,29 @@ export type TeamStatType = {
     for: number
     against: number
   }
+}
+
+type HomeAwayTotal = {
+  home: number
+  away: number
+  total: number
+}
+
+export type TeamStatisticType = {
+  league: LeagueType
+  team: TeamType
+  form: string
+  fixtures: {
+    played: HomeAwayTotal
+    wins: HomeAwayTotal
+    draws: HomeAwayTotal
+    loses: HomeAwayTotal
+  }
+  goals: any
+  biggest: any
+  cleansheet: HomeAwayTotal
+  failed_to_score: HomeAwayTotal
+  penalty: any
+  lineups: any
+  cards: any
 }

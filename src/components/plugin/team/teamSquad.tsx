@@ -27,7 +27,8 @@ const PositionName = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: bold;
   color: ${COLORS.black};
   cursor: pointer;
 `
@@ -40,35 +41,75 @@ const TeamSquad = ({ team }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const [squadData, setSquadData] = useState<PlayerType[]>([])
+  const [coachData, setCoachData] = useState<PlayerType[]>([])
   const [positionList, setPositionList] = useState<string[]>([])
+
   const getSquadData = async () => {
-    dispatch(loadDataStart())
     const res = await axios.get('/players/squads', {
       params: {
         team: team.id,
       },
     })
-
     setSquadData(res.data.response[0].players)
     let temp: string[] = []
     res.data.response[0].players.forEach((s: PlayerType) => {
       if (s.position && !temp.includes(s.position)) temp.push(s.position)
     })
     setPositionList(temp)
-    dispatch(loadDataFinish())
+  }
+
+  const getCoachData = async () => {
+    const res = await axios.get('/coachs', {
+      params: {
+        team: team.id,
+      },
+    })
+    if (res.data.response.length) {
+      setCoachData(res.data.response)
+    }
   }
 
   useEffect(() => {
+    dispatch(loadDataStart())
     getSquadData()
-  }, [])
+    getCoachData().then(() => dispatch(loadDataFinish()))
+  }, [team])
 
   return (
     <React.Fragment>
       <Container>
+        <Position>
+          <PositionName>Coach</PositionName>
+          {coachData.length &&
+            coachData.map((c) => {
+              return (
+                <PlayerInfoBox
+                  key={c.id}
+                  playerData={{
+                    player: {
+                      id: c.id,
+                      name: c.name,
+                      photo: c.photo,
+                      nationality: c.nationality,
+                    },
+                    statistics: [
+                      {
+                        team: {
+                          id: team.id,
+                          logo: team.logo,
+                          name: team.name,
+                        },
+                      },
+                    ],
+                  }}
+                />
+              )
+            })}
+        </Position>
         {positionList.map((p) => {
           return (
             <Position key={p}>
-              <PositionName>{p}</PositionName>
+              <PositionName>{p}s</PositionName>
               {squadData
                 .filter((player) => player.position === p)
                 .map((player) => {

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import CircledImage from '../common/circledImage'
 
-const Container = styled.div`
+const Container = styled.div<{ selected?: boolean }>`
   width: 100%;
   height: 50px;
   display: flex;
@@ -17,6 +17,7 @@ const Container = styled.div`
   font-size: 14px;
   border-bottom: 1px ${COLORS.lightgray} solid;
   color: ${COLORS.drakblack};
+  background-color: ${(props) => props.selected && COLORS.lightgray};
 `
 const Rank = styled.div`
   width: 18px;
@@ -35,13 +36,11 @@ const TeamStat = styled.div<{ points?: boolean }>`
 interface PropsType {
   team: StandingDataType
   leagueId: number
+  selected?: boolean
 }
 
-const LeagueStandingTeam = ({ team, leagueId }: PropsType) => {
+const LeagueStandingTeam = ({ team, leagueId, selected }: PropsType) => {
   const dispatch = useDispatch()
-  const { currentPage, currentMenu, pageProps } = useSelector(
-    (state: RootState) => state.pageReducer
-  )
 
   return (
     <React.Fragment>
@@ -51,6 +50,7 @@ const LeagueStandingTeam = ({ team, leagueId }: PropsType) => {
             changeModalPage('teamDetail', 'Teams', { teamId: team.team.id, leagueId: leagueId })
           )
         }}
+        selected={selected}
       >
         <Rank>{team.rank}</Rank>
         <CircledImage src={team.team.logo} width={24} height={24} />
