@@ -28,7 +28,7 @@ const Column = styled.div`
 interface PropsType {
   player: PlayerType
   season: number
-  setSeason: (season: number) => void
+  setSeason?: (season: number) => void
 }
 
 const PlayerCareerStats = ({ player, setSeason, season }: PropsType) => {
@@ -63,7 +63,9 @@ const PlayerCareerStats = ({ player, setSeason, season }: PropsType) => {
       <Container>
         <BoldTitleBox>
           Career Stats
-          <SeasonDropDown season={season} setSeason={setSeason} seasonList={seasonList} />
+          {setSeason ? (
+            <SeasonDropDown season={season} setSeason={setSeason} seasonList={seasonList} />
+          ) : null}
         </BoldTitleBox>
         <Column>
           {playerData.statistics.map((s, i) => {

@@ -191,15 +191,6 @@ export type PlayerType = {
   position?: string
 }
 
-export type PlayerShortType = {
-  id: number
-  name: string
-  age: number
-  number: number
-  position: string
-  photo: string
-}
-
 export type PlayerDataType = {
   player: PlayerType
   statistics: StatisticsType[]
@@ -213,6 +204,15 @@ export type PlayerDataShortedType = {
     nationality: string
   }
   statistics: { team: { id: number; logo: string; name: string } }[]
+}
+
+export type PlayerShortType = {
+  id: number
+  name: string
+  age: number
+  number: number
+  position: string
+  photo: string
 }
 
 export type PlayerMatchStatsType = {

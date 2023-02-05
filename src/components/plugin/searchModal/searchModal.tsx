@@ -134,6 +134,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
       case 'playerHome':
         return <PlayerHome leagueId={pageProps?.leagueId} searchKey={pageProps?.searchKey} />
       case 'playerDetail':
+        dispatch(setBlockType(blockId, 'Player_Detail'))
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
         else break
     }

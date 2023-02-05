@@ -65,10 +65,9 @@ const ViewLabel = styled.div`
 
 interface PropsType {
   playerData: PlayerDataType
-  playerTeam: { team: TeamType; players: PlayerShortType[] }[]
 }
 
-const PlayerRecentMatches = ({ playerData, playerTeam }: PropsType) => {
+const PlayerRecentMatches = ({ playerData }: PropsType) => {
   const axios = useAxios()
   const dispatch = useDispatch()
   const [page, setPage] = useState<number>(1)
