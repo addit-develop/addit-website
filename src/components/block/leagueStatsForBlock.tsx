@@ -28,7 +28,12 @@ const LeagueStats = ({ data }: PropType) => {
         <LeagueStatsContainer key={i}>
           <LeagueStatsIndex>{d.type}</LeagueStatsIndex>
           {d.data.slice(0, isOpenList[i] ? 10 : 3).map((p, index) => (
-            <PlayerInfoBox key={index} playerData={p} stat={p.statistics[0].goals.total} />
+            <PlayerInfoBox
+              key={index}
+              playerData={p}
+              stat={p.statistics[0].goals.total}
+              size={index === 0 ? 'medium' : 'small'}
+            />
           ))}
           <LeagueStatsViewMore onClick={() => changeIsOpenList(i)}>
             {isOpenList[i] ? 'View Less' : 'View More'}
