@@ -50,10 +50,11 @@ const WritePage: NextPage = () => {
       }
     }
     redirectToLoginPageOrResetReducer()
-  }, [])
+  }, [me])
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.
+    console.log(exPost)
     if (exPost) {
       setData(exPost.data)
     }

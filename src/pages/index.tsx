@@ -90,7 +90,12 @@ const HomePage: NextPage = () => {
       <main>
         {me ? (
           <div className={styles.myPostCheckBox}>
-            <input type="checkbox" id="showMineCheckBox" onClick={exposeMine} defaultChecked />
+            <input
+              type="checkbox"
+              id="showMineCheckBox"
+              onClick={exposeMine}
+              defaultChecked={false}
+            />
             My posts
           </div>
         ) : (
