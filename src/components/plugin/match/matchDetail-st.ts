@@ -311,13 +311,17 @@ export const playerSub = styled.div`
   }
 `
 
-export const StatsContainer = styled.div`
+export const StatsContainer = styled.div<{ forBlock: boolean }>`
   width: 100%;
   height: fit-content;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   background-color: ${COLORS.white};
+  @media only screen and (min-width: 810px) {
+    width: ${(props) => (props.forBlock ? 'calc(50% - 2px)' : '100%')};
+    height: ${(props) => (props.forBlock ? '281px' : 'fit-content')};
+  }
 `
 
 export const Stat = styled.div`

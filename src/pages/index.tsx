@@ -108,14 +108,11 @@ const HomePage: NextPage = () => {
           <div className={styles.postsContainer}>
             {toExposePosts.map((x) => (
               <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
-                {x.mainImage ? (
-                  <img className={styles.postImage} src={x.mainImage}></img>
-                ) : (
-                  <div className={styles.postImage} />
-                )}
+                {x.mainImage ? <img className={styles.postImage} src={x.mainImage} /> : null}
                 <div className={styles.postDetails}>
                   <div className={styles.postTitle}>{x.title}</div>
                   <div className={styles.postSnippet}>{x.snippet}</div>
+                  {x.mainImage ? null : <div className={styles.postEmptySpace} />}
                   <div className={styles.postUploadInfo}>
                     {x.email}
                     <span>{`${timeConverter(x.time)}`}</span>

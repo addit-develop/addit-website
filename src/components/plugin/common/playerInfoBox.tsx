@@ -12,12 +12,20 @@ import CircledImage from './circledImage'
 const Container = styled.div`
   flex-shrink: 0;
   width: 100%;
+  height: fit-content;
   padding: 8px;
   display: flex;
   flex-direction: row;
   gap: 10px;
   background-color: ${COLORS.white};
   cursor: pointer;
+`
+
+const PlayerImage = styled.img<{ size: string }>`
+  width: ${(props) => (props.size === 'large' ? '72px' : '54px')};
+  height: ${(props) =>
+    props.size === 'large' ? '72px' : props.size === 'medium' ? '54px' : '40px'};
+  object-fit: contain;
 `
 
 const PlayerInfo = styled.div`
@@ -27,9 +35,10 @@ const PlayerInfo = styled.div`
   gap: 8px;
 `
 
-const PlayerName = styled.div<{ smallFont: boolean }>`
+const PlayerName = styled.div<{ size: string }>`
   width: 100%;
-  font-size: ${(props) => (props.smallFont ? '16px' : '20px')};
+  font-size: ${(props) =>
+    props.size === 'large' ? '20px' : props.size === 'medium' ? '18px' : '16px'};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -57,9 +66,10 @@ const Stat = styled.div`
 interface PropsType {
   playerData: PlayerDataType | PlayerDataShortedType
   stat?: number
+  size: string
 }
 
-const PlayerInfoBox = ({ playerData, stat }: PropsType) => {
+const PlayerInfoBox = ({ playerData, stat, size = 'large' }: PropsType) => {
   const dispatch = useDispatch()
   const player = playerData.player
   const club = playerData.statistics[0].team || null
@@ -71,24 +81,37 @@ const PlayerInfoBox = ({ playerData, stat }: PropsType) => {
           dispatch(changeModalPage('playerDetail', 'Players', player.id))
         }}
       >
-        <Image src={player.photo} width={72} height={72} alt={player.name} />
+        <PlayerImage src={player.photo} alt={player.name} size={size} />
         <PlayerInfo>
-          <PlayerName smallFont={player.name.length > 25}>{player.name}</PlayerName>
+          <PlayerName size={size}>{player.name}</PlayerName>
           <PlayerTeamRow>
             {player.nationality && (
               <PlayerTeam>
-                <CircledImage
-                  src={countryFlag}
-                  width={24}
-                  height={24}
-                  altText={player.nationality}
-                />
+                {size === 'small' ? (
+                  <CircledImage
+                    src={countryFlag}
+                    width={16}
+                    height={16}
+                    altText={player.nationality}
+                  />
+                ) : (
+                  <CircledImage
+                    src={countryFlag}
+                    width={24}
+                    height={24}
+                    altText={player.nationality}
+                  />
+                )}
                 <div>{player.nationality}</div>
               </PlayerTeam>
             )}
             {club && (
               <PlayerTeam>
-                <CircledImage src={club.logo} width={24} height={24} altText={club.name} />
+                {size === 'small' ? (
+                  <CircledImage src={club.logo} width={16} height={16} altText={club.name} />
+                ) : (
+                  <CircledImage src={club.logo} width={24} height={24} altText={club.name} />
+                )}
                 <div>{club.name}</div>
               </PlayerTeam>
             )}

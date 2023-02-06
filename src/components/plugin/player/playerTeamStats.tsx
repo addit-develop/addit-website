@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CircledImage from '../common/circledImage'
 
-const Container = styled.div`
-  border-bottom: 1px ${COLORS.lightgray} solid;
+const Container = styled.div<{ expanded: boolean }>`
+  border-bottom: ${(props) => (props.expanded ? 'none' : `1px solid ${COLORS.lightgray}`)};
 `
 const LeaugeName = styled.div`
   margin-left: 8px;
@@ -16,21 +16,39 @@ const TeamTitle = styled.div`
   align-items: center;
 `
 
-const StatRow = styled.div`
+const StatRow = styled.div<{ expanded: boolean }>`
   padding: 8px;
   display: flex;
+  width: 100%;
+  height: fit-content;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  @media only screen and (max-width: 810px) {
+    flex-direction: ${(props) => (props.expanded ? 'column' : 'row')};
+    padding: ${(props) => (props.expanded ? '0px' : '8px')};
+  }
 `
 
 const StatBox = styled.div<{ expanded: boolean }>`
-  flex: 1;
-  height: ${(props) => props.expanded && 40}px;
+  flex-shrink: 0;
+  width: ${(props) => (props.expanded ? '25%' : '20%')};
+  height: 80px;
   font-size: 14px;
   display: flex;
-  flex-direction: ${(props) => (props.expanded ? 'row' : 'column')};
-  justify-content: ${(props) => props.expanded && 'space-between'};
+  flex-direction: column;
+  justify-content: center;
   gap: 16px;
   align-items: center;
+  border-radius: 10px;
+  border: ${(props) => (props.expanded ? `1px solid ${COLORS.lightgray}` : 'none')};
+  @media only screen and (max-width: 810px) {
+    width: ${(props) => (props.expanded ? '100%' : '20%')};
+    height: ${(props) => (props.expanded ? '40px' : '56px')};
+    flex-direction: ${(props) => (props.expanded ? 'row' : 'column')};
+    justify-content: ${(props) => (props.expanded ? 'space-between' : 'center')};
+    border: none;
+  }
 `
 
 const StatKey = styled.div`
@@ -87,7 +105,7 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
     'Key passes': passes.key,
     'Total Passes': passes.total,
     'Pass Accuracy': passes.accuracy,
-    'Dribbles success/attempts': `${dribbles.success} / ${dribbles.attempts}`,
+    'Dribbles success': `${dribbles.success} / ${dribbles.attempts}`,
     'Total tackles': tackles.total,
     Blocks: tackles.blocks,
     Interceptions: tackles.interceptions,
@@ -98,7 +116,7 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
   }
   return (
     <React.Fragment>
-      <Container>
+      <Container expanded={expanded}>
         <TeamTitle>
           <CircledImage src={team.logo} width={24} height={24} />
           <LeaugeName>
@@ -117,20 +135,20 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
           </ExpandButton>
         </TeamTitle>
         {expanded ? (
-          <>
+          <StatRow expanded={true}>
             {Object.keys(complexStat).map((k) => (
               <StatBox key={k} expanded={true}>
                 <StatKey>{k}</StatKey>
-                <StatValue rating={k === 'Rating'}>{complexStat[k]}</StatValue>
+                <StatValue rating={k === 'Rating'}>{complexStat[k] ? complexStat[k] : 0}</StatValue>
               </StatBox>
             ))}
-          </>
+          </StatRow>
         ) : (
-          <StatRow>
+          <StatRow expanded={false}>
             {Object.keys(simpleStat).map((k) => (
               <StatBox key={k} expanded={false}>
                 <StatKey>{k}</StatKey>
-                <StatValue rating={k === 'Rating'}>{simpleStat[k]}</StatValue>
+                <StatValue rating={k === 'Rating'}>{simpleStat[k] ? simpleStat[k] : 0}</StatValue>
               </StatBox>
             ))}
           </StatRow>

@@ -29,12 +29,16 @@ const Home = styled.div`
   width: 100%;
   font-size: 15px;
   text-align: end;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Away = styled.div`
   width: 100%;
   font-size: 15px;
   text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const Flag = styled.img`

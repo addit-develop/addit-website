@@ -85,6 +85,7 @@ const TeamSquad = ({ team }: PropsType) => {
                     },
                   ],
                 }}
+                size="small"
               />
             )
           })}
@@ -116,6 +117,7 @@ const TeamSquad = ({ team }: PropsType) => {
                         },
                       ],
                     }}
+                    size="small"
                   />
                 )
               })}

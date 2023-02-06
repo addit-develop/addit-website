@@ -58,3 +58,9 @@
   background-color: var(--blue);
   border-radius: 30px;
 }
+
+@media only screen and (max-width: 810px) {
+  .page {
+    padding: 24px 16px;
+  }
+}

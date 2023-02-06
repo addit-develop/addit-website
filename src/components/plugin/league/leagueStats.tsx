@@ -112,7 +112,14 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         />
         <Index>Top Scorer</Index>
         {topScorerList.slice(0, topScorerOpen ? 10 : 3).map((p, i) => {
-          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].goals.total} />
+          return (
+            <PlayerInfoBox
+              key={i}
+              playerData={p}
+              stat={p.statistics[0].goals.total}
+              size={i === 0 ? 'medium' : 'small'}
+            />
+          )
         })}
         <ViewMore onClick={() => setTopScorerOpen(!topScorerOpen)}>
           {topScorerOpen ? 'View Less' : 'View More'}
@@ -126,7 +133,14 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         />
         <Index>Top Assists</Index>
         {topAssistList.slice(0, topAssistOpen ? 10 : 3).map((p, i) => {
-          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].goals.assists} />
+          return (
+            <PlayerInfoBox
+              key={i}
+              playerData={p}
+              stat={p.statistics[0].goals.assists}
+              size={i === 0 ? 'medium' : 'small'}
+            />
+          )
         })}
         <ViewMore onClick={() => setTopAssistOpen(!topAssistOpen)}>
           {topAssistOpen ? 'View Less' : 'View More'}
@@ -140,7 +154,14 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         />
         <Index>Top Yellow Cards</Index>
         {topYellowCardList.slice(0, topYellowCardOpen ? 10 : 3).map((p, i) => {
-          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].cards.yellow} />
+          return (
+            <PlayerInfoBox
+              key={i}
+              playerData={p}
+              stat={p.statistics[0].cards.yellow}
+              size={i === 0 ? 'medium' : 'small'}
+            />
+          )
         })}
         <ViewMore onClick={() => setTopYellowCardOpen(!topYellowCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}
@@ -154,7 +175,14 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
         />
         <Index>Top Red Cards</Index>
         {topRedCardList.slice(0, topRedCardOpen ? 10 : 3).map((p, i) => {
-          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].cards.red} />
+          return (
+            <PlayerInfoBox
+              key={i}
+              playerData={p}
+              stat={p.statistics[0].cards.red}
+              size={i === 0 ? 'medium' : 'small'}
+            />
+          )
         })}
         <ViewMore onClick={() => setTopRedCardOpen(!topRedCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}
