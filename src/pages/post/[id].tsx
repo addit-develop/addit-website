@@ -14,11 +14,12 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
-import Editor from '../../components/editor/editor'
+import loadable from '@loadable/component'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
+const Editor = loadable(() => import('../../components/editor/editor'))
 // const Editor = dynamic(() => import('../../components/editor/editor'), {
 //   ssr: false,
 // })

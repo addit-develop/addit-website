@@ -16,6 +16,7 @@
     "@editorjs/list": "^1.8.0",
     "@editorjs/paragraph": "^2.9.0",
     "@editorjs/table": "^2.2.0",
+    "@loadable/component": "^5.15.3",
     "@next/font": "13.1.2",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",

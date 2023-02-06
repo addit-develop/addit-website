@@ -17,3 +17,8 @@ declare module '@editorjs/image' {
   import ImageTool from '@editorjs/image'
   export = ImageTool
 }
+
+declare module '@loadable/component' {
+  import loadable from '@loadable/component'
+  export = loadable
+}
