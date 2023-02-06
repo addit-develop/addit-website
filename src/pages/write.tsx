@@ -35,18 +35,18 @@ const WritePage: NextPage = () => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  useEffect(() => {
-    // redirect to main if not logged in or other post is yet saving.
-    async function redirectToLoginPageOrResetReducer() {
-      if (!me) {
-        const loginUrl = await loginRequestAction()
-        if (loginUrl) {
-          router.replace(loginUrl)
-        }
-      }
-    }
-    redirectToLoginPageOrResetReducer()
-  }, [])
+  // useEffect(() => {
+  //   // redirect to main if not logged in or other post is yet saving.
+  //   async function redirectToLoginPageOrResetReducer() {
+  //     if (!me) {
+  //       const loginUrl = await loginRequestAction()
+  //       if (loginUrl) {
+  //         router.replace(loginUrl)
+  //       }
+  //     }
+  //   }
+  //   redirectToLoginPageOrResetReducer()
+  // }, [])
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.

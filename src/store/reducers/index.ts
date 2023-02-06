@@ -5,27 +5,27 @@ import pageReducer from './pageReducer'
 import userReducer from './userReducer'
 
 // (이전상태, 액션) -> 다음상태
-// const rootReducer = (state: any, action: any) => {
-//   switch (action.type) {
-//     case HYDRATE:
-//       console.log('HYDRATE', action)
-//       return { ...state, ...action.payload }
-//     default: {
-//       const combinedReducer = combineReducers({
-//         userReducer,
-//         postReducer,
-//         pageReducer,
-//       })
-//       return combinedReducer(state, action)
-//     }
-//   }
-// }
+const rootReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case HYDRATE:
+      console.log('HYDRATE', action)
+      return { ...state, ...action.payload }
+    default: {
+      const combinedReducer = combineReducers({
+        userReducer,
+        postReducer,
+        pageReducer,
+      })
+      return combinedReducer(state, action)
+    }
+  }
+}
 
-const rootReducer = combineReducers({
-  userReducer,
-  postReducer,
-  pageReducer,
-})
+// const rootReducer = combineReducers({
+//   userReducer,
+//   postReducer,
+//   pageReducer,
+// })
 
 export default rootReducer
 

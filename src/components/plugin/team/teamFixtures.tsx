@@ -84,7 +84,7 @@ const TeamFixtures = ({ team }: PropsType) => {
             </BoxContainer>
           )
         })}
-        <ViewLabel onClick={() => setPage(page + 1)}>View next matches</ViewLabel>
+        <ViewLabel onClick={() => setPage(page + 1)}>View prev matches</ViewLabel>
       </Container>
     </React.Fragment>
   )

@@ -50,7 +50,7 @@ export const HeaderConatiner = styled.div<{ input: boolean }>`
   height: fit-content;
   padding-left: 8px;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 `
 
 export const backButton = styled.button`

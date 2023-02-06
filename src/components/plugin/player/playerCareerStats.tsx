@@ -41,8 +41,6 @@ interface PropsType {
 }
 
 const PlayerCareerStats = ({ data, setSeason, season }: PropsType) => {
-  if (!data) return null
-
   const dispatch = useDispatch()
   const axios = useAxios()
   const { currentSeason } = useCurrentSeason()
@@ -73,6 +71,7 @@ const PlayerCareerStats = ({ data, setSeason, season }: PropsType) => {
     else getPlayerDetail()
   }, [season])
 
+  if (!data) return null
   return (
     <React.Fragment>
       <Container>
