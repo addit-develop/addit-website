@@ -33,7 +33,7 @@ const StatRow = styled.div<{ expanded: boolean; forBlock: boolean }>`
 
 const StatBox = styled.div<{ expanded: boolean; forBlock: boolean }>`
   flex-shrink: 0;
-  width: ${(props) => (props.expanded && props.forBlock ? '25%' : '20%')};
+  width: ${(props) => (props.expanded ? (props.forBlock ? '25%' : '100%') : '20%')};
   height: 80px;
   font-size: 14px;
   display: flex;
