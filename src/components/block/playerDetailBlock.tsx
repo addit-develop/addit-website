@@ -41,7 +41,7 @@ const PlayerDetailBlock = ({ data }: PropsType) => {
   return (
     <React.Fragment>
       <BlockContainer>
-        <PlayerInfoBox playerData={data.playerData} />
+        <PlayerInfoBox playerData={data.playerData} size="large" />
         {data.statBox ? (
           <PlayerStatBox playerData={data.playerData} playerTeam={data.playerTeam} />
         ) : null}

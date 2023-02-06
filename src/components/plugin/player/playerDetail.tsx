@@ -130,7 +130,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
-        <PlayerInfoBox playerData={playerData} />
+        <PlayerInfoBox playerData={playerData} size="large" />
         <ElementContainer>
           <SelectBox
             selectMode={selectMode}
