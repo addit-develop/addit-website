@@ -22,12 +22,12 @@ const StatRow = styled.div<{ expanded: boolean; forBlock: boolean }>`
   display: flex;
   width: 100%;
   height: fit-content;
-  flex-direction: row;
+  flex-direction: ${(props) => (props.expanded && !props.forBlock ? 'column' : 'row')};
   flex-wrap: wrap;
   justify-content: start;
   @media only screen and (max-width: 810px) {
-    flex-direction: ${(props) => (props.expanded && props.forBlock ? 'column' : 'row')};
-    padding: ${(props) => (props.expanded && props.forBlock ? '0px' : '8px')};
+    flex-direction: ${(props) => (props.expanded ? 'column' : 'row')};
+    padding: ${(props) => (props.expanded ? '0px' : '8px')};
   }
 `
 
@@ -37,8 +37,8 @@ const StatBox = styled.div<{ expanded: boolean; forBlock: boolean }>`
   height: 80px;
   font-size: 14px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: ${(props) => (props.expanded && !props.forBlock ? 'row' : 'column')};
+  justify-content: ${(props) => (props.expanded && !props.forBlock ? 'space-between' : 'center')};
   gap: 16px;
   align-items: center;
   border-radius: 10px;
