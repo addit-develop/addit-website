@@ -68,14 +68,14 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
     team,
     league,
   } = statistics
-  const simpleStat = {
+  const simpleStat: { [prop: string]: any } = {
     Position: games.position,
     Games: games.appearences || 0,
     Goals: goals.total || 0,
     Assists: goals.assists || 0,
     Rating: games.rating?.toString().substring(0, 5) || 'N/A',
   }
-  const complexStat = {
+  const complexStat: { [prop: string]: any } = {
     'Subbed In': substitutes.in,
     'Subbed Out': substitutes.out,
     'Minutes played': games.minutes,
