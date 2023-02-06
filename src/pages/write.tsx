@@ -1,5 +1,5 @@
 import { OutputData } from '@editorjs/editorjs'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
@@ -9,6 +9,10 @@ import { RootState } from '@/store/reducers'
 import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
 import { loginRequestAction } from '@/store/actions/userAction'
+import wrapper from '@/store/configureStore'
+import backAxios from '@/store/configureBackAxios'
+import { LOAD_USER_REQUEST } from '@/store/types'
+import { END } from 'redux-saga'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -140,5 +144,22 @@ const WritePage: NextPage = () => {
     </div>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context.req ? context.req.headers.cookie : ''
+    backAxios.defaults.headers.Cookie = ''
+    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
+
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+
+    store.dispatch(END)
+    await store.sagaTask?.toPromise()
+
+    return { props: {} }
+  }
+)
 
 export default WritePage

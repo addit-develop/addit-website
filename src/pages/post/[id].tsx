@@ -16,6 +16,8 @@ import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
 import loadable from '@loadable/component'
 import InfoModal from '@/components/plugin/searchModal/infoModal'
+import backAxios from '@/store/configureBackAxios'
+import { LOAD_USER_REQUEST } from '@/store/types'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -103,6 +105,14 @@ const PostPage: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context.req ? context.req.headers.cookie : ''
+    backAxios.defaults.headers.Cookie = ''
+    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
+
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+
     const { id } = context.query
 
     if (id) {
