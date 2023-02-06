@@ -14,13 +14,14 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
+import Editor from '../../components/editor/editor'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const Editor = dynamic(() => import('../../components/editor/editor'), {
-  ssr: false,
-})
+// const Editor = dynamic(() => import('../../components/editor/editor'), {
+//   ssr: false,
+// })
 
 const PostPage: NextPage = () => {
   const [data, setData] = useState<OutputData>({
@@ -33,13 +34,13 @@ const PostPage: NextPage = () => {
   const { post, loadPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me } = useSelector((state: RootState) => state.userReducer)
 
-  const { id } = router.query
+  // const { id } = router.query
 
-  useEffect(() => {
-    if (id) {
-      dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
-    }
-  }, [id])
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
+  //   }
+  // }, [id])
 
   const timeConverter = useCallback((UNIX_timestamp: number) => {
     return dayjs(new Date(UNIX_timestamp))
@@ -97,19 +98,19 @@ const PostPage: NextPage = () => {
   )
 }
 
-// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (context: GetServerSidePropsContext) => {
-//     const { id } = context.query
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const { id } = context.query
 
-//     if (id) {
-//       store.dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
-//     }
+    if (id) {
+      store.dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
+    }
 
-//     store.dispatch(END)
-//     await store.sagaTask?.toPromise()
+    store.dispatch(END)
+    await store.sagaTask?.toPromise()
 
-//     return { props: {} }
-//   }
-// )
+    return { props: {} }
+  }
+)
 
 export default PostPage
