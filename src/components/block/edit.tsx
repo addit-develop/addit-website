@@ -1,9 +1,8 @@
-import { COLORS } from '@/constants/constants'
 import { default as React, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { BlockDataType } from '@/types'
-import rootReducer, { RootState } from '@/store/reducers'
+import { RootState } from '@/store/reducers'
 
 import EmptyBlock from './emptyBlock'
 import FixtureListByLeague from './fixtureListByLeague'
