@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CircledImage from '../common/circledImage'
 
-const Container = styled.div<{ expanded: boolean }>`
-  border-bottom: ${(props) => (props.expanded ? 'none' : `1px solid ${COLORS.lightgray}`)};
+const Container = styled.div<{ expanded: boolean; forBlock: boolean }>`
+  border-bottom: ${(props) =>
+    props.expanded && props.forBlock ? 'none' : `1px solid ${COLORS.lightgray}`};
 `
 const LeaugeName = styled.div`
   margin-left: 8px;
@@ -16,7 +17,7 @@ const TeamTitle = styled.div`
   align-items: center;
 `
 
-const StatRow = styled.div<{ expanded: boolean }>`
+const StatRow = styled.div<{ expanded: boolean; forBlock: boolean }>`
   padding: 8px;
   display: flex;
   width: 100%;
@@ -25,14 +26,14 @@ const StatRow = styled.div<{ expanded: boolean }>`
   flex-wrap: wrap;
   justify-content: start;
   @media only screen and (max-width: 810px) {
-    flex-direction: ${(props) => (props.expanded ? 'column' : 'row')};
-    padding: ${(props) => (props.expanded ? '0px' : '8px')};
+    flex-direction: ${(props) => (props.expanded && props.forBlock ? 'column' : 'row')};
+    padding: ${(props) => (props.expanded && props.forBlock ? '0px' : '8px')};
   }
 `
 
-const StatBox = styled.div<{ expanded: boolean }>`
+const StatBox = styled.div<{ expanded: boolean; forBlock: boolean }>`
   flex-shrink: 0;
-  width: ${(props) => (props.expanded ? '25%' : '20%')};
+  width: ${(props) => (props.expanded && props.forBlock ? '25%' : '20%')};
   height: 80px;
   font-size: 14px;
   display: flex;
@@ -41,7 +42,8 @@ const StatBox = styled.div<{ expanded: boolean }>`
   gap: 16px;
   align-items: center;
   border-radius: 10px;
-  border: ${(props) => (props.expanded ? `1px solid ${COLORS.lightgray}` : 'none')};
+  border: ${(props) =>
+    props.expanded && props.forBlock ? `1px solid ${COLORS.lightgray}` : 'none'};
   @media only screen and (max-width: 810px) {
     width: ${(props) => (props.expanded ? '100%' : '20%')};
     height: ${(props) => (props.expanded ? '40px' : '56px')};
@@ -66,9 +68,10 @@ const ExpandButton = styled.div`
 interface PropsType {
   statistics: StatisticsType
   player: PlayerType
+  forBlock?: boolean
 }
 
-const PlayerTeamStats = ({ statistics, player }: PropsType) => {
+const PlayerTeamStats = ({ statistics, player, forBlock = false }: PropsType) => {
   const [expanded, setExpanded] = useState<boolean>(false)
   const {
     games,
@@ -116,7 +119,7 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
   }
   return (
     <React.Fragment>
-      <Container expanded={expanded}>
+      <Container expanded={expanded} forBlock={forBlock}>
         <TeamTitle>
           <CircledImage src={team.logo} width={24} height={24} />
           <LeaugeName>
@@ -135,18 +138,18 @@ const PlayerTeamStats = ({ statistics, player }: PropsType) => {
           </ExpandButton>
         </TeamTitle>
         {expanded ? (
-          <StatRow expanded={true}>
+          <StatRow expanded={true} forBlock={forBlock}>
             {Object.keys(complexStat).map((k) => (
-              <StatBox key={k} expanded={true}>
+              <StatBox key={k} expanded={true} forBlock={forBlock}>
                 <StatKey>{k}</StatKey>
                 <StatValue rating={k === 'Rating'}>{complexStat[k] ? complexStat[k] : 0}</StatValue>
               </StatBox>
             ))}
           </StatRow>
         ) : (
-          <StatRow expanded={false}>
+          <StatRow expanded={false} forBlock={forBlock}>
             {Object.keys(simpleStat).map((k) => (
-              <StatBox key={k} expanded={false}>
+              <StatBox key={k} expanded={false} forBlock={forBlock}>
                 <StatKey>{k}</StatKey>
                 <StatValue rating={k === 'Rating'}>{simpleStat[k] ? simpleStat[k] : 0}</StatValue>
               </StatBox>

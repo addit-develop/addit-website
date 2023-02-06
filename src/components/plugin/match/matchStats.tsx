@@ -4,6 +4,7 @@ import { MatchDetailDataType } from '@/types'
 import styled from 'styled-components'
 
 const Container = styled.div<{ forBlock: boolean }>`
+  width: 100%;
   display: flex;
   flex-direction: column;
   @media only screen and (min-width: 810px) {

@@ -38,9 +38,10 @@ interface PropsType {
   data: PlayerDataType
   season: number
   setSeason?: ((season: number) => void) | undefined
+  forBlock?: boolean
 }
 
-const PlayerCareerStats = ({ data, setSeason, season }: PropsType) => {
+const PlayerCareerStats = ({ data, setSeason, season, forBlock = false }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const { currentSeason } = useCurrentSeason()
@@ -86,7 +87,14 @@ const PlayerCareerStats = ({ data, setSeason, season }: PropsType) => {
         </BoldTitleBox>
         <Column>
           {playerData.statistics.slice(0, isOpen ? undefined : 1).map((s, i) => {
-            return <PlayerTeamStats statistics={s} key={i} player={playerData.player} />
+            return (
+              <PlayerTeamStats
+                statistics={s}
+                key={i}
+                player={playerData.player}
+                forBlock={forBlock}
+              />
+            )
           })}
         </Column>
         <ViewLabel onClick={() => setIsOpen(!isOpen)}>

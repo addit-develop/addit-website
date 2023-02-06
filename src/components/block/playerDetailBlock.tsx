@@ -47,7 +47,7 @@ const PlayerDetailBlock = ({ data }: PropsType) => {
         ) : null}
         {data.recentMatches ? <PlayerRecentMatches data={data.matchData} /> : null}
         {data.careerStats ? (
-          <PlayerCareerStats data={data.playerData} season={data.season} />
+          <PlayerCareerStats data={data.playerData} season={data.season} forBlock />
         ) : null}
       </BlockContainer>
     </React.Fragment>
