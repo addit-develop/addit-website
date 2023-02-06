@@ -66,7 +66,7 @@ const SearchHome = ({ searchKey }: PropsType) => {
                   key={p.player.id}
                   onClick={() => dispatch(changeModalPage('playerDetail', 'Players', p.player.id))}
                 >
-                  <PlayerInfoBox playerData={p} />
+                  <PlayerInfoBox playerData={p} size="medium" />
                 </div>
               )
             })}
