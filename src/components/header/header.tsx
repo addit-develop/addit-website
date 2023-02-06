@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext, NextComponentType } from 'next'
+import { NextComponentType } from 'next'
 import Image from 'next/image'
 import logo from '@/assets/logo_long.svg'
 import styles from './header.module.css'
@@ -8,10 +8,6 @@ import Link from 'next/link'
 import { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import { useRouter } from 'next/router'
-import { LOAD_USER_REQUEST } from '@/store/types'
-import wrapper from '@/store/configureStore'
-import { END } from 'redux-saga'
-import backAxios from '@/store/configureBackAxios'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
@@ -86,22 +82,5 @@ const Header: NextComponentType = () => {
     </div>
   )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context: GetServerSidePropsContext) => {
-    const cookie = context.req ? context.req.headers.cookie : ''
-    backAxios.defaults.headers.Cookie = ''
-    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
-    store.dispatch({
-      type: LOAD_USER_REQUEST,
-    })
-
-    store.dispatch(END)
-    await store.sagaTask?.toPromise()
-
-    return { props: {} }
-  }
-)
 
 export default Header

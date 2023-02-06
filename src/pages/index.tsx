@@ -14,6 +14,8 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
+import backAxios from '@/store/configureBackAxios'
+import { LOAD_USER_REQUEST } from '@/store/types'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -138,6 +140,13 @@ const HomePage: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context.req ? context.req.headers.cookie : ''
+    backAxios.defaults.headers.Cookie = ''
+    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
+
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
     store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
 
     store.dispatch(END)
