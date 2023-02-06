@@ -105,7 +105,6 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.loadPostLoading = true
         draft.loadPostSuccess = false
         draft.loadPostError = null
-        draft.post = null
         break
       case LOAD_POST_SUCCESS:
         draft.loadPostLoading = false
