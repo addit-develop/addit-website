@@ -7,7 +7,7 @@ const useAxios = () => {
     const instance = axios.create({
       baseURL: FIXTURE_API,
     }) // Axios Instance 생성
-    instance.interceptors.request.use(async (config) => {
+    instance.interceptors.request.use(async (config: any) => {
       return {
         ...config,
         headers: {
