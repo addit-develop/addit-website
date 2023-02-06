@@ -8,6 +8,7 @@ const nextConfig = {
       'localhost',
       'media-1.api-sports.io',
       'media-2.api-sports.io',
+      process.env.NEXT_PUBLIC_BACK_URL,
     ],
   },
 }
