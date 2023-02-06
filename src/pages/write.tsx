@@ -109,7 +109,7 @@ const WritePage: NextPage = () => {
       dispatch(writePostResetReducerAction()) // reset post save reducers for later new post writing
       router.replace(`/post/${id}`)
     }
-  }, [savePostLoading])
+  }, [savePostLoading, savePostSuccess, savedPostId])
 
   const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') e.preventDefault()

@@ -22,7 +22,7 @@ type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
-  exPost: Post | null
+  exPost: boolean
   savePostLoading: boolean
   savePostSuccess: boolean
   savePostError: any | null
@@ -43,7 +43,7 @@ export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
-  exPost: null,
+  exPost: false,
   savePostLoading: false,
   savePostSuccess: false,
   savePostError: null,
@@ -133,10 +133,10 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case WRITE_POST_RESET_ACTION:
         draft.savedPostId = null
         draft.savePostSuccess = false
-        draft.exPost = null
+        draft.exPost = false
         break
       case EDIT_POST_ACTION:
-        draft.exPost = draft.post
+        draft.exPost = true
         break
       default:
         break
