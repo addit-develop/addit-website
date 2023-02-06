@@ -1,19 +1,9 @@
 import { COLORS } from '@/constants/constants'
-import useAxios from '@/hooks/useAxios'
-import useCurrentSeason from '@/hooks/useCurrentSeason'
-import { changeModalPage, loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import {
-  FixtureType,
-  PlayerDataType,
-  PlayerMatchStatsType,
-  PlayerShortType,
-  TeamType,
-} from '@/types'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { FixtureType } from '@/types'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import BoldTitleBox from '../common/boldTitleBox'
-import FixtureTable from '../common/fixtureTable'
+import BoldTitleBox from '../plugin/common/boldTitleBox'
+import FixtureTable from '../plugin/common/fixtureTable'
 
 const Container = styled.div`
   width: 100%;
@@ -64,40 +54,17 @@ const ViewLabel = styled.div`
 `
 
 interface PropsType {
-  playerData: PlayerDataType
-  sendData: any
+  data: FixtureType[]
 }
 
-const PlayerRecentMatches = ({ playerData, sendData }: PropsType) => {
-  const axios = useAxios()
-  const dispatch = useDispatch()
-  const [page, setPage] = useState<number>(1)
-
-  const [recentMatches, setRecentMatches] = useState<FixtureType[]>([])
-
-  const getRecentFixtures = async () => {
-    dispatch(loadDataStart())
-    const res = await axios.get('/fixtures', {
-      params: {
-        team: playerData.statistics[0].team.id,
-        last: 3 * page,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      },
-    })
-    setRecentMatches(res.data.response)
-    sendData(res.data.response)
-    dispatch(loadDataFinish())
-  }
-
-  useEffect(() => {
-    getRecentFixtures()
-  }, [page])
+const PlayerRecentMatches = ({ data }: PropsType) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
     <React.Fragment>
       <Container>
         <BoldTitleBox>Recent Matches</BoldTitleBox>
-        {recentMatches.map((f) => {
+        {data.slice(0, isOpen ? undefined : 3).map((f) => {
           return (
             <BoxContainer key={f.fixture.id}>
               <DateContainer>
@@ -130,7 +97,11 @@ const PlayerRecentMatches = ({ playerData, sendData }: PropsType) => {
             </BoxContainer>
           )
         })}
-        <ViewLabel onClick={() => setPage(page + 1)}>View more</ViewLabel>
+        {data.length > 3 ? (
+          <ViewLabel onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? 'View Less' : 'View More'}
+          </ViewLabel>
+        ) : null}
       </Container>
     </React.Fragment>
   )

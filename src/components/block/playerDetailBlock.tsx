@@ -1,16 +1,11 @@
 import { COLORS } from '@/constants/constants'
-import useAxios from '@/hooks/useAxios'
-import useCurrentSeason from '@/hooks/useCurrentSeason'
-import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import { PlayerDataType, PlayerShortType, PlayerType, TeamType } from '@/types'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { FixtureType, PlayerDataType, PlayerShortType, TeamType } from '@/types'
+import React from 'react'
 import styled from 'styled-components'
-import { RootState } from '@/store/reducers'
 import PlayerInfoBox from '../plugin/common/playerInfoBox'
 import PlayerStatBox from '../plugin/player/playerStatBox'
-import PlayerRecentMatches from '../plugin/player/playerRecentMatches'
 import PlayerCareerStats from '../plugin/player/playerCareerStats'
+import PlayerRecentMatches from './playerRecentMatchesForBlock'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -37,11 +32,12 @@ interface PropsType {
     playerData: PlayerDataType
     playerTeam: { team: TeamType; players: PlayerShortType[] }[]
     season: number
+    matchData: FixtureType[]
   }
 }
 
 const PlayerDetailBlock = ({ data }: PropsType) => {
-  if (!data) return null
+  if (!data.playerData) return null
   return (
     <React.Fragment>
       <BlockContainer>
@@ -49,9 +45,9 @@ const PlayerDetailBlock = ({ data }: PropsType) => {
         {data.statBox ? (
           <PlayerStatBox playerData={data.playerData} playerTeam={data.playerTeam} />
         ) : null}
-        {data.recentMatches ? <PlayerRecentMatches playerData={data.playerData} /> : null}
+        {data.recentMatches ? <PlayerRecentMatches data={data.matchData} /> : null}
         {data.careerStats ? (
-          <PlayerCareerStats player={data.playerData.player} season={data.season} />
+          <PlayerCareerStats data={data.playerData} season={data.season} />
         ) : null}
       </BlockContainer>
     </React.Fragment>

@@ -20,8 +20,9 @@ const Season = styled.div`
   color: ${COLORS.lightblack};
 `
 
-const SeasonSelector = styled.div`
+const SeasonSelector = styled.div<{ shorten?: boolean }>`
   position: absolute;
+  height: ${(props) => (props.shorten ? '150px' : 'fit-conent')};
   display: flex;
   flex-direction: column;
   background-color: ${COLORS.white};
@@ -31,6 +32,7 @@ const SeasonSelector = styled.div`
   right: 0px;
   border-radius: 14px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  overflow-y: scroll;
 `
 
 const SeasonItem = styled.div`
@@ -44,28 +46,31 @@ const SeasonItem = styled.div`
 interface PropsType {
   seasonList: number[]
   season: number
-  setSeason: (season: number) => void
+  setSeason: ((season: number) => void) | undefined
+  shorten?: boolean
 }
 
-const SeasonDropDown = ({ seasonList, season, setSeason }: PropsType) => {
+const SeasonDropDown = ({ seasonList, season, setSeason, shorten }: PropsType) => {
   const [selectorOpen, setSelectorOpen] = useState<boolean>(false)
 
   return (
     <SeasonContainer onClick={() => setSelectorOpen(!selectorOpen)}>
       <Season>
         {season}-{season + 1}
-        {selectorOpen ? (
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
-          </svg>
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={COLORS.darkgray} />
-          </svg>
-        )}
+        {setSeason ? (
+          selectorOpen ? (
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+              <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+              <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={COLORS.darkgray} />
+            </svg>
+          )
+        ) : null}
       </Season>
       {seasonList && setSeason && selectorOpen && (
-        <SeasonSelector>
+        <SeasonSelector shorten={shorten}>
           {seasonList.map((s) => {
             return (
               <SeasonItem

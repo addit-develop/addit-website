@@ -2,7 +2,7 @@ import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import { PlayerDataType, PlayerShortType, PlayerType, TeamType } from '@/types'
+import { FixtureType, PlayerDataType, PlayerShortType, PlayerType, TeamType } from '@/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -48,6 +48,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
     playerData: PlayerDataType | undefined
     playerTeam: { team: TeamType; players: PlayerShortType[] }[]
     season: number
+    matchData: FixtureType[]
   }>({
     statBox: false,
     recentMatches: false,
@@ -55,7 +56,15 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
     playerData: playerData,
     playerTeam: playerTeam,
     season,
+    matchData: [],
   })
+
+  useEffect(() => {
+    const copyData = JSON.parse(JSON.stringify(playerBlockData))
+    if (!copyData.statBox) copyData.playerTeam = []
+    if (!copyData.recentMatches) copyData.matchData = []
+    if (copyData) dispatch(setBlockData(blockId, copyData))
+  }, [playerBlockData])
 
   const changeSeason = useCallback(
     (x: number) => {
@@ -68,9 +77,15 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
     [playerBlockData]
   )
 
-  useEffect(() => {
-    if (playerBlockData) dispatch(setBlockData(blockId, playerBlockData))
-  }, [playerBlockData])
+  const getMatchData = useCallback(
+    (data: FixtureType[]) => {
+      setPlayerBlockData({
+        ...playerBlockData,
+        matchData: data,
+      })
+    },
+    [playerBlockData]
+  )
 
   const getPlayerDetail = async () => {
     dispatch(loadDataStart())
@@ -130,7 +145,10 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
             selected={playerBlockData.recentMatches}
             onClick={() => selectElement('recentMatches')}
           />
-          <PlayerRecentMatches playerData={playerData} />
+          <PlayerRecentMatches
+            playerData={playerData}
+            sendData={(data: FixtureType[]) => getMatchData(data)}
+          />
         </ElementContainer>
         <ElementContainer>
           <SelectBox
@@ -138,7 +156,7 @@ const PlayerDetail = ({ playerId, blockId }: PropsType) => {
             selected={playerBlockData.careerStats}
             onClick={() => selectElement('careerStats')}
           />
-          <PlayerCareerStats player={playerData.player} setSeason={changeSeason} season={season} />
+          <PlayerCareerStats data={playerData} setSeason={changeSeason} season={season} />
         </ElementContainer>
       </Container>
     </React.Fragment>

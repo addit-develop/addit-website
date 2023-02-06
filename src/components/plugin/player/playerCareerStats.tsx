@@ -1,5 +1,6 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
+import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { PlayerDataType, PlayerType, SeasonType } from '@/types'
 import React, { useEffect, useState } from 'react'
@@ -18,33 +19,47 @@ const Container = styled.div`
   padding: 8px;
   border-radius: 10px;
 `
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
 `
+const ViewLabel = styled.div`
+  font-size: 14px;
+  color: ${COLORS.darkgray};
+  display: flex;
+  padding: 10px 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`
 
 interface PropsType {
-  player: PlayerType
+  data: PlayerDataType
   season: number
-  setSeason?: (season: number) => void
+  setSeason?: ((season: number) => void) | undefined
 }
 
-const PlayerCareerStats = ({ player, setSeason, season }: PropsType) => {
+const PlayerCareerStats = ({ data, setSeason, season }: PropsType) => {
+  if (!data) return null
+
   const dispatch = useDispatch()
   const axios = useAxios()
-  const [playerData, setPlayerData] = useState<PlayerDataType | null>(null)
+  const { currentSeason } = useCurrentSeason()
+  const [playerData, setPlayerData] = useState<PlayerDataType>(data)
   const [seasonList, setSeasonList] = useState<number[]>([])
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const getPlayerSeason = async () => {
-    const res = await axios.get('/players/seasons', { params: { player: player.id } })
+    const res = await axios.get('/players/seasons', { params: { player: playerData.player.id } })
     setSeasonList(res.data.response)
   }
 
   const getPlayerDetail = async () => {
     dispatch(loadDataStart())
-    const res = await axios.get('/players', { params: { id: player.id, season: season } })
+    const res = await axios.get('/players', {
+      params: { id: playerData.player.id, season: season },
+    })
     setPlayerData(res.data.response[0])
     dispatch(loadDataFinish())
   }
@@ -54,24 +69,30 @@ const PlayerCareerStats = ({ player, setSeason, season }: PropsType) => {
   }, [])
 
   useEffect(() => {
-    getPlayerDetail()
+    if (season === currentSeason) setPlayerData(data)
+    else getPlayerDetail()
   }, [season])
 
-  if (!playerData) return null
   return (
     <React.Fragment>
       <Container>
         <BoldTitleBox>
           Career Stats
-          {setSeason ? (
-            <SeasonDropDown season={season} setSeason={setSeason} seasonList={seasonList} />
-          ) : null}
+          <SeasonDropDown
+            season={season}
+            setSeason={setSeason}
+            seasonList={seasonList.slice().reverse()}
+            shorten={true}
+          />
         </BoldTitleBox>
         <Column>
-          {playerData.statistics.map((s, i) => {
-            return <PlayerTeamStats statistics={s} key={i} player={player} />
+          {playerData.statistics.slice(0, isOpen ? undefined : 1).map((s, i) => {
+            return <PlayerTeamStats statistics={s} key={i} player={playerData.player} />
           })}
         </Column>
+        <ViewLabel onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? 'View Less' : 'View All'}
+        </ViewLabel>
       </Container>
     </React.Fragment>
   )
