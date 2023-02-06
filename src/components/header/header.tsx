@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { LOAD_USER_REQUEST } from '@/store/types'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
+import backAxios from '@/store/configureBackAxios'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
@@ -88,6 +89,10 @@ const Header: NextComponentType = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context.req ? context.req.headers.cookie : ''
+    backAxios.defaults.headers.Cookie = ''
+    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
+
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
