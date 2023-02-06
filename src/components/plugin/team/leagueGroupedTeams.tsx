@@ -76,7 +76,7 @@ const LeaugeGroupedTeams = ({ league, selectMode, forBlock = false, blockId }: P
 
   const getTeamList = async () => {
     const res = await axios.get('/teams', { params: { league: league.id, season: 2022 } })
-    setTeamList(res.data.response.map((i) => i.team))
+    setTeamList(res.data.response.map((i: any) => i.team))
   }
 
   useEffect(() => {
