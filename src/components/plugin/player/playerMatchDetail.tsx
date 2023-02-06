@@ -67,7 +67,7 @@ const PlayerMatchDetail = ({ data, selectMode, blockId }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
-        <PlayerInfoBox playerData={playerDataFilled} />
+        <PlayerInfoBox playerData={playerDataFilled} size="large" />
         <MatchContainer>
           <Round>
             {data.fixtureData.league?.name} {data.fixtureData.league?.round}
