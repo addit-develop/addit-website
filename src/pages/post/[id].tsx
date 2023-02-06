@@ -19,7 +19,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const Editor = dynamic(() => import('../../components/editor/editor'), {
-  ssr: true,
+  ssr: false,
 })
 
 const PostPage: NextPage = () => {
@@ -32,6 +32,14 @@ const PostPage: NextPage = () => {
   const dispatch = useDispatch()
   const { post, loadPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me } = useSelector((state: RootState) => state.userReducer)
+
+  const { id } = router.query
+
+  useEffect(() => {
+    if (id) {
+      dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
+    }
+  }, [id])
 
   const timeConverter = useCallback((UNIX_timestamp: number) => {
     return dayjs(new Date(UNIX_timestamp))
@@ -89,19 +97,19 @@ const PostPage: NextPage = () => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context: GetServerSidePropsContext) => {
-    const { id } = context.query
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+//   (store) => async (context: GetServerSidePropsContext) => {
+//     const { id } = context.query
 
-    if (id) {
-      store.dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
-    }
+//     if (id) {
+//       store.dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
+//     }
 
-    store.dispatch(END)
-    await store.sagaTask?.toPromise()
+//     store.dispatch(END)
+//     await store.sagaTask?.toPromise()
 
-    return { props: {} }
-  }
-)
+//     return { props: {} }
+//   }
+// )
 
 export default PostPage
