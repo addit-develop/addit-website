@@ -1,4 +1,3 @@
-import { COLORS } from '@/constants/constants'
 import { default as React, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BlockDataType } from '@/types'
