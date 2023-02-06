@@ -8,7 +8,7 @@ import axios from 'axios'
 // fork는 비동기 함수 호출
 
 function savePostAPI(post:Post){
-    return backAxios.post("http://localhost:3065/post/save", post)
+    return backAxios.post("/post/save", post)
 }
 
 function* savePost(action:any){
