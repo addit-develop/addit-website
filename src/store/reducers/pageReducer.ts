@@ -1,13 +1,10 @@
 import produce from 'immer'
 import {
-  LOAD_POST_ERROR,
-  LOAD_POST_REQUEST,
-  LOAD_POST_SUCCESS,
   SET_MODAL_PAGE,
-  TEAM_DETAIL_PAGE,
   LOAD_DATA_START,
   LOAD_DATA_FINISH,
   CHANGE_SELECT_MODE,
+  CLOSE_INFO_MODAL,
 } from '../types'
 
 type StateType = {
@@ -17,6 +14,7 @@ type StateType = {
   loadingData: boolean
   history: { menu: string; page: string; props?: any }[]
   selectMode: boolean
+  openInfoModal: boolean
 }
 
 export const initialState: StateType = {
@@ -25,6 +23,7 @@ export const initialState: StateType = {
   loadingData: false,
   history: [],
   selectMode: false,
+  openInfoModal: false,
 }
 
 const pageReducer = (state: StateType = initialState, action: any) =>
@@ -48,6 +47,7 @@ const pageReducer = (state: StateType = initialState, action: any) =>
         draft.currentPage = action.data.page
         draft.currentMenu = action.data.menu
         if (action.data.pageProps) draft.pageProps = action.data.pageProps
+        draft.openInfoModal = true
         break
       case LOAD_DATA_START:
         draft.loadingData = true
@@ -57,6 +57,9 @@ const pageReducer = (state: StateType = initialState, action: any) =>
         break
       case CHANGE_SELECT_MODE:
         draft.selectMode = action.data
+        break
+      case CLOSE_INFO_MODAL:
+        draft.openInfoModal = false
         break
       default:
         break

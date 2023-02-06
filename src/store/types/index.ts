@@ -7,6 +7,7 @@ export const SET_MODAL_PAGE = 'SET_MODAL_PAGE' as const
 export const PLAYER_DETAIL_PAGE = 'PLAYER_DETAIL_PAGE' as const
 export const TEAM_DETAIL_PAGE = 'TEAM_DETAIL_PAGE' as const
 export const CHANGE_SELECT_MODE = 'CHANGE_SELECT_MODE' as const
+export const CLOSE_INFO_MODAL = 'CLOSE_INFO_MODAL' as const
 //loadPostReducer
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST' as const
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS' as const

@@ -3,7 +3,7 @@ import { default as React, useCallback, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import TeamDetail from '../team/teamDetail'
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
@@ -14,6 +14,7 @@ import SearchHome from '../search/searchHome'
 import PlayerHome from '../player/playerHome'
 import PlayerMatchDetail from '../player/playerMatchDetail'
 import Loading from '../common/loading'
+import { closeInfoModal } from '@/store/actions/pageAction'
 
 interface Props {
   blockId: string
@@ -24,14 +25,13 @@ type MenuType = {
 }
 
 const InfoModal = ({ blockId }: Props) => {
-  const { currentPage, pageProps, loadingData } = useSelector(
+  const dispatch = useDispatch()
+  const { currentPage, pageProps, loadingData, openInfoModal } = useSelector(
     (state: RootState) => state.pageReducer
   )
 
-  const [modalClosed, setModalClosed] = useState<boolean>(true)
-
   const closeModal = useCallback(() => {
-    setModalClosed(true)
+    dispatch(closeInfoModal())
   }, [])
 
   const showCurrentModalPage = useCallback(() => {
@@ -75,7 +75,7 @@ const InfoModal = ({ blockId }: Props) => {
 
   return (
     <React.Fragment>
-      <Styles.Modal closed={modalClosed} id="addit-modal">
+      <Styles.Modal closed={!openInfoModal} id="addit-modal">
         <Styles.DragLine />
         <Styles.ContentContainer>
           {loadingData ? <Loading /> : null}
