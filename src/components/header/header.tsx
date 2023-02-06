@@ -17,11 +17,11 @@ const Header: NextComponentType = () => {
 
   const [menuState, setMenuState] = useState(false)
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_USER_REQUEST,
-    })
-  }, [])
+  // useEffect(() => {
+  //   dispatch({
+  //     type: LOAD_USER_REQUEST,
+  //   })
+  // }, [])
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
