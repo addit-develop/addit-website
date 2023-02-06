@@ -1,4 +1,4 @@
-import { NextComponentType } from 'next'
+import { GetServerSideProps, GetServerSidePropsContext, NextComponentType } from 'next'
 import Image from 'next/image'
 import logo from '@/assets/logo_long.svg'
 import styles from './header.module.css'
@@ -9,28 +9,26 @@ import { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import { useRouter } from 'next/router'
 import { LOAD_USER_REQUEST } from '@/store/types'
+import wrapper from '@/store/configureStore'
+import { END } from 'redux-saga'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
   const { me } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_USER_REQUEST,
-    });
-  }, [])
-
   const [menuState, setMenuState] = useState(false)
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
   }, [menuState])
-  
+
   const logIn = useCallback(async () => {
-      const loginUrl = await loginRequestAction()
-      if(loginUrl){router.push(loginUrl)}
-    }, [])
+    const loginUrl = await loginRequestAction()
+    if (loginUrl) {
+      router.push(loginUrl)
+    }
+  }, [])
 
   const logout = useCallback(() => {
     dispatch(logoutRequestAction())
@@ -87,4 +85,18 @@ const Header: NextComponentType = () => {
     </div>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+
+    store.dispatch(END)
+    await store.sagaTask?.toPromise()
+
+    return { props: {} }
+  }
+)
+
 export default Header
