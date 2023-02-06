@@ -108,8 +108,8 @@ const HeadToHead = ({ predictionData }: PropsType) => {
           </ResultConatiner>
         </SubContainer>
         <FixturesContainer>
-          {slicedh2hData?.map((x) => (
-            <FixtureTable fixture={x} />
+          {slicedh2hData?.map((x, i) => (
+            <FixtureTable key={i} fixture={x} />
           ))}
         </FixturesContainer>
       </Container>

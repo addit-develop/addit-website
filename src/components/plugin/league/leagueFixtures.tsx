@@ -79,13 +79,13 @@ const LeagueFixtures = ({ league, season, setData }: PropsType) => {
         ) : (
           fixturesByDate.map((d, i) => {
             return (
-              <ElementContainer>
+              <ElementContainer key={i}>
                 <SelectBox
                   selectMode={selectMode}
                   selected={d.selected}
                   onClick={() => onSelect(i)}
                 />
-                <DateGroupedFixtures key={i} fixtures={d.fixtures} />
+                <DateGroupedFixtures fixtures={d.fixtures} />
               </ElementContainer>
             )
           })

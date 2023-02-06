@@ -111,8 +111,8 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
           onClick={() => setTopScorerSelected(!topScorerSelected)}
         />
         <Index>Top Scorer</Index>
-        {topScorerList.slice(0, topScorerOpen ? 10 : 3).map((p) => {
-          return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.total} />
+        {topScorerList.slice(0, topScorerOpen ? 10 : 3).map((p, i) => {
+          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].goals.total} />
         })}
         <ViewMore onClick={() => setTopScorerOpen(!topScorerOpen)}>
           {topScorerOpen ? 'View Less' : 'View More'}
@@ -125,8 +125,8 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
           onClick={() => setTopAssistSelected(!topAssistSelected)}
         />
         <Index>Top Assists</Index>
-        {topAssistList.slice(0, topAssistOpen ? 10 : 3).map((p) => {
-          return <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.assists} />
+        {topAssistList.slice(0, topAssistOpen ? 10 : 3).map((p, i) => {
+          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].goals.assists} />
         })}
         <ViewMore onClick={() => setTopAssistOpen(!topAssistOpen)}>
           {topAssistOpen ? 'View Less' : 'View More'}
@@ -139,8 +139,8 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
           onClick={() => setTopYellowCardSelected(!topYellowCardSelected)}
         />
         <Index>Top Yellow Cards</Index>
-        {topYellowCardList.slice(0, topYellowCardOpen ? 10 : 3).map((p) => {
-          return <PlayerInfoBox playerData={p} stat={p.statistics[0].cards.yellow} />
+        {topYellowCardList.slice(0, topYellowCardOpen ? 10 : 3).map((p, i) => {
+          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].cards.yellow} />
         })}
         <ViewMore onClick={() => setTopYellowCardOpen(!topYellowCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}
@@ -153,8 +153,8 @@ const LeagueStats = ({ league, season, setData }: PropsType) => {
           onClick={() => setTopRedCardSelected(!topRedCardSelected)}
         />
         <Index>Top Red Cards</Index>
-        {topRedCardList.slice(0, topRedCardOpen ? 10 : 3).map((p) => {
-          return <PlayerInfoBox playerData={p} stat={p.statistics[0].cards.red} />
+        {topRedCardList.slice(0, topRedCardOpen ? 10 : 3).map((p, i) => {
+          return <PlayerInfoBox key={i} playerData={p} stat={p.statistics[0].cards.red} />
         })}
         <ViewMore onClick={() => setTopRedCardOpen(!topRedCardOpen)}>
           {topYellowCardOpen ? 'View Less' : 'View More'}

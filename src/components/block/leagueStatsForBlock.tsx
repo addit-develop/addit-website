@@ -25,10 +25,10 @@ const LeagueStats = ({ data }: PropType) => {
   return (
     <React.Fragment>
       {data.map((d, i: number) => (
-        <LeagueStatsContainer>
+        <LeagueStatsContainer key={i}>
           <LeagueStatsIndex>{d.type}</LeagueStatsIndex>
-          {d.data.slice(0, isOpenList[i] ? 10 : 3).map((p) => (
-            <PlayerInfoBox playerData={p} stat={p.statistics[0].goals.total} />
+          {d.data.slice(0, isOpenList[i] ? 10 : 3).map((p, index) => (
+            <PlayerInfoBox key={index} playerData={p} stat={p.statistics[0].goals.total} />
           ))}
           <LeagueStatsViewMore onClick={() => changeIsOpenList(i)}>
             {isOpenList[i] ? 'View Less' : 'View More'}
