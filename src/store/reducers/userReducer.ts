@@ -27,12 +27,12 @@ type StateType = {
   me: string | null
 
   logOutDone: boolean
-  logOutLoading: boolean 
+  logOutLoading: boolean
   logOutError: any | null
 
-  loadMyPostLoading : boolean
-  loadMyPostSuccess : boolean
-  loadMyPostError : any | null
+  loadMyPostLoading: boolean
+  loadMyPostSuccess: boolean
+  loadMyPostError: any | null
   myPosts: PostSummary[]
 }
 
@@ -51,27 +51,26 @@ export const initialState: StateType = {
   logOutLoading: false, //로그아웃 시도 중
   logOutError: null,
 
-  loadMyPostLoading : false,
-  loadMyPostSuccess : false,
-  loadMyPostError : null,
+  loadMyPostLoading: false,
+  loadMyPostSuccess: false,
+  loadMyPostError: null,
   myPosts: [],
 }
 
 const userReducer = (state = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case LOAD_USER_REQUEST : // load user when F5
+      case LOAD_USER_REQUEST: // load user when F5
         draft.loadUserLoading = true
         draft.loadUserError = null
         draft.loadUserDone = false
-        draft.me = null
         break
-        case LOAD_USER_SUCCESS :
+      case LOAD_USER_SUCCESS:
         draft.loadUserLoading = false
         draft.loadUserDone = true
         draft.me = action.data
         break
-        case LOAD_USER_FAILURE :
+      case LOAD_USER_FAILURE:
         draft.loadUserLoading = false
         draft.loadUserError = action.error
         break
@@ -117,7 +116,7 @@ const userReducer = (state = initialState, action: any) =>
       case LOAD_MY_POST_ERROR:
         draft.loadMyPostLoading = false
         draft.loadMyPostError = action.error
-        break  
+        break
       default:
         break
     }
