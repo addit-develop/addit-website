@@ -73,3 +73,9 @@
   background-color: var(--blue);
   border-radius: 30px;
 }
+
+@media only screen and (max-width: 600px) {
+  .title {
+    padding: 0 0 16px 0;
+  }
+}

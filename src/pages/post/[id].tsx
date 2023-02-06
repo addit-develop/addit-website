@@ -15,6 +15,7 @@ import timezone from 'dayjs/plugin/timezone'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
 import loadable from '@loadable/component'
+import InfoModal from '@/components/plugin/searchModal/infoModal'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -66,6 +67,7 @@ const PostPage: NextPage = () => {
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
           {!loadPostLoading && post ? (
             <div className={styles.postContainer} id="postContainer">
+              <InfoModal />
               <div className={styles.title}>{post.title}</div>
               <div className={styles.detail}>{`${
                 post.email

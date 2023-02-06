@@ -19,8 +19,8 @@ import axios from 'axios'
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
 
-function savePostAPI(post:Post){
-    return backAxios.post("/post/save", post)
+function savePostAPI(post: Post) {
+  return backAxios.post('/post/save', post)
 }
 
 function* savePost(action: any) {

@@ -23,7 +23,7 @@ export const Modal = styled.div<{ closed: boolean }>`
     height: 100%;
     right: 0;
     bottom: 0;
-    border-radius: 10px 10px 0 0;
+    border-radius: 20px 20px 0 0;
     border-top: 1px solid ${COLORS.gray};
     background: ${COLORS.white};
     overflow: hidden;
@@ -44,6 +44,7 @@ export const DragLine = styled.div`
 `
 
 export const HeaderConatiner = styled.div<{ input: boolean }>`
+  order: 1;
   display: flex;
   flex-direction: ${(props) => (props.input ? 'column' : 'row')};
   width: 100%;
@@ -51,6 +52,11 @@ export const HeaderConatiner = styled.div<{ input: boolean }>`
   padding-left: 8px;
   align-items: center;
   justify-content: start;
+  @media only screen and (max-width: 600px) {
+    order: 3;
+    flex-direction: ${(props) => (props.input ? 'column-reverse' : 'row')};
+    border-top: 1px solid ${COLORS.gray};
+  }
 `
 
 export const backButton = styled.button`
@@ -72,7 +78,6 @@ export const InputContainer = styled.div`
 
 export const SearchMenuContainer = styled.div<{ big: boolean }>`
   flex-shrink: 0;
-  order: 2;
   display: flex;
   width: 100%;
   height: ${(props) => (props.big ? '48px' : '44px')};
@@ -89,7 +94,8 @@ export const SearchMenuContainer = styled.div<{ big: boolean }>`
     display: none;
   }
   @media only screen and (max-width: 600px) {
-    order: 4;
+    height: 44px;
+    padding: 0 0 0 8px;
   }
 `
 
@@ -106,7 +112,7 @@ export const SearchMenu = styled.div<{ selected?: boolean }>`
 `
 
 export const ContentContainer = styled.div`
-  order: 3;
+  order: 2;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -124,7 +130,7 @@ export const ContentContainer = styled.div`
 `
 
 export const ModalMenuContainer = styled.div`
-  order: 6;
+  order: 4;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -135,7 +141,7 @@ export const ModalMenuContainer = styled.div`
   gap: 8px;
   padding: 12px 8px 16px 16px;
   @media only screen and (max-width: 600px) {
-    padding: 0px 16px 16px 12px;
+    padding: 4px 16px 16px 12px;
     border: none;
   }
 `

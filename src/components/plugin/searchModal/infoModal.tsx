@@ -16,15 +16,13 @@ import PlayerMatchDetail from '../player/playerMatchDetail'
 import Loading from '../common/loading'
 import { closeInfoModal } from '@/store/actions/pageAction'
 
-interface Props {
-  blockId: string
-}
 type MenuType = {
   page: string
   title: string
 }
 
-const InfoModal = ({ blockId }: Props) => {
+const InfoModal = () => {
+  const blockId = 'no block id'
   const dispatch = useDispatch()
   const { currentPage, pageProps, loadingData, openInfoModal } = useSelector(
     (state: RootState) => state.pageReducer
