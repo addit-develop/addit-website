@@ -1,5 +1,5 @@
 import { COLORS } from '@/constants/constants'
-import { LeagueBlockDataType } from '@/types'
+import { FixtureType, LeagueBlockDataType } from '@/types'
 import { default as React, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import LeagueStanding from './leagueStandingForBlock'
@@ -38,7 +38,9 @@ const LeagueDetailBlock = ({ data }: Props) => {
             selectedTeamId={data.leagueData.data.selectedTeamId}
           />
         ) : data.tab === 'Fixtures' ? (
-          data.leagueData.data.map((d, i: number) => <DateGroupedFixtures key={i} fixtures={d} />)
+          data.leagueData.data.map((d: FixtureType[], i: number) => (
+            <DateGroupedFixtures key={i} fixtures={d} />
+          ))
         ) : (
           <LeagueStats data={data.leagueData.data} />
         )}

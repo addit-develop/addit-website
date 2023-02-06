@@ -144,10 +144,7 @@ export type LeagueBlockDataType = {
     | {
         league: LeagueType
         season: number
-        data:
-          | { standingData: StandingDataType[]; selectedTeamId: number | undefined }
-          | FixtureType[][]
-          | { type: string; data: PlayerDataType[] }[]
+        data: any
       }
     | undefined
 }
