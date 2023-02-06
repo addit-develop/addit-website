@@ -6,6 +6,9 @@ import useAxios from '@/hooks/useAxios'
 import { PlayerDataType } from '@/types'
 import { changeModalPage, loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import PlayerInfoBox from '../common/playerInfoBox'
+import Header from '@/components/header/header'
+import SearchModalInput from '../searchModal/searchModalInput'
+
 export const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -55,6 +58,8 @@ const PlayerHome = ({ leagueId, searchKey }: PropsType) => {
   useEffect(() => {
     if (leagueId && searchKey) {
       searchPlayer()
+    } else {
+      setIsLoading(false)
     }
   }, [leagueId, searchKey])
 

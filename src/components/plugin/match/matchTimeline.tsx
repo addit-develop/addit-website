@@ -83,7 +83,7 @@ const MatchTimeline = ({ matchData, eventList }: PropsType) => {
           return (
             <div>
               {data.player.name}
-              {data.assist.name ? <span>assit by {data.assist.name}</span> : null}
+              {data.assist.name ? <span>assist by {data.assist.name}</span> : null}
             </div>
           )
         case 'subst':

@@ -9,6 +9,8 @@ import EmptyBlock from './emptyBlock'
 import FixtureListByLeague from './fixtureListByLeague'
 import MatchDetailBlock from './matchDetailBlock'
 import MatchPredictionBlock from './matchPredictionBlock'
+import LeagueDetailBlock from './leagueDetailBlock'
+import PlayerDetailBlock from './playerDetailBlock'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -38,6 +40,10 @@ const FootballBlockEdit = ({ blockId, savedblockData }: Props) => {
           return <MatchDetailBlock data={blockData?.data} />
         case 'Match_Prediction':
           return <MatchPredictionBlock data={blockData?.data} />
+        case 'League_Detail':
+          return <LeagueDetailBlock data={blockData?.data} />
+        case 'Player_Detail':
+          return <PlayerDetailBlock data={blockData?.data} />
       }
     },
     [blockData]

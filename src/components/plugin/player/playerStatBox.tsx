@@ -1,7 +1,7 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import { useCountryFlag } from '@/hooks/useCountryFlag'
-import { PlayerDataType, PlayerType, StatisticsType, TeamType } from '@/types'
+import { PlayerDataType, PlayerShortType, PlayerType, StatisticsType, TeamType } from '@/types'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -40,34 +40,15 @@ const NumberRow = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-right: ;
 `
 
 interface PropsType {
   playerData: PlayerDataType
+  playerTeam: { team: TeamType; players: PlayerShortType[] }[]
 }
 
-const PlayerStatBox = ({ playerData }: PropsType) => {
+const PlayerStatBox = ({ playerData, playerTeam }: PropsType) => {
   const axios = useAxios()
-  const [playerNumber, setPlayerNumber] = useState<
-    { teamName: string; teamLogo: string; number: number }[]
-  >([])
-
-  const getPlayerNumber = async () => {
-    const res = await axios.get('/players/squads', { params: { player: playerData.player.id } })
-    const temp = res.data.response.map((r) => {
-      return {
-        teamName: r.team.name,
-        teamLogo: r.team.logo,
-        number: r.players[0].number,
-      }
-    })
-    setPlayerNumber(temp)
-  }
-
-  useEffect(() => {
-    getPlayerNumber()
-  }, [])
 
   return (
     <React.Fragment>
@@ -90,16 +71,16 @@ const PlayerStatBox = ({ playerData }: PropsType) => {
           <StatBox>
             <StatName>Shirt</StatName>
             <Row>
-              {playerNumber.map((item) => {
+              {playerTeam.map((item) => {
                 return (
-                  <NumberRow key={item.teamName}>
+                  <NumberRow key={item.team.id}>
                     <CircledImage
-                      src={item.teamLogo}
+                      src={item.team.logo}
                       width={24}
                       height={24}
-                      altText={item.teamName}
+                      altText={item.team.name}
                     />
-                    <StatNumber>{item.number}</StatNumber>
+                    <StatNumber>{item.players[0].number}</StatNumber>
                   </NumberRow>
                 )
               })}

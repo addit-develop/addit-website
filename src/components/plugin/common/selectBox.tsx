@@ -2,6 +2,13 @@ import { default as React, useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import { COLORS } from '@/constants/constants'
 
+export const ElementContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+`
+
 const Box = styled.div<{ selectMode?: boolean; selected?: boolean }>`
   display: ${(props) => (props.selectMode ? 'flex' : 'none')};
   z-index: 999;

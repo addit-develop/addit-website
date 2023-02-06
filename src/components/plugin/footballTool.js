@@ -23,6 +23,7 @@ export default class FootballTool {
     this.api = api
     this.readOnly = readOnly
     this.data = data
+    this.blockAdded = false
 
     this.CSS = {
       baseClass: this.api.styles.block,
@@ -40,6 +41,14 @@ export default class FootballTool {
     this.data = data
   }
 
+  setBlockAdded() {
+    this.blockAdded = true
+  }
+
+  deleteBlock() {
+    this.api.blocks.delete()
+  }
+
   render() {
     const rootNode = document.createElement('div')
     rootNode.classList.add(this.CSS.baseClass, this.CSS.wrapper)
@@ -53,11 +62,13 @@ export default class FootballTool {
           ) : (
             <FootballBlockEdit blockId={this.id} savedblockData={this.data} />
           )}
-          {this.readOnly ? null : (
+          {this.readOnly || this.blockAdded ? null : (
             <SearchModal
               blockId={this.id}
               saveData={(data) => this.saveData(data)}
               savedblockData={this.data}
+              setBlockAdded={() => this.setBlockAdded()}
+              deleteBlock={() => this.deleteBlock()}
             />
           )}
         </React.StrictMode>

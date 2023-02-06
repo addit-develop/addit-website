@@ -61,6 +61,13 @@ export type FixtureType = {
   }
 }
 
+export type FixtureListBlockType = {
+  id: number
+  name: string
+  logo: string
+  fixtures: FixtureType[]
+}
+
 export type FixtureStatsType = {
   games: {
     appearences?: number
@@ -131,11 +138,18 @@ export type LeagueType = {
   logo: string
 }
 
-export type LeagueBlockType = {
-  id: number
-  name: string
-  logo: string
-  fixtures: FixtureType[]
+export type LeagueBlockDataType = {
+  tab: string
+  leagueData:
+    | {
+        league: LeagueType
+        season: number
+        data:
+          | { standingData: StandingDataType[]; selectedTeamId: number | undefined }
+          | FixtureType[][]
+          | { type: string; data: PlayerDataType[] }[]
+      }
+    | undefined
 }
 
 export type MatchDetailDataType = {
@@ -190,6 +204,15 @@ export type PlayerDataShortedType = {
     nationality: string
   }
   statistics: { team: { id: number; logo: string; name: string } }[]
+}
+
+export type PlayerShortType = {
+  id: number
+  name: string
+  age: number
+  number: number
+  position: string
+  photo: string
 }
 
 export type PlayerMatchStatsType = {
@@ -273,4 +296,52 @@ export type TeamStatType = {
     for: number
     against: number
   }
+}
+
+export type TransferType = {
+  player: {
+    id: number
+    name: string
+  }
+  update: string
+  transfers: {
+    date: string
+    type: string
+    teams: {
+      in: {
+        id: number
+        name: string
+        logo: string
+      }
+      out: {
+        id: number
+        name: string
+        logo: string
+      }
+    }
+  }[]
+}
+type HomeAwayTotal = {
+  home: number
+  away: number
+  total: number
+}
+
+export type TeamStatisticType = {
+  league: LeagueType
+  team: TeamType
+  form: string
+  fixtures: {
+    played: HomeAwayTotal
+    wins: HomeAwayTotal
+    draws: HomeAwayTotal
+    loses: HomeAwayTotal
+  }
+  goals: any
+  biggest: any
+  clean_sheet: HomeAwayTotal
+  failed_to_score: HomeAwayTotal
+  penalty: any
+  lineups: { formation: string; played: number }[]
+  cards: any
 }

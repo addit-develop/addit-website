@@ -1,13 +1,16 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 import { LeagueType, StandingDataType, TeamType } from '@/types'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import LeagueStandingTeam from './leagueStandingTeam'
+import LeagueStandingTeam from '../league/leagueStandingTeam'
+import SelectBox from '../common/selectBox'
 
 const Container = styled.div`
+  position: relative;
   margin-top: 2px;
   padding: 6px 8px 6px 8px;
   background-color: ${COLORS.white};
@@ -29,12 +32,17 @@ const Index = styled.div`
 interface PropsType {
   league: LeagueType
   season: number
+  selectedTeam?: TeamType
+  setData?: any
 }
 
-const LeagueStanding = ({ league, season }: PropsType) => {
+const LeagueStanding = ({ league, season, selectedTeam, setData }: PropsType) => {
   const [standingData, setStandingData] = useState<StandingDataType[]>([])
   const dispatch = useDispatch()
   const axios = useAxios()
+
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
+  const [selected, setSelected] = useState<boolean>(false)
 
   const getStandingData = async () => {
     dispatch(loadDataStart())
@@ -49,10 +57,18 @@ const LeagueStanding = ({ league, season }: PropsType) => {
     getStandingData()
   }, [season])
 
+  const onSelected = useCallback(() => {
+    if (!selected)
+      setData({ standingData: standingData, leagueId: league.id, selectedTeamId: selectedTeam?.id })
+    else setData()
+    setSelected(!selected)
+  }, [standingData, selected])
+
   if (!standingData) return null
   return (
     <React.Fragment>
       <Container>
+        <SelectBox selectMode={selectMode} selected={selected} onClick={onSelected} />
         <StandingIndex>
           <Index>PL</Index>
           <Index>W</Index>
@@ -62,7 +78,14 @@ const LeagueStanding = ({ league, season }: PropsType) => {
           <Index>PTS</Index>
         </StandingIndex>
         {standingData.map((team, i) => {
-          return <LeagueStandingTeam team={team} leagueId={league.id} key={i} />
+          return (
+            <LeagueStandingTeam
+              team={team}
+              leagueId={league.id}
+              key={i}
+              selected={team.team.id === selectedTeam?.id}
+            />
+          )
         })}
       </Container>
     </React.Fragment>

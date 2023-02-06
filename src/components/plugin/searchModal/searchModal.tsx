@@ -4,7 +4,7 @@ import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
 import { useSelector, useDispatch } from 'react-redux'
-import { LeagueBlockType, BlockDataType } from '@/types'
+import { FixtureListBlockType, BlockDataType } from '@/types'
 import TeamDetail from '../team/teamDetail'
 import {
   setBlockData,
@@ -15,7 +15,7 @@ import {
 import { RootState } from '@/store/reducers'
 import MatchDetail from '../match/matchDetail'
 import MatchPrediction from '../match/matchPrediction'
-import { changeModalPage } from '@/store/actions/pageAction'
+import { changeModalPage, changeSelectMode } from '@/store/actions/pageAction'
 import TeamHome from '../team/teamHome'
 import LeagueDetail from '../league/leagueDetail'
 import SearchModalInput from './searchModalInput'
@@ -28,16 +28,18 @@ interface Props {
   blockId: string
   saveData: any
   savedblockData: BlockDataType
+  setBlockAdded: any
+  deleteBlock: any
 }
 type MenuType = {
   page: string
   title: string
 }
 
-const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
+const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteBlock }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
-  const { currentPage, currentMenu, pageProps, loadingData, history } = useSelector(
+  const { currentPage, currentMenu, pageProps, loadingData, history, selectMode } = useSelector(
     (state: RootState) => state.pageReducer
   )
   const menu: MenuType[] = [
@@ -48,12 +50,17 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
   ]
 
   const [modalClosed, setModalClosed] = useState<boolean>(false)
-  const [selectMode, setSelectMode] = useState<boolean>(false)
 
   // 모달창 초기화 (이전에 작성한 블록이 있을 경우 모달창 정보가 남아있음)
   useEffect(() => {
     dispatch(changeModalPage('matchHome', 'Matches'))
   }, [])
+
+  // 블록이 추가된 경우 modal 창 없애기
+  useEffect(() => {
+    const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
+    if (myBlock?.isReady) setBlockAdded()
+  }, [blockDataList])
 
   // 새로운 blockdata 생성
   useEffect(() => {
@@ -64,6 +71,7 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
 
   const closeModal = useCallback(() => {
     setModalClosed(true)
+    deleteBlock()
   }, [])
 
   const selectContent = useCallback(() => {
@@ -73,7 +81,9 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
       const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
       var dataforSave = { type: myBlock?.type, data: myBlock?.data }
       if (myBlock?.type === 'Fixture_List_By_Date') {
-        dataforSave.data = myBlock?.data.filter((x: LeagueBlockType) => x.fixtures.length !== 0)
+        dataforSave.data = myBlock?.data.filter(
+          (x: FixtureListBlockType) => x.fixtures.length !== 0
+        )
         dispatch(setBlockData(blockId, dataforSave.data))
       }
       saveData(dataforSave)
@@ -81,7 +91,7 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
       setModalClosed(true)
     }
     // 데이터 선택 모드로 변경
-    setSelectMode(!selectMode)
+    dispatch(changeSelectMode(!selectMode))
   }, [selectMode, blockDataList])
 
   const showCurrentModalPage = useCallback(() => {
@@ -92,7 +102,7 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
         }
       case 'matchHome':
         dispatch(setBlockType(blockId, 'Fixture_List_By_Date'))
-        return <MatchHome selectMode={selectMode} blockId={blockId} />
+        return <MatchHome blockId={blockId} />
       case 'matchDetail':
         dispatch(setBlockType(blockId, 'Match_Detail'))
         if (pageProps)
@@ -110,6 +120,7 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
+        dispatch(setBlockType(blockId, 'League_Detail'))
         if (pageProps) return <LeagueDetail blockId={blockId} leagueId={pageProps} />
         else break
       case 'teamHome':
@@ -123,13 +134,14 @@ const SearchModal = ({ blockId, saveData, savedblockData }: Props) => {
       case 'playerHome':
         return <PlayerHome leagueId={pageProps?.leagueId} searchKey={pageProps?.searchKey} />
       case 'playerDetail':
+        dispatch(setBlockType(blockId, 'Player_Detail'))
         if (pageProps) return <PlayerDetail blockId={blockId} playerId={pageProps} />
         else break
     }
   }, [currentPage, selectMode, blockId, pageProps])
 
   const cancelSelectMode = useCallback(() => {
-    setSelectMode(false)
+    dispatch(changeSelectMode(false))
   }, [selectMode])
 
   const moveBack = useCallback(() => {

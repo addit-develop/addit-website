@@ -44,15 +44,18 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
 
     var i: number = 0
     while (i < 2) {
+      //lineup 데이터에 statistics 정보를 추가
       matchData?.lineups[i].startXI.forEach((x: lineupPlayerType) => {
         newStartXIData[i].push({ ...x, statistics: getStatistics(i, x.player.id) })
       })
       matchData?.lineups[i].substitutes.forEach((x: lineupPlayerType) => {
         newSubstituesData[i].push({ ...x, statistics: getStatistics(i, x.player.id) })
       })
+      //lineup 데이터를 포메이션에 따라 2차원 배열로 재정렬
+      StartXIFormationData[i].push(newStartXIData[i].splice(0, 1))
       const formationArray = matchData?.lineups[i].formation.split('-')
       formationArray?.forEach((x: number) => {
-        StartXIFormationData[i].push(newStartXIData[i].splice(1, x))
+        StartXIFormationData[i].push(newStartXIData[i].splice(0, x))
       })
       i++
     }
@@ -107,21 +110,15 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         <Styles.SubTitle>Lineup</Styles.SubTitle>
         <Styles.Lineup forBlock={forBlock}>
           <Styles.startingXI forBlock={forBlock}>
-            <Styles.startingXIRow forBlock={forBlock}>
-              {getPlayerElement(0, matchData?.lineups[0]?.startXI[0])}
-            </Styles.startingXIRow>
-            {startXIData[0].map((x) => (
-              <Styles.startingXIRow forBlock={forBlock}>
+            {startXIData[0].map((x, i) => (
+              <Styles.startingXIRow forBlock={forBlock} key={i}>
                 {x.map((y) => getPlayerElement(0, y))}
               </Styles.startingXIRow>
             ))}
           </Styles.startingXI>
           <Styles.startingXI reverse forBlock={forBlock}>
-            <Styles.startingXIRow forBlock={forBlock}>
-              {getPlayerElement(1, matchData?.lineups[1].startXI[0])}
-            </Styles.startingXIRow>
-            {startXIData[1].map((x) => (
-              <Styles.startingXIRow forBlock={forBlock}>
+            {startXIData[1].map((x, i) => (
+              <Styles.startingXIRow forBlock={forBlock} key={i}>
                 {x.map((y) => getPlayerElement(1, y))}
               </Styles.startingXIRow>
             ))}
@@ -130,7 +127,10 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         <Styles.SubPlayerContainer>
           <Styles.SubPlayerList>
             {substituesData[0].map((x: lineupPlayerType) => (
-              <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 0)}>
+              <Styles.playerSub
+                key={x.player.id}
+                onClick={() => moveToPlayerMatchStat(x.statistics, 0)}
+              >
                 <div>{x.player.number}</div>
                 <div>{x.player.name}</div>
               </Styles.playerSub>
@@ -139,7 +139,10 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
           <Styles.SubPlayerList>
             <Styles.SubPlayerList>
               {substituesData[1].map((x: lineupPlayerType) => (
-                <Styles.playerSub onClick={() => moveToPlayerMatchStat(x.statistics, 1)}>
+                <Styles.playerSub
+                  key={x.player.id}
+                  onClick={() => moveToPlayerMatchStat(x.statistics, 1)}
+                >
                   <div>{x.player.number}</div>
                   <div>{x.player.name}</div>
                 </Styles.playerSub>

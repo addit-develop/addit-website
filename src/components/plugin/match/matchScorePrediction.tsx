@@ -41,7 +41,7 @@ const PredictionScore = styled.div`
   }
 `
 
-const PredictionPresentage = styled.div<{ data: { home: string; draw: string; away: string } }>`
+const PredictionPercentage = styled.div<{ data: { home: string; draw: string; away: string } }>`
   width: 100%;
   height: 40px;
   display: flex;
@@ -85,11 +85,11 @@ const MatchScorePrediction = ({ predictionData }: PropsType) => {
           <div id="away">{Math.abs(predictionData?.predictions.goals.away)}</div>
           <span>Away</span>
         </PredictionScore>
-        <PredictionPresentage data={predictionData?.predictions.percent}>
+        <PredictionPercentage data={predictionData?.predictions.percent}>
           <div id="home">{predictionData?.predictions.percent.home}</div>
           <div id="draw">{predictionData?.predictions.percent.draw}</div>
           <div id="away">{predictionData?.predictions.percent.away}</div>
-        </PredictionPresentage>
+        </PredictionPercentage>
       </Container>
     </React.Fragment>
   )

@@ -6,6 +6,7 @@ export const Container = styled.div`
   width: 100%;
   padding: 8px;
   background-color: ${COLORS.white};
+  margin-bottom: 2px;
 `
 
 export const MenuList = styled.div`

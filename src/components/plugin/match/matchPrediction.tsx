@@ -9,7 +9,7 @@ import { FixtureType } from '@/types'
 import HeadToHead from './headToHead'
 import { useDispatch } from 'react-redux'
 import { setBlockData } from '@/store/actions/postAction'
-import SelectBox from '../common/selectBox'
+import SelectBox, { ElementContainer } from '../common/selectBox'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 interface PropsType {
@@ -95,30 +95,30 @@ const MatchPrediction = ({ fixtureData, selectMode, blockId }: PropsType) => {
     <React.Fragment>
       <Styles.Container>
         <MatchHeader matchData={fixtureData} />
-        <Styles.ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={predictionBlockData.scorePrediction}
             onClick={() => selectElement('scorePrediction')}
           />
           <MatchScorePrediction predictionData={predictionData} />
-        </Styles.ElementContainer>
-        <Styles.ElementContainer>
+        </ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={predictionBlockData.teamForm}
             onClick={() => selectElement('teamForm')}
           />
           <TeamForm predictionData={predictionData} />
-        </Styles.ElementContainer>
-        <Styles.ElementContainer>
+        </ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={predictionBlockData.headToHead}
             onClick={() => selectElement('headToHead')}
           />
           <HeadToHead predictionData={predictionData} />
-        </Styles.ElementContainer>
+        </ElementContainer>
       </Styles.Container>
     </React.Fragment>
   )

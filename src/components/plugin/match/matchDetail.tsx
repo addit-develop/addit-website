@@ -8,7 +8,7 @@ import MatchHeader from './matchHeader'
 import MatchLineup from './matchLineup'
 import MatchTimeline from './matchTimeline'
 import MatchStats from './matchStats'
-import SelectBox from '../common/selectBox'
+import SelectBox, { ElementContainer } from '../common/selectBox'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 interface PropsType {
@@ -132,30 +132,30 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
     <React.Fragment>
       <Styles.Container>
         <MatchHeader matchData={matchData} scorerList={scorerList} />
-        <Styles.ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={matchBlockData.timeline}
             onClick={() => selectElement('timeline')}
           />
           <MatchTimeline matchData={matchData} eventList={eventList} />
-        </Styles.ElementContainer>
-        <Styles.ElementContainer>
+        </ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={matchBlockData.lineUp}
             onClick={() => selectElement('lineUp')}
           />
           <MatchLineup matchData={matchData} />
-        </Styles.ElementContainer>
-        <Styles.ElementContainer>
+        </ElementContainer>
+        <ElementContainer>
           <SelectBox
             selectMode={selectMode}
             selected={matchBlockData.stats}
             onClick={() => selectElement('stats')}
           />
           <MatchStats matchData={matchData} />
-        </Styles.ElementContainer>
+        </ElementContainer>
       </Styles.Container>
     </React.Fragment>
   )
