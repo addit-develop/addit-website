@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { RootState } from '@/store/reducers'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import { useRouter } from 'next/router'
+import { LOAD_USER_REQUEST } from '@/store/types'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,12 @@ const Header: NextComponentType = () => {
   const router = useRouter()
 
   const [menuState, setMenuState] = useState(false)
+
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+  }, [])
 
   const openMenu = useCallback(() => {
     setMenuState(!menuState)
