@@ -4,25 +4,11 @@ import postReducer from './postReducer'
 import pageReducer from './pageReducer'
 import userReducer from './userReducer'
 
-// (이전상태, 액션) -> 다음상태
-const rootReducer = (state: any, action: any) => {
-  switch (action.type) {
-    default: {
-      const combinedReducer = combineReducers({
-        userReducer,
-        postReducer,
-        pageReducer,
-      })
-      return combinedReducer(state, action)
-    }
-  }
-}
-
-// const rootReducer = combineReducers({
-//   userReducer,
-//   postReducer,
-//   pageReducer,
-// })
+const rootReducer = combineReducers({
+  userReducer,
+  postReducer,
+  pageReducer,
+})
 
 export default rootReducer
 
