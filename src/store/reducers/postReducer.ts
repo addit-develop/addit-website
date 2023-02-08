@@ -35,9 +35,10 @@ type StateType = {
   loadPostSuccess: boolean
   loadPostError: any | null
   loadPost: Post | null
-  deletePostLoading: boolean,
-  deletePostSuccess: boolean,
-  deletePostError: any | null,
+  deletePostLoading: boolean
+  deletePostSuccess: boolean
+  deletePostError: any | null
+  editing : boolean
 
   loadMainPostLoading: boolean
   loadMainPostSuccess: boolean
@@ -62,6 +63,7 @@ export const initialState: StateType = {
   deletePostLoading: false,
   deletePostSuccess: false,
   deletePostError: null,
+  editing:false,
 
   loadMainPostLoading: false,
   loadMainPostSuccess: false,
@@ -151,7 +153,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case EDIT_POST_ACTION:
         draft.loadPostLoading = false
         draft.loadPostError = null
-        draft.exPost = draft.loadPost
+        draft.exPost = draft.loadPost?{...draft.loadPost}:null
         draft.loadPost = null
         break
       case DELETE_POST_REQUEST:
