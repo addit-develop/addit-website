@@ -43,10 +43,10 @@ export const DragLine = styled.div`
   }
 `
 
-export const HeaderConatiner = styled.div<{ input: boolean }>`
+export const HeaderConatiner = styled.div`
   order: 1;
   display: flex;
-  flex-direction: ${(props) => (props.input ? 'column' : 'row')};
+  flex-direction: column;
   width: 100%;
   height: fit-content;
   padding-left: 8px;
@@ -54,17 +54,8 @@ export const HeaderConatiner = styled.div<{ input: boolean }>`
   justify-content: start;
   @media only screen and (max-width: 600px) {
     order: 3;
-    flex-direction: ${(props) => (props.input ? 'column-reverse' : 'row')};
-    border-top: 1px solid ${COLORS.gray};
+    border-top: 1px solid ${COLORS.lightgray};
   }
-`
-
-export const backButton = styled.button`
-  flex-shrink: 0;
-  display: flex;
-  width: 32px;
-  height: 24px;
-  justify-content: center;
 `
 
 export const InputContainer = styled.div`
@@ -120,12 +111,29 @@ export const ContentContainer = styled.div`
   justify-content: start;
   width: 100%;
   height: 100%;
-  padding: 8px 0;
+  padding: 8px 0 0;
   background-color: ${COLORS.lightgray};
   overflow: hidden;
   @media only screen and (max-width: 600px) {
     padding: 0;
     margin-top: 10px;
+  }
+`
+
+export const backButton = styled.button`
+  z-index: 9;
+  position: absolute;
+  right: 8px;
+  bottom: 12px;
+  display: flex;
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  background-color: ${COLORS.lightgray};
+  @media only screen and (max-width: 600px) {
+    right: 12px;
   }
 `
 
@@ -140,6 +148,7 @@ export const ModalMenuContainer = styled.div`
   justify-content: start;
   gap: 8px;
   padding: 12px 8px 16px 16px;
+  border-top: 1px solid ${COLORS.lightgray};
   @media only screen and (max-width: 600px) {
     padding: 4px 16px 16px 12px;
     border: none;
