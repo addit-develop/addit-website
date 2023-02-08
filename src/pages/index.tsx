@@ -20,7 +20,7 @@ import { LOAD_USER_REQUEST } from '@/store/types'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
+const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | null, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
   const dispatch = useDispatch()
   const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr ? myPostsSsr : mainPostsSsr)
   const { mainPosts } = useSelector((state: RootState) => state.postReducer)
@@ -139,18 +139,17 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-    const res1:{data:any} = await store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
-    const res2:{data:any} = await store.dispatch({
+    store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
+    store.dispatch({
       type: LOAD_USER_REQUEST,
     })
 
-    console.log(res1, res2)
-    const mainPostsSsr:PostSummary[] = res1 ? res1.data : []
-    const meSsr:string = res2?res2.data:null
+    const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
+    const meSsr:string | null = store.getState().userReducer.me
     var myPostsSsr:PostSummary[]=[];
     if (meSsr) {
       const res3:{data:any} =  await store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
-      myPostsSsr = res3?res3.data:[]
+      myPostsSsr = store.getState().userReducer.myPosts
     }
 
     store.dispatch(END)
