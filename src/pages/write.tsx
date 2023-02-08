@@ -48,7 +48,7 @@ const WritePage: NextPage = () => {
       }
     }
     if(exPost && me && me!==exPost.email){
-      dispatch(logoutRequestAction)
+      dispatch(logoutRequestAction())
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
     }
