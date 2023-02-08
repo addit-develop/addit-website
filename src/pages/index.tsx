@@ -37,6 +37,9 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
     }
   }, [meSsr, mainPostsSsr, myPostsSsr])
 
+  useEffect(() => {
+    console.log(toExposePosts)
+  }, [toExposePosts])
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
   //     if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
@@ -82,7 +85,6 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
       console.log('show all')
     }
   }, [myPosts, mainPosts])
-
   return (
     <>
       <Head>
