@@ -35,7 +35,7 @@ const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSi
           version: '2.26.4',
         }
   )
-  const [title, setTitle] = useState<string>('')
+  const [title, setTitle] = useState<string>(exPost?exPost.title:'')
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -51,14 +51,6 @@ const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSi
     }
     redirectToLoginPageOrResetReducer()
   }, [me])
-
-  useEffect(() => {
-    // redirect to main if not logged in or other post is yet saving.
-    if (exPost) {
-      setData(exPost.data)
-      setTitle(exPost.title)
-    }
-  }, [exPost])
 
   const savePost = useCallback(() => {
     if (me) {
@@ -158,6 +150,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     })
     store.dispatch(END)
     await store.sagaTask?.toPromise()
+
     const storeState = store.getState()
     const exPost = storeState.postReducer.exPost
 

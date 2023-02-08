@@ -1,5 +1,6 @@
 import { BlockDataType, Post, PostSummary } from '@/types'
 import produce from 'immer'
+import { HYDRATE } from 'next-redux-wrapper'
 import {
   LOAD_MAIN_POST_ERROR,
   LOAD_MAIN_POST_REQUEST,
@@ -74,6 +75,8 @@ export const initialState: StateType = {
 const postReducer = (state: StateType = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case HYDRATE:
+        return action.payload;
       case MAKE_BLOCK_DATA:
         if (draft.blockDataList.find((x) => x.id === action.id) === undefined) {
           draft.blockDataList.push({
