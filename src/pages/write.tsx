@@ -82,7 +82,7 @@ const WritePage: NextPage = () => {
           hashtags = hashtags.concat(
             (block.data.text.match(hashtagRegex) || []).map((e: string) => e.slice(1).toLowerCase())
           )
-        } else if (block.type === 'image' && !mainImage && !block.data.file.url) {
+        } else if (block.type === 'image' && !mainImage && block.data.file.url) {
           const splitedImageUrl = block.data.file.url.split('/')
           const fileName = splitedImageUrl[splitedImageUrl.length - 1]
           mainImage = 'https://addit-football-s3.s3.ap-northeast-2.amazonaws.com/thumb/' + fileName
