@@ -22,10 +22,10 @@ dayjs.extend(timezone)
 
 const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | null, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
   const dispatch = useDispatch()
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>([])
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr?myPostsSsr:mainPostsSsr)
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(true)
+  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(toExposePosts?false:true)
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
     if (box && box.checked && myPostsSsr) {
