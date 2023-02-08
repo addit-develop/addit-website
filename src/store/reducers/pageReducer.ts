@@ -27,7 +27,7 @@ export const initialState: StateType = {
   openInfoModal: false,
 }
 
-const pageReducerUnhydrate = (state: StateType = initialState, action: any) =>
+const pageReducer = (state: StateType = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
       case SET_MODAL_PAGE:
@@ -66,15 +66,5 @@ const pageReducerUnhydrate = (state: StateType = initialState, action: any) =>
         break
     }
   })
-
-  const pageReducer = (state: StateType = initialState, action: any) => {
-    switch (action.type) {
-      case HYDRATE:
-        return {...state, ...action.payload}
-      default: {
-        return pageReducerUnhydrate
-      }
-    }
-  };
 
 export default pageReducer

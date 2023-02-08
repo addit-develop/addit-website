@@ -1,14 +1,14 @@
 import { OutputData } from '@editorjs/editorjs'
-import type { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
+import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
-import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
+import { editPostRequestAction, savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
-import { loginRequestAction } from '@/store/actions/userAction'
+import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import wrapper from '@/store/configureStore'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
@@ -20,9 +20,9 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 
-const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSideProps>) => {
+const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, } = useSelector(
+  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
     (state: RootState) => state.postReducer
   )
   //state to hold output data. we'll use this for rendering later
@@ -41,6 +41,9 @@ const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSi
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.
+    if(exPost && me && me!==exPost.email){
+      return dispatch(logoutRequestAction)
+    }
     async function redirectToLoginPageOrResetReducer() {
       if (!me) {
         const loginUrl = await loginRequestAction()
@@ -138,22 +141,5 @@ const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSi
     </div>
   )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context: GetServerSidePropsContext) => {
-    const cookie = context.req ? context.req.headers.cookie : ''
-    backAxios.defaults.headers.Cookie = ''
-    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
-    store.dispatch({
-      type: LOAD_USER_REQUEST,
-    })
-    store.dispatch(END)
-    await store.sagaTask?.toPromise()
-    const exPost = store.postReducer.exPost
-
-    return { props: {exPost} }
-  }
-)
 
 export default WritePage
