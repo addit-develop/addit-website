@@ -11,7 +11,6 @@ import {
   SAVE_POST_ERROR,
   SAVE_POST_REQUEST,
   SAVE_POST_SUCCESS,
-  WRITE_POST_RESET_ACTION,
   CHANGE_SELECT_MODE,
   DELETE_POST_REQUEST,
   DELETE_POST_ERROR,
@@ -101,9 +100,9 @@ function* watchLoadMainPostRequestAction() {
 function deletePostAPI(postId : number) {
   return backAxios.post('/post/delete', postId)
 }
-function* deletePost(action : {postId : number}) {
+function* deletePost(action : any) {
   try{
-    const result:{} = yield call(deletePostAPI, action.postId)
+    yield call(deletePostAPI, action.postId)
     yield put({
       type: DELETE_POST_SUCCESS,
     })
