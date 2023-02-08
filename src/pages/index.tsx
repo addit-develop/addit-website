@@ -139,8 +139,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-    const res1 = await store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
-    const res2 = await store.dispatch({
+    const res1:{data:any} = await store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
+    const res2:{data:any} = await store.dispatch({
       type: LOAD_USER_REQUEST,
     })
 
@@ -149,7 +149,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const meSsr:string = res2?res2.data:null
     var myPostsSsr:PostSummary[]=[];
     if (meSsr) {
-      const res3 =  await store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
+      const res3:{data:any} =  await store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
       myPostsSsr = res3?res3.data:[]
     }
 
