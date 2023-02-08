@@ -150,9 +150,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     })
     store.dispatch(END)
     await store.sagaTask?.toPromise()
-
-    const storeState = store.getState()
-    const exPost = storeState.postReducer.exPost
+    const exPost = store.postReducer.exPost
 
     return { props: {exPost} }
   }
