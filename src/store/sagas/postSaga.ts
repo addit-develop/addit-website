@@ -13,6 +13,9 @@ import {
   SAVE_POST_SUCCESS,
   WRITE_POST_RESET_ACTION,
   CHANGE_SELECT_MODE,
+  DELETE_POST_REQUEST,
+  DELETE_POST_ERROR,
+  DELETE_POST_SUCCESS,
 } from '../types'
 import axios from 'axios'
 
@@ -90,14 +93,36 @@ function* loadMainPost(action: any) {
     })
   }
 }
-function* watchLoadMainPostRequestActrion() {
+function* watchLoadMainPostRequestAction() {
   yield takeLatest(LOAD_MAIN_POST_REQUEST, loadMainPost)
+}
+
+
+function deletePostAPI(postId : number) {
+  return backAxios.post('/post/delete', postId)
+}
+function* deletePost(action : {postId : number}) {
+  try{
+    const result:{} = yield call(deletePostAPI, action.postId)
+    yield put({
+      type: DELETE_POST_SUCCESS,
+    })
+  }catch(err : any){
+    yield put({
+      type: DELETE_POST_ERROR,
+      data: err.response.data,
+    })
+  }
+}
+function* watchDeletePostRequestAction() {
+  yield takeLatest(DELETE_POST_REQUEST, deletePost)
 }
 
 export default function* postSaga() {
   yield all([
     fork(watchSavePostRequestAction),
     fork(watchLoadPostRequestActrion),
-    fork(watchLoadMainPostRequestActrion),
+    fork(watchLoadMainPostRequestAction),
+    fork(watchDeletePostRequestAction),
   ])
 }

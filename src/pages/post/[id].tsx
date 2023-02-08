@@ -4,7 +4,7 @@ import styles from '@/styles/post.module.css'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { editPostAction, loadPostRequestAction } from '@/store/actions/postAction'
+import { editPostRequestAction, loadPostRequestAction, deletePostRequestAction } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -35,7 +35,7 @@ const PostPage: NextPage = () => {
   })
   const router = useRouter()
   const dispatch = useDispatch()
-  const { post, loadPostLoading } = useSelector((state: RootState) => state.postReducer)
+  const { loadPost, loadPostLoading, deletePostLoading, deletePostSuccess } = useSelector((state: RootState) => state.postReducer)
   const { me } = useSelector((state: RootState) => state.userReducer)
 
   // const { id } = router.query
@@ -54,9 +54,19 @@ const PostPage: NextPage = () => {
   }, [])
 
   const editPost = useCallback(() => {
-    dispatch(editPostAction())
+    dispatch(editPostRequestAction())
     router.push('/write')
   }, [])
+
+  const deletePost = useCallback(() => {
+    dispatch(deletePostRequestAction(loadPost.id))
+  }, [])
+
+  useEffect(() => {
+    if(!deletePostLoading && deletePostSuccess && !loadPost){
+      router.push('/')
+    }
+  }, [deletePostLoading, deletePostSuccess])
 
   return (
     <>
@@ -67,15 +77,15 @@ const PostPage: NextPage = () => {
       <main>
         <div className={styles.page}>
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
-          {!loadPostLoading && post ? (
+          {!loadPostLoading && loadPost ? (
             <div className={styles.postContainer} id="postContainer">
               <InfoModal />
-              <div className={styles.title}>{post.title}</div>
+              <div className={styles.title}>{loadPost.title}</div>
               <div className={styles.detail}>{`${
-                post.email
-              }${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${timeConverter(post.data.time || 0)}`}</div>
+                loadPost.email
+              }${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${timeConverter(loadPost.data.time || 0)}`}</div>
               <Editor
-                data={post.data}
+                data={loadPost.data}
                 onChange={setData}
                 holder="editorjs-container"
                 readonly={true}
@@ -84,7 +94,8 @@ const PostPage: NextPage = () => {
           ) : (
             <div>This post does not exist or has been deleted.</div>
           )}
-          {!loadPostLoading && post && me === post.email ? (
+          {!loadPostLoading && loadPost && me === loadPost.email ? (
+            <>
             <button className={styles.edit} onClick={editPost}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                 <path
@@ -94,6 +105,16 @@ const PostPage: NextPage = () => {
               </svg>
               Edit
             </button>
+            <button className={styles.edit} onClick={deletePost}>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <path
+                  d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
+                  fill="#fff"
+                />
+              </svg>
+              Delete
+            </button>
+            </>
           ) : (
             <></>
           )}

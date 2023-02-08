@@ -82,9 +82,9 @@ const WritePage: NextPage = () => {
           hashtags = hashtags.concat(
             (block.data.text.match(hashtagRegex) || []).map((e: string) => e.slice(1).toLowerCase())
           )
-        } else if (block.type === 'image' && !mainImage) {
-          console.log(block.data)
-          mainImage = block.data.file.url
+        } else if (block.type === 'image' && !mainImage && !block.data.file.url) {
+          const splitedImageUrl = decodeURIComponent(block.data.file.url).split('original/')
+          mainImage = splitedImageUrl[0] + 'thumb/' + splitedImageUrl[1]
         }
       }
       const post: Post = {
@@ -111,8 +111,8 @@ const WritePage: NextPage = () => {
     }
   }, [savePostLoading, savePostSuccess, savedPostId])
 
-  const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter') e.preventDefault()
+  const preventEnter = useCallback((e: React.splitedImageUrlboardEvent<HTMLDivElement>) => {
+    if (e.splitedImageUrl === 'Enter') e.preventDefault()
   }, [])
 
   const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
@@ -127,7 +127,7 @@ const WritePage: NextPage = () => {
           <div
             id="titleInput"
             contentEditable
-            onKeyDown={(e) => preventEnter(e)}
+            onsplitedImageUrlDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
           />
         </div>

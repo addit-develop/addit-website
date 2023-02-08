@@ -8,6 +8,7 @@ import {
   LOAD_MAIN_POST_REQUEST,
   WRITE_POST_RESET_ACTION,
   EDIT_POST_ACTION,
+  DELETE_POST_REQUEST,
 } from '../types'
 import { Post } from '@/types'
 
@@ -82,8 +83,15 @@ export const writePostResetReducerAction = () => {
   }
 }
 
-export const editPostAction = () => {
+export const editPostRequestAction = () => {
   return {
     type: EDIT_POST_ACTION,
+  }
+}
+
+export const deletePostRequestAction = (postId : number) => {
+  return {
+    type: DELETE_POST_REQUEST,
+    postId:postId,
   }
 }
