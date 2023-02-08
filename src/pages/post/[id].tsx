@@ -59,7 +59,9 @@ const PostPage: NextPage = () => {
   }, [])
 
   const deletePost = useCallback(() => {
-    dispatch(deletePostRequestAction(loadPost.id))
+    if(loadPost && loadPost.id){
+      dispatch(deletePostRequestAction(loadPost.id))
+    }
   }, [])
 
   useEffect(() => {
