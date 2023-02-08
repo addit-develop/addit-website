@@ -1,5 +1,5 @@
 import { OutputData } from '@editorjs/editorjs'
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
@@ -20,9 +20,9 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 
-const WritePage: NextPage = () => {
+const WritePage: NextPage = ({ exPost }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
+  const { savePostSuccess, savePostLoading, savedPostId, } = useSelector(
     (state: RootState) => state.postReducer
   )
   //state to hold output data. we'll use this for rendering later
@@ -54,9 +54,9 @@ const WritePage: NextPage = () => {
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.
-    console.log(exPost)
     if (exPost) {
       setData(exPost.data)
+      setTitle(exPost.title)
     }
   }, [exPost])
 
@@ -152,15 +152,16 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
+    const { exPost } = useSelector(
+      (state: RootState) => state.postReducer
+    )
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-
     store.dispatch(END)
     await store.sagaTask?.toPromise()
 
-    return { props: {} }
+    return { props: {exPost} }
   }
 )
 
