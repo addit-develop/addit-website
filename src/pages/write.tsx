@@ -41,18 +41,17 @@ const WritePage: NextPage = () => {
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.
-    if(exPost && me && me!==exPost.email){
-      return dispatch(logoutRequestAction)
-    }
     async function redirectToLoginPageOrResetReducer() {
-      if (!me) {
-        const loginUrl = await loginRequestAction()
-        if (loginUrl) {
-          router.replace(loginUrl)
-        }
+      const loginUrl = await loginRequestAction()
+      if (loginUrl) {
+        router.replace(loginUrl)
       }
     }
-    redirectToLoginPageOrResetReducer()
+    if(exPost && me && me!==exPost.email){
+      dispatch(logoutRequestAction)
+    } else if (!me) {
+      redirectToLoginPageOrResetReducer()
+    }
   }, [me])
 
   const savePost = useCallback(() => {
