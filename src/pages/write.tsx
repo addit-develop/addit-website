@@ -40,6 +40,8 @@ const WritePage: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
+    setData(exPost.data)
+    setTitle(exPost.title)
     // redirect to main if not logged in or other post is yet saving.
     async function redirectToLoginPageOrResetReducer() {
       const loginUrl = await loginRequestAction()
@@ -52,7 +54,7 @@ const WritePage: NextPage = () => {
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
     }
-  }, [me])
+  }, [me, exPost])
 
   const savePost = useCallback(() => {
     if (me) {

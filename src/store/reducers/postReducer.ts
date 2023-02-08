@@ -1,6 +1,7 @@
 import { BlockDataType, Post, PostSummary } from '@/types'
 import produce from 'immer'
 import { HYDRATE } from 'next-redux-wrapper'
+import configureStore from '../configureStore'
 import {
   LOAD_MAIN_POST_ERROR,
   LOAD_MAIN_POST_REQUEST,
