@@ -7,6 +7,9 @@ import userReducer from './userReducer'
 // (이전상태, 액션) -> 다음상태
 const rootReducer = (state: any, action: any) => {
   switch (action.type) {
+    case HYDRATE:
+      console.log('HYDRATE', action.payload)
+      return action.payload
     default: {
       const combinedReducer = combineReducers({
         userReducer,
