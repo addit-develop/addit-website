@@ -75,8 +75,6 @@ export const initialState: StateType = {
 const postReducer = (state: StateType = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case HYDRATE:
-        return action.payload;
       case MAKE_BLOCK_DATA:
         if (draft.blockDataList.find((x) => x.id === action.id) === undefined) {
           draft.blockDataList.push({

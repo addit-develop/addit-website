@@ -8,8 +8,8 @@ import userReducer from './userReducer'
 const rootReducer = (state: any, action: any) => {
   switch (action.type) {
     case HYDRATE:
-      console.log('HYDRATE', action)
-      return { ...state, ...action.payload }
+      console.log('HYDRATE', action.payload)
+      return action.payload
     default: {
       const combinedReducer = combineReducers({
         userReducer,

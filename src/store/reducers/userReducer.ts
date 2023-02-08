@@ -1,5 +1,6 @@
 import { PostSummary } from '@/types'
 import produce from 'immer'
+import { HYDRATE } from 'next-redux-wrapper'
 
 import {
   CHECK_USER_REQUEST,
