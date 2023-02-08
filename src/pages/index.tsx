@@ -20,18 +20,12 @@ import { LOAD_USER_REQUEST } from '@/store/types'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = () => {
+const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
   const dispatch = useDispatch()
-  const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
-  const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(me ? myPosts : mainPosts)
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr ? myPostsSsr : mainPostsSsr)
+  const { mainPosts } = useSelector((state: RootState) => state.postReducer)
+  const { me, myPosts } = useSelector((state: RootState) => state.userReducer)
   const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(true)
-
-  useEffect(() => {
-    if (me) {
-      dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [me] }))
-    }
-  }, [me])
 
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
@@ -61,25 +55,21 @@ const HomePage: NextPage = () => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
     if (box && box.checked) {
       setToExposePosts(myPosts)
-      setLoadToExposePosts(loadMyPostLoading)
     } else {
       setToExposePosts(mainPosts)
-      setLoadToExposePosts(loadMainPostLoading)
     }
-  }, [myPosts, mainPosts, loadMyPostLoading, loadMainPostLoading])
+  }, [myPosts, mainPosts])
 
   const exposeMine = useCallback(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
     if (box && box.checked) {
       setToExposePosts(myPosts)
-      setLoadToExposePosts(loadMyPostLoading)
       console.log('show mine')
     } else {
       setToExposePosts(mainPosts)
-      setLoadToExposePosts(loadMainPostLoading)
       console.log('show all')
     }
-  }, [myPosts, mainPosts, loadMyPostLoading, loadMainPostLoading])
+  }, [myPosts, mainPosts])
 
   return (
     <>
@@ -149,16 +139,24 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
-    store.dispatch({
+    const res1 = await store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
+    const res2 = await store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-    store.dispatch(loadMainPostRequestAction({ summary: true, amount: 16 }))
+
+    console.log(res1, res2)
+    const mainPostsSsr:PostSummary[] = res1 ? res1.data : []
+    const meSsr:string = res2?res2.data:null
+    var myPostsSsr:PostSummary[]=[];
+    if (meSsr) {
+      const res3 =  await store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
+      myPostsSsr = res3?res3.data:[]
+    }
 
     store.dispatch(END)
     await store.sagaTask?.toPromise()
 
-    return { props: {} }
+    return { props: {meSsr, mainPostsSsr, myPostsSsr} }
   }
 )
 
