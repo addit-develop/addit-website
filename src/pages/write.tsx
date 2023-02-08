@@ -6,7 +6,7 @@ import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
-import { editPostRequestAction, savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
+import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import wrapper from '@/store/configureStore'
@@ -40,8 +40,8 @@ const WritePage: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    setData(exPost.data)
-    setTitle(exPost.title)
+    // setData(exPost.data)
+    // setTitle(exPost.title)
     // redirect to main if not logged in or other post is yet saving.
     async function redirectToLoginPageOrResetReducer() {
       const loginUrl = await loginRequestAction()

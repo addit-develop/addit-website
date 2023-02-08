@@ -40,7 +40,6 @@ type StateType = {
   deletePostLoading: boolean
   deletePostSuccess: boolean
   deletePostError: any | null
-  editing : boolean
 
   loadMainPostLoading: boolean
   loadMainPostSuccess: boolean
@@ -65,7 +64,6 @@ export const initialState: StateType = {
   deletePostLoading: false,
   deletePostSuccess: false,
   deletePostError: null,
-  editing:false,
 
   loadMainPostLoading: false,
   loadMainPostSuccess: false,
