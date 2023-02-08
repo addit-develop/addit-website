@@ -148,7 +148,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const meSsr:string | null = store.getState().userReducer.me
     var myPostsSsr:PostSummary[]=[];
     if (meSsr) {
-      const res3:{data:any} =  await store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
+      store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
       myPostsSsr = store.getState().userReducer.myPosts
     }
 
