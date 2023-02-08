@@ -152,14 +152,14 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-    const { exPost } = useSelector(
-      (state: RootState) => state.postReducer
-    )
+
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
     store.dispatch(END)
     await store.sagaTask?.toPromise()
+    const storeState = store.getState()
+    const exPost = storeState.postReducer.exPost
 
     return { props: {exPost} }
   }
