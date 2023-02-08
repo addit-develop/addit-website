@@ -111,8 +111,8 @@ const WritePage: NextPage = () => {
     }
   }, [savePostLoading, savePostSuccess, savedPostId])
 
-  const preventEnter = useCallback((e: React.splitedImageUrlboardEvent<HTMLDivElement>) => {
-    if (e.splitedImageUrl === 'Enter') e.preventDefault()
+  const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') e.preventDefault()
   }, [])
 
   const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
@@ -127,7 +127,7 @@ const WritePage: NextPage = () => {
           <div
             id="titleInput"
             contentEditable
-            onsplitedImageUrlDown={(e) => preventEnter(e)}
+            onKeyDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
           />
         </div>
