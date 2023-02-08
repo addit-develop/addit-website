@@ -55,7 +55,7 @@ const PostPage: NextPage = () => {
 
   const editPost = useCallback(() => {
     dispatch(editPostRequestAction())
-      .then(router.push('/write'))
+      router.push('/write')
   }, [])
 
   const deletePost = useCallback(() => {
