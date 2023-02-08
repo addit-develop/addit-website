@@ -25,7 +25,7 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
   const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr ? myPostsSsr : mainPostsSsr)
   const { mainPosts } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts } = useSelector((state: RootState) => state.userReducer)
-  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(true)
+  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(false)
 
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
