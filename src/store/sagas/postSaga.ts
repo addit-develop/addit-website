@@ -98,7 +98,7 @@ function* watchLoadMainPostRequestAction() {
 
 
 function deletePostAPI(postId : number) {
-  return backAxios.post('/post/delete', postId)
+  return backAxios.post('/post/delete', {postId:postId})
 }
 function* deletePost(action : any) {
   try{
