@@ -32,6 +32,11 @@ const WritePage: NextPage = () => {
           version: '2.26.4',
         }
   )
+  
+  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
+    setTitle(e.currentTarget.textContent || exPost.title || '')
+  }, [])
+
   const [title, setTitle] = useState<string>(exPost?exPost.title:'')
   const dispatch = useDispatch()
   const router = useRouter()
@@ -106,10 +111,6 @@ const WritePage: NextPage = () => {
     if (e.key === 'Enter') e.preventDefault()
   }, [])
 
-  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    setTitle(e.currentTarget.textContent || title)
-  }, [title])
-
   return (
     <div className={styles.page}>
       {/* <div className={styles.editor__backgroundImage}>+ Add background image</div> */}
@@ -120,6 +121,7 @@ const WritePage: NextPage = () => {
             contentEditable
             onKeyDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
+            defaultValue={exPost.title || ''}
           />
         </div>
         <Editor data={data} onChange={setData} holder="editorjs-container" readonly={false} />
