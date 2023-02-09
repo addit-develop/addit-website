@@ -37,9 +37,24 @@ const WritePage: NextPage = () => {
         }
   )
 
-  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    setTitle(e.currentTarget.textContent || exPost.title || '')
-  }, [])
+  useEffect(() => {
+    setData(
+      exPost
+        ? exPost.data
+        : {
+            time: 0,
+            blocks: [],
+            version: '2.26.4',
+          }
+    )
+  }, [exPost])
+
+  const saveTitle = useCallback(
+    (e: React.FormEvent<HTMLDivElement>) => {
+      setTitle(e.currentTarget.textContent || exPost.title || '')
+    },
+    [exPost]
+  )
 
   const [title, setTitle] = useState<string>(exPost ? exPost.title : '')
   const dispatch = useDispatch()

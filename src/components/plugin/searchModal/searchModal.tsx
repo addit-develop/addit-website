@@ -30,7 +30,6 @@ interface Props {
   blockId: string
   saveData: any
   savedblockData: BlockDataType
-  setBlockAdded: any
   deleteBlock: any
 }
 type MenuType = {
@@ -38,7 +37,7 @@ type MenuType = {
   title: string
 }
 
-const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteBlock }: Props) => {
+const SearchModal = ({ blockId, saveData, savedblockData, deleteBlock }: Props) => {
   const dispatch = useDispatch()
   const { blockDataList } = useSelector((state: RootState) => state.postReducer)
   const { currentPage, currentMenu, pageProps, loadingData, history, selectMode } = useSelector(
@@ -57,12 +56,6 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
   useEffect(() => {
     dispatch(changeModalPage('matchHome', 'Matches'))
   }, [])
-
-  // 블록이 추가된 경우 modal 창 없애기
-  useEffect(() => {
-    const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
-    if (myBlock?.isReady) setBlockAdded()
-  }, [blockDataList])
 
   // 새로운 blockdata 생성
   useEffect(() => {
