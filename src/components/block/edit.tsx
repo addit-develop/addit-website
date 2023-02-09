@@ -27,7 +27,7 @@ const FootballBlockEdit = ({ blockId, savedblockData }: Props) => {
   const [blockData, setBlockData] = useState<BlockDataType | undefined>(savedblockData)
 
   useEffect(() => {
-    setBlockData(blockDataList.find((x: BlockDataType) => x.id === blockId))
+    if (!savedblockData) setBlockData(blockDataList.find((x: BlockDataType) => x.id === blockId))
   }, [blockDataList])
 
   const getBlockElement = useCallback(
