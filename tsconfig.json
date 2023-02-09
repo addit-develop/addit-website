@@ -30,7 +30,8 @@
     "src/pages/checkLogIn.js",
     "src/pages/user.js",
     "src/pages/error.js",
-    "src/pages/checkLogIn.js"
+    "src/pages/checkLogIn.js",
+    "./@types/*.d.ts"
   ],
   "exclude": ["node_modules"]
 }

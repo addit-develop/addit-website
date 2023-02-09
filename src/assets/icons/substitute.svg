@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="current" height="current" viewBox="5 5 18 18">
+  <path
+    data-name="Path 2280"
+    d="m3.687.144 2.824 2.825a.5.5 0 0 1-.354.86H4.345v6.084a1.012 1.012 0 0 1-2.025 0V3.829H.508a.5.5 0 0 1-.354-.86L2.978.144a.507.507 0 0 1 .709 0z"
+    transform="rotate(-90 9.903 4.282)"
+    fill="#449765"
+  ></path>
+  <path
+    data-name="Path 2279"
+    d="M2.328 7.1V1.012a1.012 1.012 0 0 1 2.025 0V7.1h1.812a.5.5 0 0 1 .354.86l-2.824 2.811a.52.52 0 0 1-.719 0L.151 7.957A.5.5 0 0 1 .506 7.1z"
+    transform="rotate(-90 15.876 4.39)"
+    fill="#D56660"
+  ></path>
+</svg>

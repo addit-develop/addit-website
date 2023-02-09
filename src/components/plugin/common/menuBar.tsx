@@ -50,11 +50,6 @@ const MenuBar = ({ menu, selectedMenu, setSelectedMenu }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
-        {/* <ArrowButton onClick={prevDate}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill={COLORS.darkgray} />
-          </svg>
-        </ArrowButton> */}
         <MenuList>
           {menu.map((m, i) => {
             return (
@@ -70,11 +65,6 @@ const MenuBar = ({ menu, selectedMenu, setSelectedMenu }: PropsType) => {
             )
           })}
         </MenuList>
-        {/* <ArrowButton onClick={nextDate}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={COLORS.darkgray} />
-          </svg>
-        </ArrowButton> */}
       </Container>
     </React.Fragment>
   )

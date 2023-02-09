@@ -12,6 +12,13 @@ import { makeBlockData, setBlockData } from '@/store/actions/postAction'
 import LeagueGroupedFixtures from './leagueGroupedFixtures'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { RootState } from '@/store/reducers'
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MinusIcon,
+  PlusIcon,
+} from '@/assets/icons'
 
 dayjs.extend(relativeTime)
 
@@ -108,9 +115,7 @@ const MatchHome = ({ blockId }: PropsType) => {
         <Styles.Header>
           <Styles.DatePicker>
             <Styles.ArrowButton onClick={prevDate}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="m14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6Z" fill={COLORS.darkgray} />
-              </svg>
+              <ChevronLeftIcon width={24} height={24} fill={COLORS.darkgray} />
             </Styles.ArrowButton>
             <Styles.DateContainer>
               <Styles.Date onClick={prevDate}>
@@ -125,9 +130,7 @@ const MatchHome = ({ blockId }: PropsType) => {
               </Styles.Date>
             </Styles.DateContainer>
             <Styles.ArrowButton onClick={nextDate}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={COLORS.darkgray} />
-              </svg>
+              <ChevronRightIcon width={24} height={24} fill={COLORS.darkgray} />
             </Styles.ArrowButton>
           </Styles.DatePicker>
         </Styles.Header>
@@ -135,13 +138,9 @@ const MatchHome = ({ blockId }: PropsType) => {
           <Styles.CountryName onClick={openMajorLeagues}>
             Major Leagues
             {majorLeaguesOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M5 13v-2h14v2Z" fill={COLORS.lightblack} />
-              </svg>
+              <MinusIcon width={24} height={24} fill={COLORS.lightblack} />
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6Z" fill={COLORS.lightblack} />
-              </svg>
+              <PlusIcon width={24} height={24} fill={COLORS.lightblack} />
             )}
           </Styles.CountryName>
           {majorLeaguesOpen &&

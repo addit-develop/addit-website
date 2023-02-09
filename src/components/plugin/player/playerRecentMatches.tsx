@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
@@ -116,9 +117,7 @@ const PlayerRecentMatches = ({ playerData, sendData }: PropsType) => {
                 }
               >
                 Player Stats
-                <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20">
-                  <path d="M9.4 18 8 16.6l4.6-4.6L8 7.4 9.4 6l6 6Z" fill={COLORS.darkgray} />
-                </svg>
+                <ChevronRightIcon width={20} height={20} fill={COLORS.darkgray} />
               </MoreButton>
             </BoxContainer>
           )

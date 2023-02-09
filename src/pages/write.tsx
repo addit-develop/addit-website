@@ -14,6 +14,8 @@ import wrapper from '@/store/configureStore'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
 import { END } from 'redux-saga'
+import { PenIcon } from '@/assets/icons'
+import { COLORS } from '@/constants/constants'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
@@ -21,7 +23,9 @@ const Editor = loadable(() => import('../components/editor/editor'), { ssr: fals
 
 const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
+  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
+    (state: RootState) => state.postReducer
+  )
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>(
     exPost
@@ -32,7 +36,7 @@ const WritePage: NextPage = () => {
           version: '2.26.4',
         }
   )
-  const [title, setTitle] = useState<string>(exPost?exPost.title:'')
+  const [title, setTitle] = useState<string>(exPost ? exPost.title : '')
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -44,7 +48,7 @@ const WritePage: NextPage = () => {
         router.replace(loginUrl)
       }
     }
-    if(exPost && me && me!==exPost.email){
+    if (exPost && me && me !== exPost.email) {
       dispatch(logoutRequestAction())
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
@@ -106,9 +110,12 @@ const WritePage: NextPage = () => {
     if (e.key === 'Enter') e.preventDefault()
   }, [])
 
-  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    setTitle(e.currentTarget.textContent || title)
-  }, [title])
+  const saveTitle = useCallback(
+    (e: React.FormEvent<HTMLDivElement>) => {
+      setTitle(e.currentTarget.textContent || title)
+    },
+    [title]
+  )
 
   return (
     <div className={styles.page}>
@@ -124,12 +131,7 @@ const WritePage: NextPage = () => {
         </div>
         <Editor data={data} onChange={setData} holder="editorjs-container" readonly={false} />
         <button className={styles.publish} onClick={savePost}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-            <path
-              d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
-              fill="#fff"
-            />
-          </svg>
+          <PenIcon width={24} height={24} fill={COLORS.white} />
           Publish
         </button>
       </div>
@@ -145,22 +147,24 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-    const id:number = context.query.postId ? Number(context.query.postId):0;
-    if(id){store.dispatch(editPostRequestAction({ids:[id]}))}
+    const id: number = context.query.postId ? Number(context.query.postId) : 0
+    if (id) {
+      store.dispatch(editPostRequestAction({ ids: [id] }))
+    }
     store.dispatch(END)
     await store.sagaTask?.toPromise()
 
-    const meSsr:string = store.getState().userReducer.me
-    const exPostSsr:Post = store.getState().postReducer.exPost
-    if(exPostSsr && exPostSsr.email !== meSsr){
+    const meSsr: string = store.getState().userReducer.me
+    const exPostSsr: Post = store.getState().postReducer.exPost
+    if (exPostSsr && exPostSsr.email !== meSsr) {
       return {
         redirect: {
           permanent: true,
-          destination: "/",
+          destination: '/',
         },
       }
     }
-    return { props: {exPostSsr:exPostSsr} }
+    return { props: { exPostSsr: exPostSsr } }
   }
 )
 

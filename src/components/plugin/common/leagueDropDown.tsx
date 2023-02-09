@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import CircledImage from './circledImage'
 import majorLeagues from '@/data/majorLeaguesData.json'
+import { ChevronDownIcon, ChevronUpIcon } from '@/assets/icons'
 
 const SeasonContainer = styled.div`
   margin-left: auto;
@@ -34,9 +35,9 @@ const SeasonSelector = styled.div`
   right: 6px;
   border-radius: 8px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  z-index: 3;
+  z-index: 1;
   /* &::-webkit-scrollbar {
-    display: none;
+    display: none;  
   } */
 `
 
@@ -66,13 +67,9 @@ const LeagueDropDown = ({ selectedLeague, setSelectedLeague }: PropsType) => {
             altText={selectedLeague.name}
           />
           {dropDownOpen ? (
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
-            </svg>
+            <ChevronDownIcon width={24} height={24} fill={COLORS.darkgray} />
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={COLORS.darkgray} />
-            </svg>
+            <ChevronUpIcon width={24} height={24} fill={COLORS.darkgray} />
           )}
         </Season>
         {majorLeagues && dropDownOpen && (

@@ -17,7 +17,6 @@ const nextConfig = {
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
-      ㅡ,
     })
     return config
   },

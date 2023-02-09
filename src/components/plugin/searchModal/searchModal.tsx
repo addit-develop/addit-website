@@ -23,6 +23,8 @@ import SearchHome from '../search/searchHome'
 import PlayerHome from '../player/playerHome'
 import PlayerMatchDetail from '../player/playerMatchDetail'
 import Loading from '../common/loading'
+import { ArrowLeftIcon, CrossIcon } from '@/assets/icons'
+import { COLORS } from '@/constants/constants'
 
 interface Props {
   blockId: string
@@ -193,9 +195,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
         <Styles.ContentContainer>
           {history?.length ? (
             <Styles.backButton onClick={moveBack}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path d="m12 20-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825l5.6 5.6Z" fill="#8a8a8a" />
-              </svg>
+              <ArrowLeftIcon width={24} height={24} fill={COLORS.darkgray} />
             </Styles.backButton>
           ) : null}
           {loadingData ? <Loading /> : null}
@@ -209,12 +209,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
             ) : null}
           </Styles.AddButton>
           <Styles.CloseButton onClick={closeModal}>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path
-                d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6Z"
-                fill="#8C7B72"
-              />
-            </svg>
+            <CrossIcon width={24} height={24} fill={COLORS.darkgray} />
           </Styles.CloseButton>
         </Styles.ModalMenuContainer>
       </Styles.Modal>

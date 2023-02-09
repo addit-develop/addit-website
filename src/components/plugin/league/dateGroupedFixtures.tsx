@@ -6,6 +6,7 @@ import FixtureTable from '../common/fixtureTable'
 import { useDispatch, useSelector } from 'react-redux'
 import rootReducer, { RootState } from '@/store/reducers'
 import { setBlockData } from '@/store/actions/postAction'
+import { ChevronDownIcon, ChevronUpIcon } from '@/assets/icons'
 
 const FixturesContainer = styled.div<{ forBlock?: boolean }>`
   position: relative;
@@ -76,13 +77,9 @@ const DateGroupedFixtures = ({ fixtures, forBlock = false }: PropsType) => {
         <Date onClick={openMenu}>
           <LeagueName>{date.substring(0, 10)}</LeagueName>
           {forBlock ? null : menuState ? (
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m7.4 15.375-1.4-1.4 6-6 6 6-1.4 1.4-4.6-4.6Z" fill={COLORS.darkgray} />
-            </svg>
+            <ChevronDownIcon height="24" width="24" fill={COLORS.darkgray} />
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path d="m12 15.375-6-6 1.4-1.4 4.6 4.6 4.6-4.6 1.4 1.4Z" fill={COLORS.darkgray} />
-            </svg>
+            <ChevronUpIcon height="24" width="24" fill={COLORS.darkgray} />
           )}
         </Date>
         {menuState

@@ -122,14 +122,12 @@ const HomePage: NextPage = () => {
             {loadToExpostPosts ? <div>Loading more Posts</div> : <></>}
           </div>
         )}
-        {me ? (
-          <Link className={styles.write} href={'/write'}>
-            <PenIcon width={24} height={24} fill="#fff" />
-            Write
-          </Link>
-        ) : (
-          <></>
-        )}
+        {/* {me && (  임시 주석처리*/}
+        <Link className={styles.write} href={'/write'}>
+          <PenIcon width={24} height={24} fill="#fff" />
+          <div>Write</div>
+        </Link>
+        {/* )} */}
       </main>
     </>
   )
