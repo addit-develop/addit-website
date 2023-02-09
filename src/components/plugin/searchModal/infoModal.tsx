@@ -48,7 +48,15 @@ const InfoModal = () => {
           return <MatchPrediction selectMode={false} blockId={blockId} fixtureData={pageProps} />
         else break
       case 'playerMatchDetail':
-        return <PlayerMatchDetail data={pageProps} selectMode={false} blockId={blockId} />
+        return (
+          <PlayerMatchDetail
+            matchStatData={pageProps.matchStatData}
+            playerData={pageProps.playerData}
+            fixtureData={pageProps.fixtureData}
+            selectMode={false}
+            blockId={blockId}
+          />
+        )
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':

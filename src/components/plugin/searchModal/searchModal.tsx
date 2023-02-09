@@ -1,5 +1,5 @@
 import * as Styles from './style'
-import { default as React, useCallback, useEffect, useRef, useState } from 'react'
+import { default as React, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
@@ -74,7 +74,13 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
     deleteBlock()
   }, [])
 
+  const canSelect = useMemo(() => {
+    if (['leagueHome', 'teamHome', 'playerHome', 'searchHome'].includes(currentPage)) return false
+    return true
+  }, [currentPage])
+
   const selectContent = useCallback(() => {
+    if (!canSelect) return null
     // 선택된 데이터 바탕으로 블록 생성
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
@@ -92,7 +98,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
     }
     // 데이터 선택 모드로 변경
     dispatch(changeSelectMode(!selectMode))
-  }, [selectMode, blockDataList])
+  }, [selectMode, blockDataList, canSelect])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
@@ -196,7 +202,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
           {showCurrentModalPage()}
         </Styles.ContentContainer>
         <Styles.ModalMenuContainer>
-          <Styles.AddButton disabled={false}>
+          <Styles.AddButton disabled={!canSelect}>
             <span onClick={selectContent}>{selectMode ? 'Add Block' : 'Select'}</span>
             {selectMode ? (
               <Styles.CancelButton onClick={cancelSelectMode}>Cancel</Styles.CancelButton>

@@ -46,8 +46,9 @@ const ViewLabel = styled.div`
 
 interface PropsType {
   team: TeamStatisticType
+  setData?: any
 }
-const TeamFixtures = ({ team }: PropsType) => {
+const TeamFixtures = ({ team, setData }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const [fixtures, setFixtures] = useState<FixtureType[]>([])

@@ -8,12 +8,18 @@ const Container = styled.div``
 interface PropsType {
   team: TeamStatisticType
   season: number
+  setData?: any
 }
-const TeamTable = ({ team, season }: PropsType) => {
+const TeamTable = ({ team, season, setData }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
-        <LeagueStanding season={season} league={team.league} selectedTeam={team.team} />
+        <LeagueStanding
+          season={season}
+          league={team.league}
+          selectedTeam={team.team}
+          setData={(data: any) => setData(data)}
+        />
       </Container>
     </React.Fragment>
   )

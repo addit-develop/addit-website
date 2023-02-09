@@ -21,36 +21,26 @@ import { PenIcon } from '@/assets/icons'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({
-  meSsr,
-  mainPostsSsr,
-  myPostsSsr,
-}: {
-  meSsr: string | null
-  mainPostsSsr: PostSummary[]
-  myPostsSsr: PostSummary[]
-}) => {
+const HomePage: NextPage = () => {
   const dispatch = useDispatch()
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(
-    meSsr ? myPostsSsr : mainPostsSsr
-  )
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(toExposePosts ? false : true)
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPosts ? mainPosts : [])
+  const [loadToExpostPosts, setLoadToExpostPosts] = useState<boolean>(false)
+  useEffect(() => {
+    dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [me] }))
+  }, [me])
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked && myPostsSsr) {
-      setToExposePosts(myPostsSsr)
-      setLoadToExposePosts(false)
-    } else if (box && !box.checked && mainPostsSsr) {
-      setToExposePosts(mainPostsSsr)
-      setLoadToExposePosts(false)
+    if (me && box && box.checked) {
+      setLoadToExpostPosts(loadMyPostLoading)
+      setToExposePosts(myPosts ? myPosts : [])
+    } else {
+      setLoadToExpostPosts(loadMainPostLoading)
+      setToExposePosts(mainPosts ? mainPosts : [])
     }
-  }, [meSsr, mainPostsSsr, myPostsSsr])
+  }, [me, mainPosts, myPosts, loadMainPostLoading, loadMyPostLoading])
 
-  useEffect(() => {
-    console.log(toExposePosts)
-  }, [toExposePosts])
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
   //     if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
@@ -75,27 +65,16 @@ const HomePage: NextPage = ({
       .toString()
   }, [])
 
-  useEffect(() => {
-    const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked) {
-      setToExposePosts(myPosts)
-      setLoadToExposePosts(false)
-    } else if (box && !box.checked) {
-      setToExposePosts(mainPosts)
-      setLoadToExposePosts(false)
-    }
-  }, [myPosts, mainPosts])
-
   const exposeMine = useCallback(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked) {
-      setToExposePosts(myPosts)
-      console.log('show mine')
-    } else if (box && !box.checked) {
-      setToExposePosts(mainPosts)
-      console.log('show all')
+    if (me && box && box.checked) {
+      setLoadToExpostPosts(loadMyPostLoading)
+      setToExposePosts(myPosts ? myPosts : [])
+    } else {
+      setLoadToExpostPosts(loadMainPostLoading)
+      setToExposePosts(mainPosts ? mainPosts : [])
     }
-  }, [myPosts, mainPosts])
+  }, [me, myPosts, mainPosts])
   return (
     <>
       <Head>
@@ -117,8 +96,7 @@ const HomePage: NextPage = ({
         ) : (
           <></>
         )}
-        {loadToExposePosts ? <div>Loading Posts...</div> : <></>}
-        {!loadToExposePosts && toExposePosts.length === 0 ? (
+        {toExposePosts.length === 0 ? (
           <div>No Post.</div>
         ) : (
           <div className={styles.postsContainer}>
@@ -138,7 +116,10 @@ const HomePage: NextPage = ({
                   </div>
                 </div>
               </Link>
-            ))} */}
+            ))}
+                */}
+            <br />
+            {loadToExpostPosts ? <div>Loading more Posts</div> : <></>}
           </div>
         )}
         {me ? (
@@ -163,20 +144,9 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-
-    const mainPostsSsr: PostSummary[] = store.getState().postReducer.mainPosts
-    const meSsr: string | null = store.getState().userReducer.me
-    var myPostsSsr: PostSummary[] = []
-    if (meSsr) {
-      store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
-      myPostsSsr = store.getState().userReducer.myPosts
-    }
-
     store.dispatch(END)
     await store.sagaTask?.toPromise()
-    console.log()
-
-    return { props: { meSsr, mainPostsSsr, myPostsSsr } }
+    return { props: {} }
   }
 )
 
