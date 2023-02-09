@@ -20,14 +20,14 @@ import { LOAD_USER_REQUEST } from '@/store/types'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({meSsr, mainPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[]}) => {
+const HomePage: NextPage = () => {
   const dispatch = useDispatch()
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPostsSsr)
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPosts?mainPosts:[])
   const [loadToExpostPosts, setLoadToExpostPosts] = useState<boolean>(false)
   useEffect(() => {
-    dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
+    dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [me] }))
   }, [me])
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
@@ -151,7 +151,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     store.dispatch(END)
     const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
     const meSsr:string | null = store.getState().userReducer.me
-    return { props: {meSsr, mainPostsSsr} }
+    return { props: {} }
   }
 )
 
