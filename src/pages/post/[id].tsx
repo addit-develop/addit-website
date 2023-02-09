@@ -18,7 +18,7 @@ import loadable from '@loadable/component'
 import InfoModal from '@/components/plugin/searchModal/infoModal'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
-import { PenIcon } from '@/assets/icons'
+import { PenIcon, TrashBinIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
 
 dayjs.extend(utc)
@@ -56,13 +56,13 @@ const PostPage: NextPage = () => {
 
   const editPost = useCallback(() => {
     router.push({ pathname: '/write', query: { postId: loadPost.id } }, '/write')
-  }, [])
+  }, [loadPost])
 
   const deletePost = useCallback(() => {
     if (loadPost && loadPost.id) {
       dispatch(deletePostRequestAction(loadPost.id))
     }
-  }, [])
+  }, [loadPost])
 
   useEffect(() => {
     if (!deletePostLoading && deletePostSuccess && !loadPost) {
@@ -100,11 +100,10 @@ const PostPage: NextPage = () => {
             <>
               <button className={styles.edit} onClick={editPost}>
                 <PenIcon width={24} height={24} fill={COLORS.white} />
-                Edit
+                Edits
               </button>
               <button className={styles.delete} onClick={deletePost}>
-                <PenIcon width={24} height={24} fill={COLORS.white} />
-                Delete
+                <TrashBinIcon width={24} height={24} fill={COLORS.white} />
               </button>
             </>
           ) : (

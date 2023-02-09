@@ -16,6 +16,7 @@ import ArrowLeftIcon from './arrow_left.svg'
 import SearchIcon from './search.svg'
 import CircleCrossIcon from './circle_cross.svg'
 import MenuIcon from './menu.svg'
+import TrashBinIcon from './trash_bin.svg'
 
 export {
   PenIcon,
@@ -36,4 +37,5 @@ export {
   CircleCrossIcon,
   MenuIcon,
   SoccerBallLineIcon,
+  TrashBinIcon,
 }

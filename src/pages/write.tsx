@@ -36,6 +36,11 @@ const WritePage: NextPage = () => {
           version: '2.26.4',
         }
   )
+
+  const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
+    setTitle(e.currentTarget.textContent || exPost.title || '')
+  }, [])
+
   const [title, setTitle] = useState<string>(exPost ? exPost.title : '')
   const dispatch = useDispatch()
   const router = useRouter()
@@ -109,13 +114,6 @@ const WritePage: NextPage = () => {
   const preventEnter = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') e.preventDefault()
   }, [])
-
-  const saveTitle = useCallback(
-    (e: React.FormEvent<HTMLDivElement>) => {
-      setTitle(e.currentTarget.textContent || title)
-    },
-    [title]
-  )
 
   return (
     <div className={styles.page}>
