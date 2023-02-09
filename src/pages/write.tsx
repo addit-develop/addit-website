@@ -38,6 +38,8 @@ const WritePage: NextPage = () => {
   }, [])
 
   const [title, setTitle] = useState<string>(exPost?exPost.title:'')
+  const inputTitle = document.getElementById("inputTitle") as HTMLInputElement
+  inputTitle.innerHTML = title
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -121,7 +123,7 @@ const WritePage: NextPage = () => {
             contentEditable
             onKeyDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
-          >{exPost?exPost.title:''}</div>
+          />
         </div>
         <Editor data={data} onChange={setData} holder="editorjs-container" readonly={false} />
         <button className={styles.publish} onClick={savePost}>
