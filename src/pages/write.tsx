@@ -19,11 +19,10 @@ import { END } from 'redux-saga'
 // editorjs should only be rendered on the client side.
 const Editor = loadable(() => import('../components/editor/editor'), { ssr: false })
 
-const WritePage: NextPage = ({exPostSsr}:{exPostSsr:PostSummary[]}) => {
+const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
   const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
   //state to hold output data. we'll use this for rendering later
-  console.log(exPostSsr)
   const [data, setData] = useState<OutputData>(
     exPost
       ? exPost.data
@@ -109,7 +108,7 @@ const WritePage: NextPage = ({exPostSsr}:{exPostSsr:PostSummary[]}) => {
 
   const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
     setTitle(e.currentTarget.textContent || title)
-  }, [])
+  }, [title])
 
   return (
     <div className={styles.page}>
