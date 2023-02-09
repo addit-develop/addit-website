@@ -16,17 +16,21 @@ import {
   LOAD_POST_REQUEST,
   LOAD_POST_SUCCESS,
   LOAD_POST_ERROR,
-  WRITE_POST_RESET_ACTION,
-  EDIT_POST_ACTION,
   DELETE_POST_REQUEST,
   DELETE_POST_SUCCESS,
   DELETE_POST_ERROR,
+  LOAD_EXPOST_REQUEST,
+  LOAD_EXPOST_SUCCESS,
+  LOAD_EXPOST_ERROR,
 } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
+  loadExPostLoading : boolean
+  loadExPostSuccess : boolean
+  loadExPostError : any | null
   exPost: Post | null
   savePostLoading: boolean
   savePostSuccess: boolean
@@ -51,6 +55,9 @@ export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
+  loadExPostLoading : false,
+  loadExPostSuccess : false,
+  loadExPostError : null,
   exPost: null,
   savePostLoading: false,
   savePostSuccess: false,
@@ -145,16 +152,20 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.loadMainPostLoading = false
         draft.loadMainPostError = action.error
         break
-      case WRITE_POST_RESET_ACTION:
-        draft.savedPostId = null
-        draft.savePostSuccess = false
+      case LOAD_EXPOST_REQUEST:
+        draft.loadExPostLoading = true
+        draft.loadExPostSuccess = false
+        draft.loadExPostError = null
         draft.exPost = null
         break
-      case EDIT_POST_ACTION:
-        draft.loadPostLoading = false
-        draft.loadPostError = null
-        draft.exPost = draft.loadPost?{...draft.loadPost}:null
-        draft.loadPost = null
+      case LOAD_EXPOST_SUCCESS:
+        draft.loadExPostLoading = false
+        draft.loadExPostSuccess = true
+        draft.exPost = action.data[0]
+        break
+      case LOAD_EXPOST_ERROR:
+        draft.loadExPostLoading = false
+        draft.loadExPostError = action.error
         break
       case DELETE_POST_REQUEST:
         draft.loadPostLoading = false
@@ -177,4 +188,27 @@ const postReducer = (state: StateType = initialState, action: any) =>
     }
   })
 
-export default postReducer
+  export default postReducer
+
+// type persistStateType = {
+//   exPost: Post | null
+// }
+
+// export const persistInitialState:persistStateType ={
+//   exPost: null,
+// }
+
+// export const persistPostReducer = (state: persistStateType = persistInitialState, action: any) =>
+//   produce(state, (draft) => {
+//     switch (action.type) {
+//       case WRITE_POST_RESET_ACTION:
+//         draft.exPost = null
+//         break
+//       case EDIT_POST_ACTION:
+//         console.log(action.exPost)
+//         draft.exPost = action.exPost
+//         break
+//       default:
+//           break
+//       }
+//     })

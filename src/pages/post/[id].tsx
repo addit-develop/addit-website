@@ -4,7 +4,7 @@ import styles from '@/styles/post.module.css'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { editPostRequestAction, loadPostRequestAction, deletePostRequestAction } from '@/store/actions/postAction'
+import { loadPostRequestAction, deletePostRequestAction } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -51,8 +51,7 @@ const PostPage: NextPage = () => {
   }, [])
 
   const editPost = useCallback(() => {
-      dispatch(editPostRequestAction())
-      router.push('/write')
+      router.push({pathname:'/write', query:{postId:loadPost.id}}, '/write')
   }, [])
 
   const deletePost = useCallback(() => {
