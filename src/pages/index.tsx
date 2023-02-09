@@ -100,7 +100,7 @@ const HomePage: NextPage = () => {
           <div>No Post.</div>
         ) : (
           <div className={styles.postsContainer}>
-            {/* {toExposePosts.map((x) => (
+            {toExposePosts.map((x) => (
               <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
                 {x.mainImage ? (
                   <div className={styles.postImage}>
@@ -117,17 +117,16 @@ const HomePage: NextPage = () => {
                 </div>
               </Link>
             ))}
-                */}
             <br />
             {loadToExpostPosts ? <div>Loading more Posts</div> : <></>}
           </div>
         )}
-        {/* {me && (  임시 주석처리*/}
-        <Link className={styles.write} href={'/write'}>
-          <PenIcon width={24} height={24} fill="#fff" />
-          <div>Write</div>
-        </Link>
-        {/* )} */}
+        {me && (
+          <Link className={styles.write} href={'/write'}>
+            <PenIcon width={24} height={24} fill="#fff" />
+            <div>Write</div>
+          </Link>
+        )}
       </main>
     </>
   )
