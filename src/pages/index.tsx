@@ -25,14 +25,20 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, m
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
   const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPostsSsr)
+  const [loadToExpostPosts, setLoadToExpostPosts] = useState<boolean>(false)
+  if(meSsr){
+    dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
+  }
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (me && box && box.checked && myPosts) {
-      setToExposePosts(myPosts)
+    if (me && box && box.checked) {
+      setLoadToExpostPosts(loadMyPostLoading)
+      setToExposePosts(myPosts?myPosts:[])
     } else {
-      setToExposePosts(mainPosts)
+      setLoadToExpostPosts(loadMainPostLoading)
+      setToExposePosts(mainPosts?mainPosts:[])
     }
-  }, [me, mainPosts, myPosts])
+  }, [me, mainPosts, myPosts, loadMainPostLoading, loadMyPostLoading])
 
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
@@ -60,12 +66,12 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, m
 
   const exposeMine = useCallback(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (me && box && box.checked && myPosts) {
-      setToExposePosts(myPosts)
-      console.log('show mine')
-    } else{
-      setToExposePosts(mainPosts)
-      console.log('show all')
+    if (me && box && box.checked) {
+      setLoadToExpostPosts(loadMyPostLoading)
+      setToExposePosts(myPosts?myPosts:[])
+    } else {
+      setLoadToExpostPosts(loadMainPostLoading)
+      setToExposePosts(mainPosts?mainPosts:[])
     }
   }, [me, myPosts, mainPosts])
   return (
@@ -110,6 +116,8 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, m
                 </div>
               </Link>
             ))}
+            <br/>
+            {loadToExpostPosts? (<div>Loading more Posts</div>):(<></>)}
           </div>
         )}
         {me ? (
@@ -140,16 +148,10 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
       type: LOAD_USER_REQUEST,
     })
     await store.sagaTask?.toPromise()
+    store.dispatch(END)
     const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
     const meSsr:string | null = store.getState().userReducer.me
-    var myPostsSsr:PostSummary[]=[];
-    if (meSsr) {
-      store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
-      myPostsSsr = store.getState().userReducer.myPosts
-    }
-    await store.sagaTask?.toPromise()
-    store.dispatch(END)
-    return { props: {meSsr, mainPostsSsr, myPostsSsr} }
+    return { props: {meSsr, mainPostsSsr} }
   }
 )
 
