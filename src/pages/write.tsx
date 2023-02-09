@@ -4,7 +4,7 @@ import loadable from '@loadable/component'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
-import { Comment, Post } from '@/types'
+import { Comment, Post, PostSummary } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import { editPostRequestAction, savePostRequestAction } from '@/store/actions/postAction'
@@ -19,11 +19,11 @@ import { END } from 'redux-saga'
 // editorjs should only be rendered on the client side.
 const Editor = loadable(() => import('../components/editor/editor'), { ssr: false })
 
-const WritePage: NextPage = () => {
+const WritePage: NextPage = ({exPostSsr}:{exPostSsr:PostSummary[]}) => {
   const { me } = useSelector((state: RootState) => state.userReducer)
   const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
   //state to hold output data. we'll use this for rendering later
-  console.log(exPost)
+  console.log(exPostSsr)
   const [data, setData] = useState<OutputData>(
     exPost
       ? exPost.data
@@ -108,7 +108,7 @@ const WritePage: NextPage = () => {
   }, [])
 
   const saveTitle = useCallback((e: React.FormEvent<HTMLDivElement>) => {
-    setTitle(e.currentTarget.textContent || '')
+    setTitle(e.currentTarget.textContent || title)
   }, [])
 
   return (
@@ -161,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
         },
       }
     }
-    return { props: {} }
+    return { props: {exPostSsr:exPostSsr} }
   }
 )
 
