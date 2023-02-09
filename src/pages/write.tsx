@@ -19,22 +19,20 @@ import { END } from 'redux-saga'
 // editorjs should only be rendered on the client side.
 const Editor = loadable(() => import('../components/editor/editor'), { ssr: false })
 
-const WritePage: NextPage = ({exPostSsr}:{exPostSsr:Post}) => {
+const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId } = useSelector(
-    (state: RootState) => state.postReducer
-  )
+  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>(
-    exPostSsr
-      ? exPostSsr.data
+    exPost
+      ? exPost.data
       : {
           time: 0,
           blocks: [],
           version: '2.26.4',
         }
   )
-  const [title, setTitle] = useState<string>(exPostSsr?exPostSsr.title:'')
+  const [title, setTitle] = useState<string>(exPost?exPost.title:'')
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -46,7 +44,7 @@ const WritePage: NextPage = ({exPostSsr}:{exPostSsr:Post}) => {
         router.replace(loginUrl)
       }
     }
-    if(exPostSsr && me && me!==exPostSsr.email){
+    if(exPost && me && me!==exPost.email){
       dispatch(logoutRequestAction())
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
@@ -82,15 +80,15 @@ const WritePage: NextPage = ({exPostSsr}:{exPostSsr:Post}) => {
         }
       }
       const post: Post = {
-        id: exPostSsr ? exPostSsr.id : 0,
+        id: exPost ? exPost.id : 0,
         title: title,
         hashtags: hashtags,
         email: me,
         data: data,
         snippet: snippet || '',
-        comments: exPostSsr ? exPostSsr.comments : [],
-        likes: exPostSsr ? exPostSsr.likes : 0,
-        views: exPostSsr ? exPostSsr.views : 0,
+        comments: exPost ? exPost.comments : [],
+        likes: exPost ? exPost.likes : 0,
+        views: exPost ? exPost.views : 0,
         mainImage: mainImage,
       }
       dispatch(savePostRequestAction(post))
