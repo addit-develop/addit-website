@@ -131,6 +131,7 @@ const WritePage: NextPage = () => {
           <div
             id="titleInput"
             contentEditable
+            ref={titleRef}
             onKeyDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
           />
