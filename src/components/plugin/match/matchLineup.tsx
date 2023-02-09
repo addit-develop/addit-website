@@ -37,6 +37,7 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
     const newSubstituesData: [lineupPlayerType[], lineupPlayerType[]] = [[], []]
     const StartXIFormationData: [lineupPlayerType[][], lineupPlayerType[][]] = [[], []]
     const getStatistics = (teamId: number, playerId: number) => {
+      if (!matchData?.players[teamId]) return undefined
       return matchData?.players[teamId].players.find(
         (x: PlayerMatchStatsType) => x.player.id === playerId
       )
@@ -64,18 +65,22 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
   }, [matchData])
 
   const getPlayerRating = useCallback(
-    (teamIndex: number, playerId: number) =>
-      matchData?.players[teamIndex].players.find((x: any) => x.player.id === playerId)
-        ?.statistics[0].games.rating,
+    (teamIndex: number, playerId: number) => {
+      if (!matchData?.players[teamIndex]) return null
+      return matchData?.players[teamIndex].players.find((x: any) => x.player.id === playerId)
+        ?.statistics[0].games.rating
+    },
     [matchData]
   )
 
   const getPlayerElement = useCallback(
     (teamIndex: number, data: lineupPlayerType) => (
       <Styles.playerStarting onClick={() => moveToPlayerMatchStat(data.statistics, teamIndex)}>
-        <Styles.playerRating starting>
-          {getPlayerRating(teamIndex, data?.player.id)}
-        </Styles.playerRating>
+        {getPlayerRating(teamIndex, data?.player.id) && (
+          <Styles.playerRating starting>
+            {getPlayerRating(teamIndex, data?.player.id)}
+          </Styles.playerRating>
+        )}
         <Styles.playerImage
           src={`https://media.api-sports.io/football/players/${data?.player.id}.png`}
         />

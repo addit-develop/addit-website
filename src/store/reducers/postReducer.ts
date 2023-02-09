@@ -1,5 +1,7 @@
 import { BlockDataType, Post, PostSummary } from '@/types'
 import produce from 'immer'
+import { HYDRATE } from 'next-redux-wrapper'
+import configureStore from '../configureStore'
 import {
   LOAD_MAIN_POST_ERROR,
   LOAD_MAIN_POST_REQUEST,
@@ -16,13 +18,16 @@ import {
   LOAD_POST_ERROR,
   WRITE_POST_RESET_ACTION,
   EDIT_POST_ACTION,
+  DELETE_POST_REQUEST,
+  DELETE_POST_SUCCESS,
+  DELETE_POST_ERROR,
 } from '../types'
 
 type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
-  exPost: boolean
+  exPost: Post | null
   savePostLoading: boolean
   savePostSuccess: boolean
   savePostError: any | null
@@ -31,7 +36,10 @@ type StateType = {
   loadPostLoading: boolean
   loadPostSuccess: boolean
   loadPostError: any | null
-  post: Post | null
+  loadPost: Post | null
+  deletePostLoading: boolean
+  deletePostSuccess: boolean
+  deletePostError: any | null
 
   loadMainPostLoading: boolean
   loadMainPostSuccess: boolean
@@ -43,7 +51,7 @@ export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
-  exPost: false,
+  exPost: null,
   savePostLoading: false,
   savePostSuccess: false,
   savePostError: null,
@@ -52,7 +60,10 @@ export const initialState: StateType = {
   loadPostLoading: false,
   loadPostSuccess: false,
   loadPostError: null,
-  post: null,
+  loadPost: null,
+  deletePostLoading: false,
+  deletePostSuccess: false,
+  deletePostError: null,
 
   loadMainPostLoading: false,
   loadMainPostSuccess: false,
@@ -102,6 +113,10 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.savePostError = action.error
         break
       case LOAD_POST_REQUEST:
+        draft.loadPost = null
+        draft.deletePostLoading = false
+        draft.deletePostSuccess = false
+        draft.deletePostError = null
         draft.loadPostLoading = true
         draft.loadPostSuccess = false
         draft.loadPostError = null
@@ -109,7 +124,7 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case LOAD_POST_SUCCESS:
         draft.loadPostLoading = false
         draft.loadPostSuccess = true
-        draft.post = action.data[0]
+        draft.loadPost = action.data[0]
         break
       case LOAD_POST_ERROR:
         draft.loadPostLoading = false
@@ -133,11 +148,30 @@ const postReducer = (state: StateType = initialState, action: any) =>
       case WRITE_POST_RESET_ACTION:
         draft.savedPostId = null
         draft.savePostSuccess = false
-        draft.exPost = false
+        draft.exPost = null
         break
       case EDIT_POST_ACTION:
-        draft.exPost = true
+        draft.loadPostLoading = false
+        draft.loadPostError = null
+        draft.exPost = draft.loadPost?{...draft.loadPost}:null
+        draft.loadPost = null
         break
+      case DELETE_POST_REQUEST:
+        draft.loadPostLoading = false
+        draft.loadPostError = null
+        draft.deletePostLoading = true
+        draft.deletePostSuccess = false
+        draft.deletePostError = null
+        break
+      case DELETE_POST_SUCCESS:
+        draft.deletePostLoading = false
+        draft.deletePostSuccess = true
+        draft.loadPost = null
+      break
+      case DELETE_POST_ERROR:
+        draft.deletePostLoading = false
+        draft.deletePostError = action.error
+      break
       default:
         break
     }

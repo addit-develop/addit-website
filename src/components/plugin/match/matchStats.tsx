@@ -48,12 +48,12 @@ const MatchStats = ({ matchData, forBlock = false }: PropsType) => {
           {matchData?.statistics[0].statistics.map((x: { type: string; value: any }, i: number) =>
             passStats.includes(x.type) ? (
               <Styles.Stat key={i}>
-                <div>{x.value ? x.value : 0}</div>
+                <div>{x.value ? x.value : '-'}</div>
                 <div>{x.type}</div>
                 <div>
                   {matchData?.statistics[1].statistics[i].value
                     ? matchData?.statistics[1].statistics[i].value
-                    : 0}
+                    : '-'}
                 </div>
               </Styles.Stat>
             ) : null
@@ -64,12 +64,12 @@ const MatchStats = ({ matchData, forBlock = false }: PropsType) => {
           {matchData?.statistics[0].statistics.map((x: { type: string; value: any }, i: number) =>
             shotStats.includes(x.type) ? (
               <Styles.Stat key={i}>
-                <div>{x.value ? x.value : 0}</div>
+                <div>{x.value ? x.value : '-'}</div>
                 <div>{x.type}</div>
                 <div>
                   {matchData?.statistics[1].statistics[i].value
                     ? matchData?.statistics[1].statistics[i].value
-                    : 0}
+                    : '-'}
                 </div>
               </Styles.Stat>
             ) : null
@@ -80,12 +80,12 @@ const MatchStats = ({ matchData, forBlock = false }: PropsType) => {
           {matchData?.statistics[0].statistics.map((x: { type: string; value: any }, i: number) =>
             foulStats.includes(x.type) ? (
               <Styles.Stat key={i}>
-                <div>{x.value ? x.value : 0}</div>
+                <div>{x.value ? x.value : '-'}</div>
                 <div>{x.type}</div>
                 <div>
                   {matchData?.statistics[1].statistics[i].value
                     ? matchData?.statistics[1].statistics[i].value
-                    : 0}
+                    : '-'}
                 </div>
               </Styles.Stat>
             ) : null
@@ -96,12 +96,12 @@ const MatchStats = ({ matchData, forBlock = false }: PropsType) => {
           {matchData?.statistics[0].statistics.map((x: { type: string; value: any }, i: number) =>
             otherStats.includes(x.type) ? (
               <Styles.Stat key={i}>
-                <div>{x.value ? x.value : 0}</div>
+                <div>{x.value ? x.value : '-'}</div>
                 <div>{x.type}</div>
                 <div>
                   {matchData?.statistics[1].statistics[i].value
                     ? matchData?.statistics[1].statistics[i].value
-                    : 0}
+                    : '-'}
                 </div>
               </Styles.Stat>
             ) : null

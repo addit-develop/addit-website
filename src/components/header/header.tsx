@@ -45,7 +45,6 @@ const Header: NextComponentType = () => {
           <Image className={styles.header__logo} src={logo} alt="addit_full_logo" />
           <div>for Football</div>
         </Link>
-        <div>hello {me}</div>
         <div className={styles.header__navigation__button} id="menu" onClick={openMenu}>
           {menuState ? (
             <svg

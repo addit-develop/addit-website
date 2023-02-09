@@ -163,15 +163,8 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
     <React.Fragment>
       <Styles.Modal closed={modalClosed} id="addit-modal">
         <Styles.DragLine />
-        <Styles.HeaderConatiner input={currentMenu === 'Players'}>
+        <Styles.HeaderConatiner>
           <Styles.InputContainer>
-            {history?.length ? (
-              <Styles.backButton onClick={moveBack}>
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                  <path d="m12 20-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825l5.6 5.6Z" fill="#8a8a8a" />
-                </svg>
-              </Styles.backButton>
-            ) : null}
             <SearchModalInput display={currentMenu === 'Players'} />
           </Styles.InputContainer>
           <Styles.SearchMenuContainer big={currentMenu !== 'Players'}>
@@ -192,6 +185,13 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
           </Styles.SearchMenuContainer>
         </Styles.HeaderConatiner>
         <Styles.ContentContainer>
+          {history?.length ? (
+            <Styles.backButton onClick={moveBack}>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                <path d="m12 20-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825l5.6 5.6Z" fill="#8a8a8a" />
+              </svg>
+            </Styles.backButton>
+          ) : null}
           {loadingData ? <Loading /> : null}
           {showCurrentModalPage()}
         </Styles.ContentContainer>

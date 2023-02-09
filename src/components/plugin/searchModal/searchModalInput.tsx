@@ -16,11 +16,10 @@ export const SearchContainer = styled.div<{ display: boolean }>`
   background: ${COLORS.white};
   align-items: center;
   justify-content: start;
-  padding-right: 8px;
+  padding: 0 8px;
   @media only screen and (max-width: 600px) {
-    order: 5;
     height: 48px;
-    padding: 8px 16px;
+    padding: 8px 16px 8px 8px;
   }
 `
 

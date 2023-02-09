@@ -40,6 +40,10 @@ export const EDIT_POST_ACTION = 'EDIT_POST_ACTION' as const
 export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST' as const
 export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS' as const
 export const SAVE_POST_ERROR = 'SAVE_POST_ERROR' as const
+//deletePostReducer
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST' as const
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS' as const
+export const DELETE_POST_ERROR = 'DELETE_POST_ERROR' as const
 
 //loadDataReducer
 export const LOAD_DATA_FINISH = 'LOAD_DATA_FINISH' as const

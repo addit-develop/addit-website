@@ -1,5 +1,5 @@
 import { OutputData } from '@editorjs/editorjs'
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
-import { loginRequestAction } from '@/store/actions/userAction'
+import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import wrapper from '@/store/configureStore'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
@@ -35,30 +35,24 @@ const WritePage: NextPage = () => {
           version: '2.26.4',
         }
   )
-  const [title, setTitle] = useState<string>('')
+  const [title, setTitle] = useState<string>(exPost?exPost.title:'')
   const dispatch = useDispatch()
   const router = useRouter()
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.
     async function redirectToLoginPageOrResetReducer() {
-      if (!me) {
-        const loginUrl = await loginRequestAction()
-        if (loginUrl) {
-          router.replace(loginUrl)
-        }
+      const loginUrl = await loginRequestAction()
+      if (loginUrl) {
+        router.replace(loginUrl)
       }
     }
-    redirectToLoginPageOrResetReducer()
-  }, [me])
-
-  useEffect(() => {
-    // redirect to main if not logged in or other post is yet saving.
-    console.log(exPost)
-    if (exPost) {
-      setData(exPost.data)
+    if(exPost && me && me!==exPost.email){
+      dispatch(logoutRequestAction())
+    } else if (!me) {
+      redirectToLoginPageOrResetReducer()
     }
-  }, [exPost])
+  }, [me, exPost])
 
   const savePost = useCallback(() => {
     if (me) {
@@ -82,9 +76,10 @@ const WritePage: NextPage = () => {
           hashtags = hashtags.concat(
             (block.data.text.match(hashtagRegex) || []).map((e: string) => e.slice(1).toLowerCase())
           )
-        } else if (block.type === 'image' && !mainImage) {
-          console.log(block.data)
-          mainImage = block.data.file.url
+        } else if (block.type === 'image' && !mainImage && block.data.file.url) {
+          const splitedImageUrl = block.data.file.url.split('/')
+          const fileName = splitedImageUrl[splitedImageUrl.length - 1]
+          mainImage = 'https://addit-football-s3.s3.ap-northeast-2.amazonaws.com/thumb/' + fileName
         }
       }
       const post: Post = {
@@ -145,22 +140,5 @@ const WritePage: NextPage = () => {
     </div>
   )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context: GetServerSidePropsContext) => {
-    const cookie = context.req ? context.req.headers.cookie : ''
-    backAxios.defaults.headers.Cookie = ''
-    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
-    store.dispatch({
-      type: LOAD_USER_REQUEST,
-    })
-
-    store.dispatch(END)
-    await store.sagaTask?.toPromise()
-
-    return { props: {} }
-  }
-)
 
 export default WritePage
