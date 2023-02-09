@@ -23,6 +23,7 @@ const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
   const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector((state: RootState) => state.postReducer)
   //state to hold output data. we'll use this for rendering later
+  console.log(exPost)
   const [data, setData] = useState<OutputData>(
     exPost
       ? exPost.data
@@ -148,8 +149,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const id:number = context.query.postId ? Number(context.query.postId):0;
     if(id){store.dispatch(editPostRequestAction({ids:[id]}))}
 
-    store.dispatch(END)
     await store.sagaTask?.toPromise()
+    store.dispatch(END)
 
     const meSsr:string = store.getState().userReducer.me
     const exPostSsr:Post = store.getState().postReducer.exPost
@@ -161,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
         },
       }
     }
-    return { props: {exPostSsr : exPostSsr} }
+    return { props: {} }
   }
 )
 
