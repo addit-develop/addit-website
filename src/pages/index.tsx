@@ -16,22 +16,33 @@ import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
+import { PenIcon } from '@/assets/icons'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | null, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
+const HomePage: NextPage = ({
+  meSsr,
+  mainPostsSsr,
+  myPostsSsr,
+}: {
+  meSsr: string | null
+  mainPostsSsr: PostSummary[]
+  myPostsSsr: PostSummary[]
+}) => {
   const dispatch = useDispatch()
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr?myPostsSsr:mainPostsSsr)
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(
+    meSsr ? myPostsSsr : mainPostsSsr
+  )
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(toExposePosts?false:true)
+  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(toExposePosts ? false : true)
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
     if (box && box.checked && myPostsSsr) {
       setToExposePosts(myPostsSsr)
       setLoadToExposePosts(false)
-    } else if(box && !box.checked && mainPostsSsr) {
+    } else if (box && !box.checked && mainPostsSsr) {
       setToExposePosts(mainPostsSsr)
       setLoadToExposePosts(false)
     }
@@ -69,7 +80,7 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
     if (box && box.checked) {
       setToExposePosts(myPosts)
       setLoadToExposePosts(false)
-    } else if(box && !box.checked) {
+    } else if (box && !box.checked) {
       setToExposePosts(mainPosts)
       setLoadToExposePosts(false)
     }
@@ -80,7 +91,7 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
     if (box && box.checked) {
       setToExposePosts(myPosts)
       console.log('show mine')
-    } else if(box && !box.checked){
+    } else if (box && !box.checked) {
       setToExposePosts(mainPosts)
       console.log('show all')
     }
@@ -111,7 +122,7 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
           <div>No Post.</div>
         ) : (
           <div className={styles.postsContainer}>
-            {toExposePosts.map((x) => (
+            {/* {toExposePosts.map((x) => (
               <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
                 {x.mainImage ? (
                   <div className={styles.postImage}>
@@ -127,17 +138,12 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
                   </div>
                 </div>
               </Link>
-            ))}
+            ))} */}
           </div>
         )}
         {me ? (
           <Link className={styles.write} href={'/write'}>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path
-                d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
-                fill="#fff"
-              />
-            </svg>
+            <PenIcon width={24} height={24} fill="#fff" />
             Write
           </Link>
         ) : (
@@ -158,9 +164,9 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
       type: LOAD_USER_REQUEST,
     })
 
-    const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
-    const meSsr:string | null = store.getState().userReducer.me
-    var myPostsSsr:PostSummary[]=[];
+    const mainPostsSsr: PostSummary[] = store.getState().postReducer.mainPosts
+    const meSsr: string | null = store.getState().userReducer.me
+    var myPostsSsr: PostSummary[] = []
     if (meSsr) {
       store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
       myPostsSsr = store.getState().userReducer.myPosts
@@ -170,7 +176,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     await store.sagaTask?.toPromise()
     console.log()
 
-    return { props: {meSsr, mainPostsSsr, myPostsSsr} }
+    return { props: { meSsr, mainPostsSsr, myPostsSsr } }
   }
 )
 

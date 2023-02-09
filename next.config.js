@@ -11,6 +11,16 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_BACK_URL,
     ],
   },
+  //@svg파일 이용을 위한 콛
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+      ㅡ,
+    })
+    return config
+  },
 }
 
 module.exports = nextConfig
