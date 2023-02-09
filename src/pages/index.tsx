@@ -147,8 +147,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-    await store.sagaTask?.toPromise()
     store.dispatch(END)
+    await store.sagaTask?.toPromise()
     return { props: {} }
   }
 )

@@ -148,9 +148,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     })
     const id:number = context.query.postId ? Number(context.query.postId):0;
     if(id){store.dispatch(editPostRequestAction({ids:[id]}))}
-
-    await store.sagaTask?.toPromise()
     store.dispatch(END)
+    await store.sagaTask?.toPromise()
 
     const meSsr:string = store.getState().userReducer.me
     const exPostSsr:Post = store.getState().postReducer.exPost
