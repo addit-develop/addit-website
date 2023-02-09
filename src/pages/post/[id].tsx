@@ -68,7 +68,7 @@ const PostPage: NextPage = () => {
     if (!deletePostLoading && deletePostSuccess && !loadPost) {
       router.push('/')
     }
-  }, [deletePostLoading, deletePostSuccess])
+  }, [deletePostLoading, deletePostSuccess, loadPost])
 
   return (
     <>
