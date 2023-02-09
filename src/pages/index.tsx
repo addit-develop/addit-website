@@ -149,8 +149,6 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     })
     await store.sagaTask?.toPromise()
     store.dispatch(END)
-    const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
-    const meSsr:string | null = store.getState().userReducer.me
     return { props: {} }
   }
 )
