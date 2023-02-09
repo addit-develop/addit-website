@@ -37,9 +37,10 @@ const BlackLabel = styled.div`
 
 interface PropsType {
   team: TeamStatisticType
+  setData?: any
 }
 
-const TeamTransfer = ({ team }: PropsType) => {
+const TeamTransfer = ({ team, setData }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   // const { currentSeason } = useCurrentSeason()

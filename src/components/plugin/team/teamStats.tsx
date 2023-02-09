@@ -33,9 +33,10 @@ const StatNumber = styled.div`
 `
 interface PropsType {
   team: TeamStatisticType
+  setData?: any
 }
 
-const TeamStats = ({ team }: PropsType) => {
+const TeamStats = ({ team, setData }: PropsType) => {
   return (
     <React.Fragment>
       <Container>
