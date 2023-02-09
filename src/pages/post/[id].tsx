@@ -23,9 +23,6 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 const Editor = loadable(() => import('../../components/editor/editor'))
-// const Editor = dynamic(() => import('../../components/editor/editor'), {
-//   ssr: false,
-// })
 
 const PostPage: NextPage = () => {
   const [data, setData] = useState<OutputData>({

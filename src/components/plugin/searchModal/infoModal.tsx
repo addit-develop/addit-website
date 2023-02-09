@@ -1,5 +1,5 @@
 import * as Styles from './style'
-import { default as React, useCallback, useState } from 'react'
+import { default as React, useCallback, useEffect, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
@@ -26,6 +26,10 @@ const InfoModal = () => {
   const closeModal = useCallback(() => {
     dispatch(closeInfoModal())
   }, [])
+
+  useEffect(() => {
+    console.log(openInfoModal)
+  }, [openInfoModal])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
