@@ -1,5 +1,6 @@
 import { OutputData } from '@editorjs/editorjs'
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import loadable from '@loadable/component'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
@@ -16,9 +17,7 @@ import { END } from 'redux-saga'
 
 // important that we use dynamic loading here
 // editorjs should only be rendered on the client side.
-const Editor = dynamic(() => import('../components/editor/editor'), {
-  ssr: false,
-})
+const Editor = loadable(() => import('../components/editor/editor'), { ssr: false })
 
 const WritePage: NextPage = ({exPostSsr}:{exPostSsr:Post}) => {
   const { me } = useSelector((state: RootState) => state.userReducer)

@@ -1,10 +1,18 @@
 import { COLORS } from '@/constants/constants'
-import { PlayerMatchStatsType, FixtureType } from '@/types'
-import React, { useMemo } from 'react'
+import {
+  PlayerMatchStatsType,
+  FixtureType,
+  TeamType,
+  PlayerDataType,
+  PlayerType,
+  MatchDetailDataType,
+} from '@/types'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
 import FixtureTable from '../common/fixtureTable'
 import PlayerMatchStats from './playerMatchStats'
+import useAxios from '@/hooks/useAxios'
 
 const Container = styled.div`
   width: 100%;
@@ -38,43 +46,55 @@ const Round = styled.div`
 `
 
 interface PropsType {
-  data: {
-    playerData: PlayerMatchStatsType
-    fixtureData: FixtureType
-    teamData: {
-      id: number
-      name: string
-      logo: string
-    }
-  }
+  matchStatData?: PlayerMatchStatsType
+  playerData: PlayerDataType
+  fixtureData: MatchDetailDataType | FixtureType
   selectMode: boolean
   blockId: string
 }
 
-const PlayerMatchDetail = ({ data, selectMode, blockId }: PropsType) => {
-  const playerDataFilled = useMemo(
-    () => ({
-      player: {
-        ...data.playerData?.player,
-        nationality: '',
-      },
-      statistics: [{ team: data.teamData }],
-    }),
-    [data]
-  )
+const PlayerMatchDetail = ({
+  matchStatData,
+  playerData,
+  fixtureData,
+  selectMode,
+  blockId,
+}: PropsType) => {
+  const axios = useAxios()
+  const [statData, setStatData] = useState<PlayerMatchStatsType | undefined>(matchStatData)
 
-  if (!data.playerData && !data.fixtureData) return null
+  const getStatData = async () => {
+    console.log('===getStatData===')
+    const res = await axios.get('/fixtures/players', {
+      params: {
+        fixture: fixtureData?.fixture.id,
+      },
+    })
+    // console.log(res.data)
+    res.data.response.forEach((team: any) => {
+      const temp = team.players.find((player: any) => player.player.id === playerData.player.id)
+      if (temp) setStatData(temp)
+    })
+  }
+
+  useEffect(() => {
+    if (!matchStatData) {
+      getStatData()
+    }
+  }, [])
+
+  if (!statData) return null
   return (
     <React.Fragment>
       <Container>
-        <PlayerInfoBox playerData={playerDataFilled} size="large" />
+        <PlayerInfoBox playerData={playerData} size="large" />
         <MatchContainer>
           <Round>
-            {data.fixtureData.league?.name} {data.fixtureData.league?.round}
+            {fixtureData.league?.name} {fixtureData.league?.round}
           </Round>
-          <FixtureTable fixture={data.fixtureData} />
+          <FixtureTable fixture={fixtureData} />
         </MatchContainer>
-        <PlayerMatchStats data={data.playerData?.statistics[0]} />
+        <PlayerMatchStats data={statData?.statistics[0]} />
       </Container>
     </React.Fragment>
   )

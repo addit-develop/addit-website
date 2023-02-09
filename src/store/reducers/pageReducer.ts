@@ -31,6 +31,7 @@ const pageReducer = (state: StateType = initialState, action: any) =>
   produce(state, (draft) => {
     switch (action.type) {
       case SET_MODAL_PAGE:
+        draft.openInfoModal = true
         if (
           action.data.page === 'matchHome' ||
           action.data.page === 'leagueHome' ||
@@ -48,7 +49,6 @@ const pageReducer = (state: StateType = initialState, action: any) =>
         draft.currentPage = action.data.page
         draft.currentMenu = action.data.menu
         if (action.data.pageProps) draft.pageProps = action.data.pageProps
-        draft.openInfoModal = true
         break
       case LOAD_DATA_START:
         draft.loadingData = true

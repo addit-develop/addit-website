@@ -40,9 +40,11 @@ const MatchPredictionBlock = ({ data }: PropsType) => {
     <React.Fragment>
       <BlockContainer>
         <MatchHeader matchData={data.fixtureData} />
-        <MatchScorePrediction predictionData={data.predictionData} />
-        <TeamForm predictionData={data.predictionData} />
-        <HeadToHead predictionData={data.predictionData} />
+        {data.scorePrediction ? (
+          <MatchScorePrediction predictionData={data.predictionData} />
+        ) : null}
+        {data.teamForm ? <TeamForm predictionData={data.predictionData} /> : null}
+        {data.headToHead ? <HeadToHead predictionData={data.predictionData} /> : null}
       </BlockContainer>
     </React.Fragment>
   )

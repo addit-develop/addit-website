@@ -1,5 +1,5 @@
 import * as Styles from './style'
-import { default as React, useCallback, useState } from 'react'
+import { default as React, useCallback, useEffect, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
@@ -27,6 +27,10 @@ const InfoModal = () => {
     dispatch(closeInfoModal())
   }, [])
 
+  useEffect(() => {
+    console.log(openInfoModal)
+  }, [openInfoModal])
+
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
       case 'searchHome':
@@ -44,7 +48,15 @@ const InfoModal = () => {
           return <MatchPrediction selectMode={false} blockId={blockId} fixtureData={pageProps} />
         else break
       case 'playerMatchDetail':
-        return <PlayerMatchDetail data={pageProps} selectMode={false} blockId={blockId} />
+        return (
+          <PlayerMatchDetail
+            matchStatData={pageProps.matchStatData}
+            playerData={pageProps.playerData}
+            fixtureData={pageProps.fixtureData}
+            selectMode={false}
+            blockId={blockId}
+          />
+        )
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':
