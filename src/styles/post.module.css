@@ -70,8 +70,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 15px 15px 15px 15px;
-  gap: 10;
   font-family: 'Manrope';
   font-size: 18px;
   color: var(--white);
