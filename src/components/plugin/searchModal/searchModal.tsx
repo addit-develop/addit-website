@@ -116,7 +116,15 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
           )
         else break
       case 'playerMatchDetail':
-        return <PlayerMatchDetail data={pageProps} selectMode={selectMode} blockId={blockId} />
+        return (
+          <PlayerMatchDetail
+            matchStatData={pageProps.matchStatData}
+            playerData={pageProps.playerData}
+            fixtureData={pageProps.fixtureData}
+            selectMode={selectMode}
+            blockId={blockId}
+          />
+        )
       case 'leagueHome':
         return <LeagueHome />
       case 'leagueDetail':

@@ -1,4 +1,5 @@
 import produce from 'immer'
+import { HYDRATE } from 'next-redux-wrapper'
 import {
   SET_MODAL_PAGE,
   LOAD_DATA_START,

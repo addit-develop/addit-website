@@ -106,21 +106,14 @@ const PlayerRecentMatches = ({ playerData, sendData }: PropsType) => {
               </DateContainer>
               <FixtureTable key={f.fixture.id} fixture={f} />
               <MoreButton
-              // onClick={() =>
-              //   dispatch(
-              //     changeModalPage('playerMatchDetail', 'Players', {
-              //       playerData: playerData,
-              //       fixtureData: {
-              //         fixture: f.fixture,
-              //         league: f?.league,
-              //         teams: f?.teams,
-              //         goals: f?.goals,
-              //         score: f?.score,
-              //       },
-              //       teamData: playerData.statistics[0].team,
-              //     })
-              //   )
-              // }
+                onClick={() =>
+                  dispatch(
+                    changeModalPage('playerMatchDetail', 'Players', {
+                      playerData: playerData,
+                      fixtureData: f,
+                    })
+                  )
+                }
               >
                 Player Stats
                 <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20">

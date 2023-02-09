@@ -9,7 +9,7 @@ interface PropsType {
   forBlock?: boolean
 }
 
-interface lineupPlayerType {
+type lineupPlayerType = {
   player: {
     grid: string
     id: number
@@ -94,15 +94,12 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
     (playerData: PlayerMatchStatsType | undefined, teamId: number) => {
       dispatch(
         changeModalPage('playerMatchDetail', 'Matches', {
-          playerData: playerData,
-          fixtureData: {
-            fixture: matchData?.fixture,
-            league: matchData?.league,
-            teams: matchData?.teams,
-            goals: matchData?.goals,
-            score: matchData?.score,
+          matchStatData: playerData,
+          fixtureData: matchData,
+          playerData: {
+            player: playerData?.player,
+            statistics: [{ team: matchData?.lineups[teamId].team }],
           },
-          teamData: matchData?.lineups[teamId].team,
         })
       )
     },

@@ -27,6 +27,7 @@ function* loadUser() {
       type: LOAD_USER_SUCCESS,
       data: result.data,
     })
+    return result.data
   } catch (err: any) {
     yield put({
       type: LOAD_USER_FAILURE,
