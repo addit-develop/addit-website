@@ -121,8 +121,7 @@ const WritePage: NextPage = () => {
             contentEditable
             onKeyDown={(e) => preventEnter(e)}
             onInput={(e) => saveTitle(e)}
-            defaultValue={exPost.title || ''}
-          />
+          >{exPost?exPost.title:''}</div>
         </div>
         <Editor data={data} onChange={setData} holder="editorjs-container" readonly={false} />
         <button className={styles.publish} onClick={savePost}>
