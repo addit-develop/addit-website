@@ -37,18 +37,6 @@ const WritePage: NextPage = () => {
         }
   )
 
-  useEffect(() => {
-    setData(
-      exPost
-        ? exPost.data
-        : {
-            time: 0,
-            blocks: [],
-            version: '2.26.4',
-          }
-    )
-  }, [exPost])
-
   const saveTitle = useCallback(
     (e: React.FormEvent<HTMLDivElement>) => {
       setTitle(e.currentTarget.textContent || exPost.title || '')
@@ -73,7 +61,7 @@ const WritePage: NextPage = () => {
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
     }
-  }, [me])
+  }, [me, exPost])
 
   const savePost = useCallback(() => {
     if (me) {
@@ -117,7 +105,7 @@ const WritePage: NextPage = () => {
       }
       dispatch(savePostRequestAction(post))
     }
-  }, [data, title, me])
+  }, [data, title, me, exPost])
 
   useEffect(() => {
     if (!savePostLoading && savePostSuccess && savedPostId) {
