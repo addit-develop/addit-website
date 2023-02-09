@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from '../../store/configureStore'
 import SearchModal from './searchModal/searchModal'
+import InfoModal from './searchModal/infoModal'
 
 import FootballBlockEdit from '../block/edit'
 import FootballBlockRead from '../block/read'
@@ -58,7 +59,9 @@ export default class FootballTool {
           ) : (
             <FootballBlockEdit blockId={this.id} savedblockData={this.data} />
           )}
-          {this.readOnly || this.data.isReady ? null : (
+          {this.readOnly || this.data.isReady ? (
+            <InfoModal />
+          ) : (
             <SearchModal
               blockId={this.id}
               saveData={(data) => this.saveData(data)}

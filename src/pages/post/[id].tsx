@@ -81,7 +81,6 @@ const PostPage: NextPage = () => {
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
           {!loadPostLoading && loadPost ? (
             <div className={styles.postContainer} id="postContainer">
-              <InfoModal />
               <div className={styles.title}>{loadPost.title}</div>
               <div className={styles.detail}>{`${
                 loadPost.email
