@@ -6,9 +6,8 @@ import {
   SAVE_POST_REQUEST,
   LOAD_POST_REQUEST,
   LOAD_MAIN_POST_REQUEST,
-  WRITE_POST_RESET_ACTION,
-  EDIT_POST_ACTION,
   DELETE_POST_REQUEST,
+  LOAD_EXPOST_REQUEST,
 } from '../types'
 import { Post } from '@/types'
 
@@ -77,15 +76,16 @@ export const loadMainPostRequestAction = (constraint: any) => {
   }
 }
 
-export const writePostResetReducerAction = () => {
+export const editPostRequestAction = (constraint : any) => {
   return {
-    type: WRITE_POST_RESET_ACTION,
-  }
-}
-
-export const editPostRequestAction = () => {
-  return {
-    type: EDIT_POST_ACTION,
+    type: LOAD_EXPOST_REQUEST,
+    constrinats:{
+      summary: constraint.summary || false, // load posts summary or not
+      writers: constraint.writers || null, // load posts of specific users
+      hashtags: constraint.hashtags || null, // load posts with specific hashtags
+      amount: constraint.amount || 1, // how many to load
+      ids: constraint.ids || null, // load posts with specific ids
+    },
   }
 }
 

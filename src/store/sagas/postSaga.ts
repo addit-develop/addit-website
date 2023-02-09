@@ -15,11 +15,35 @@ import {
   DELETE_POST_REQUEST,
   DELETE_POST_ERROR,
   DELETE_POST_SUCCESS,
+  LOAD_EXPOST_SUCCESS,
+  LOAD_EXPOST_ERROR,
+  LOAD_EXPOST_REQUEST,
 } from '../types'
 import axios from 'axios'
 
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
+function loadExPostAPI(constraint: {}) {
+  return backAxios.post('/post/load', constraint)
+}
+
+function* loadExPost(action: any) {
+  try {
+    const result: { data: PostSummary[] } = yield call(loadExPostAPI, action.constraint)
+    yield put({
+      type: LOAD_EXPOST_SUCCESS,
+      data: result.data,
+    })
+  } catch (err: any) {
+    yield put({
+      type: LOAD_EXPOST_ERROR,
+      error: err.response.data,
+    })
+  }
+}
+function* watchLoadExPostRequestAction() {
+  yield takeLatest(LOAD_EXPOST_REQUEST, loadExPost)
+}
 
 function savePostAPI(post: Post) {
   return backAxios.post('/post/save', post)
@@ -95,7 +119,6 @@ function* loadMainPost(action: any) {
 function* watchLoadMainPostRequestAction() {
   yield takeLatest(LOAD_MAIN_POST_REQUEST, loadMainPost)
 }
-
 
 function deletePostAPI(postId : number) {
   return backAxios.post('/post/delete', {postId:postId})

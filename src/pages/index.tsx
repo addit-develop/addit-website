@@ -20,26 +20,20 @@ import { LOAD_USER_REQUEST } from '@/store/types'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | null, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
+const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
   const dispatch = useDispatch()
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(meSsr?myPostsSsr:mainPostsSsr)
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [loadToExposePosts, setLoadToExposePosts] = useState<boolean>(toExposePosts?false:true)
+  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPostsSsr)
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked && myPostsSsr) {
-      setToExposePosts(myPostsSsr)
-      setLoadToExposePosts(false)
-    } else if(box && !box.checked && mainPostsSsr) {
-      setToExposePosts(mainPostsSsr)
-      setLoadToExposePosts(false)
+    if (me && box && box.checked && myPosts) {
+      setToExposePosts(myPosts)
+    } else {
+      setToExposePosts(mainPosts)
     }
-  }, [meSsr, mainPostsSsr, myPostsSsr])
+  }, [me, mainPosts, myPosts])
 
-  useEffect(() => {
-    console.log(toExposePosts)
-  }, [toExposePosts])
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
   //     if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
@@ -64,27 +58,16 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
       .toString()
   }, [])
 
-  useEffect(() => {
-    const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked) {
-      setToExposePosts(myPosts)
-      setLoadToExposePosts(false)
-    } else if(box && !box.checked) {
-      setToExposePosts(mainPosts)
-      setLoadToExposePosts(false)
-    }
-  }, [myPosts, mainPosts])
-
   const exposeMine = useCallback(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (box && box.checked) {
+    if (me && box && box.checked && myPosts) {
       setToExposePosts(myPosts)
       console.log('show mine')
-    } else if(box && !box.checked){
+    } else{
       setToExposePosts(mainPosts)
       console.log('show all')
     }
-  }, [myPosts, mainPosts])
+  }, [me, myPosts, mainPosts])
   return (
     <>
       <Head>
@@ -106,8 +89,7 @@ const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string | 
         ) : (
           <></>
         )}
-        {loadToExposePosts ? <div>Loading Posts...</div> : <></>}
-        {!loadToExposePosts && toExposePosts.length === 0 ? (
+        {toExposePosts.length === 0 ? (
           <div>No Post.</div>
         ) : (
           <div className={styles.postsContainer}>
@@ -157,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-
+    await store.sagaTask?.toPromise()
     const mainPostsSsr:PostSummary[] = store.getState().postReducer.mainPosts
     const meSsr:string | null = store.getState().userReducer.me
     var myPostsSsr:PostSummary[]=[];
@@ -165,11 +147,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
       store.dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
       myPostsSsr = store.getState().userReducer.myPosts
     }
-
-    store.dispatch(END)
     await store.sagaTask?.toPromise()
-    console.log()
-
+    store.dispatch(END)
     return { props: {meSsr, mainPostsSsr, myPostsSsr} }
   }
 )

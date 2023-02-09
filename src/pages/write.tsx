@@ -1,12 +1,12 @@
 import { OutputData } from '@editorjs/editorjs'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '@/styles/write.module.css'
 import { Comment, Post } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
-import { savePostRequestAction, writePostResetReducerAction } from '@/store/actions/postAction'
+import { editPostRequestAction, savePostRequestAction } from '@/store/actions/postAction'
 import { useRouter } from 'next/router'
 import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
 import wrapper from '@/store/configureStore'
@@ -20,22 +20,22 @@ const Editor = dynamic(() => import('../components/editor/editor'), {
   ssr: false,
 })
 
-const WritePage: NextPage = () => {
+const WritePage: NextPage = ({exPostSsr}:{exPostSsr:Post}) => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
+  const { savePostSuccess, savePostLoading, savedPostId } = useSelector(
     (state: RootState) => state.postReducer
   )
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>(
-    exPost
-      ? exPost.data
+    exPostSsr
+      ? exPostSsr.data
       : {
           time: 0,
           blocks: [],
           version: '2.26.4',
         }
   )
-  const [title, setTitle] = useState<string>(exPost?exPost.title:'')
+  const [title, setTitle] = useState<string>(exPostSsr?exPostSsr.title:'')
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -47,12 +47,12 @@ const WritePage: NextPage = () => {
         router.replace(loginUrl)
       }
     }
-    if(exPost && me && me!==exPost.email){
+    if(exPostSsr && me && me!==exPostSsr.email){
       dispatch(logoutRequestAction())
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
     }
-  }, [me, exPost])
+  }, [me])
 
   const savePost = useCallback(() => {
     if (me) {
@@ -83,15 +83,15 @@ const WritePage: NextPage = () => {
         }
       }
       const post: Post = {
-        id: exPost ? exPost.id : 0,
+        id: exPostSsr ? exPostSsr.id : 0,
         title: title,
         hashtags: hashtags,
         email: me,
         data: data,
         snippet: snippet || '',
-        comments: exPost ? exPost.comments : [],
-        likes: exPost ? exPost.likes : 0,
-        views: exPost ? exPost.views : 0,
+        comments: exPostSsr ? exPostSsr.comments : [],
+        likes: exPostSsr ? exPostSsr.likes : 0,
+        views: exPostSsr ? exPostSsr.views : 0,
         mainImage: mainImage,
       }
       dispatch(savePostRequestAction(post))
@@ -101,7 +101,6 @@ const WritePage: NextPage = () => {
   useEffect(() => {
     if (!savePostLoading && savePostSuccess && savedPostId) {
       const id = savedPostId
-      dispatch(writePostResetReducerAction()) // reset post save reducers for later new post writing
       router.replace(`/post/${id}`)
     }
   }, [savePostLoading, savePostSuccess, savedPostId])
@@ -140,5 +139,33 @@ const WritePage: NextPage = () => {
     </div>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context.req ? context.req.headers.cookie : ''
+    backAxios.defaults.headers.Cookie = ''
+    if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
+    store.dispatch({
+      type: LOAD_USER_REQUEST,
+    })
+    const id:number = context.query.postId ? Number(context.query.postId):0;
+    if(id){store.dispatch(editPostRequestAction({ids:[id]}))}
+
+    store.dispatch(END)
+    await store.sagaTask?.toPromise()
+
+    const meSsr:string = store.getState().userReducer.me
+    const exPostSsr:Post = store.getState().postReducer.exPost
+    if(exPostSsr && exPostSsr.email !== meSsr){
+      return {
+        redirect: {
+          permanent: true,
+          destination: "/",
+        },
+      }
+    }
+    return { props: {exPostSsr : exPostSsr} }
+  }
+)
 
 export default WritePage
