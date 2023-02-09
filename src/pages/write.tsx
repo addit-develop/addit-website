@@ -38,8 +38,6 @@ const WritePage: NextPage = () => {
   }, [])
 
   const [title, setTitle] = useState<string>(exPost?exPost.title:'')
-  const inputTitle = document.getElementById("inputTitle") as HTMLInputElement
-  inputTitle.innerHTML = title
   const dispatch = useDispatch()
   const router = useRouter()
 
