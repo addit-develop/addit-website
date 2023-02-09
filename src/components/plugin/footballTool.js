@@ -59,9 +59,7 @@ export default class FootballTool {
           ) : (
             <FootballBlockEdit blockId={this.id} savedblockData={this.data} />
           )}
-          {this.readOnly || this.data.isReady ? (
-            <InfoModal />
-          ) : (
+          {this.readOnly || this.data.isReady ? null : (
             <SearchModal
               blockId={this.id}
               saveData={(data) => this.saveData(data)}
@@ -70,6 +68,7 @@ export default class FootballTool {
               deleteBlock={() => this.deleteBlock()}
             />
           )}
+          {this.readOnly ? <InfoModal /> : null}
         </React.StrictMode>
       </Provider>
     )
