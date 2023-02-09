@@ -20,15 +20,15 @@ import { LOAD_USER_REQUEST } from '@/store/types'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const HomePage: NextPage = ({meSsr, mainPostsSsr, myPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[], myPostsSsr:PostSummary[]}) => {
+const HomePage: NextPage = ({meSsr, mainPostsSsr} : {meSsr:string, mainPostsSsr:PostSummary[]}) => {
   const dispatch = useDispatch()
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
   const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPostsSsr)
   const [loadToExpostPosts, setLoadToExpostPosts] = useState<boolean>(false)
-  if(meSsr){
+  useEffect(() => {
     dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [meSsr] }))
-  }
+  }, [me])
   useEffect(() => {
     const box = document.getElementById('showMineCheckBox') as HTMLInputElement
     if (me && box && box.checked) {
