@@ -39,7 +39,7 @@
   z-index: 9;
   position: absolute;
   bottom: 24px;
-  left: calc(50% - 210px);
+  left: calc(50% - 108px);
   width: 160px;
   height: 44px;
   display: flex;
@@ -63,8 +63,8 @@
   z-index: 9;
   position: absolute;
   bottom: 24px;
-  left: calc(50% + 50px);
-  width: 160px;
+  left: calc(50% + 64px);
+  width: 44px;
   height: 44px;
   display: flex;
   flex-direction: row;
@@ -79,7 +79,7 @@
   box-shadow: 0px 0.8px 2.4px -0.63px rgba(15, 41, 107, 0.1),
     0px 2.4px 7.24px -1.3px rgba(15, 41, 107, 0.1), 0px 6.4px 19.1px -1.9px rgba(15, 41, 107, 0.1),
     0px 20px 60px -2.5px rgba(15, 41, 107, 0.1);
-  background-color: #D94343;
+  background-color: #d94343;
   border-radius: 30px;
 }
 

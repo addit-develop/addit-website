@@ -32,7 +32,9 @@ const PostPage: NextPage = () => {
   })
   const router = useRouter()
   const dispatch = useDispatch()
-  const { loadPost, loadPostLoading, deletePostLoading, deletePostSuccess } = useSelector((state: RootState) => state.postReducer)
+  const { loadPost, loadPostLoading, deletePostLoading, deletePostSuccess } = useSelector(
+    (state: RootState) => state.postReducer
+  )
   const { me } = useSelector((state: RootState) => state.userReducer)
 
   // const { id } = router.query
@@ -51,17 +53,17 @@ const PostPage: NextPage = () => {
   }, [])
 
   const editPost = useCallback(() => {
-      router.push({pathname:'/write', query:{postId:loadPost.id}}, '/write')
-  }, [])
+    router.push({ pathname: '/write', query: { postId: loadPost.id } }, '/write')
+  }, [loadPost])
 
   const deletePost = useCallback(() => {
-    if(loadPost && loadPost.id){
+    if (loadPost && loadPost.id) {
       dispatch(deletePostRequestAction(loadPost.id))
     }
-  }, [])
+  }, [loadPost])
 
   useEffect(() => {
-    if(!deletePostLoading && deletePostSuccess && !loadPost){
+    if (!deletePostLoading && deletePostSuccess && !loadPost) {
       router.push('/')
     }
   }, [deletePostLoading, deletePostSuccess])
@@ -94,24 +96,23 @@ const PostPage: NextPage = () => {
           )}
           {!loadPostLoading && loadPost && me === loadPost.email ? (
             <>
-            <button className={styles.edit} onClick={editPost}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path
-                  d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
-                  fill="#fff"
-                />
-              </svg>
-              Edit
-            </button>
-            <button className={styles.delete} onClick={deletePost}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-                <path
-                  d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
-                  fill="#fff"
-                />
-              </svg>
-              Delete
-            </button>
+              <button className={styles.edit} onClick={editPost}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                  <path
+                    d="M5 19h1.4l8.625-8.625-1.4-1.4L5 17.6ZM19.3 8.925l-4.25-4.2 1.4-1.4q.575-.575 1.413-.575.837 0 1.412.575l1.4 1.4q.575.575.6 1.388.025.812-.55 1.387ZM17.85 10.4 7.25 21H3v-4.25l10.6-10.6Zm-3.525-.725-.7-.7 1.4 1.4Z"
+                    fill="#fff"
+                  />
+                </svg>
+                Edit
+              </button>
+              <button className={styles.delete} onClick={deletePost}>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
+                  <path
+                    d="M7 21q-.825 0-1.412-.587Q5 19.825 5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413Q17.825 21 17 21ZM17 6H7v13h10ZM9 17h2V8H9Zm4 0h2V8h-2ZM7 6v13Z"
+                    fill="#fff"
+                  />
+                </svg>
+              </button>
             </>
           ) : (
             <></>
