@@ -146,5 +146,6 @@ export default function* postSaga() {
     fork(watchLoadPostRequestActrion),
     fork(watchLoadMainPostRequestAction),
     fork(watchDeletePostRequestAction),
+    fork(watchLoadExPostRequestAction),
   ])
 }
