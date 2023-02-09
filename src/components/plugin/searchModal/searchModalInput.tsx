@@ -78,7 +78,7 @@ const SearchModalInput = ({ display }: PropsType) => {
 
   const search = useCallback(() => {
     dispatch(changeModalPage('playerHome', 'Players', { leagueId: league.id, searchKey: value }))
-  }, [value])
+  }, [value, league])
 
   // 검색창이 본문 작성 영역의 하위 요소이기 때문에 엔터를 클릭하면 본문 작성 영역으로 넘어가지는 문제가 발생. 이를 방지하기 위한 코드
   const stopEnterPropagation = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
