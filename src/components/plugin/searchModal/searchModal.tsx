@@ -87,7 +87,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, setBlockAdded, deleteB
     if (selectMode) {
       // 선택된 경기가 없는 리그 정보 삭제
       const myBlock = blockDataList.find((x: BlockDataType) => x.id === blockId)
-      var dataforSave = { type: myBlock?.type, data: myBlock?.data, added: true }
+      var dataforSave = { type: myBlock?.type, data: myBlock?.data, isReady: true }
       if (myBlock?.type === 'Fixture_List_By_Date') {
         dataforSave.data = myBlock?.data.filter(
           (x: FixtureListBlockType) => x.fixtures.length !== 0

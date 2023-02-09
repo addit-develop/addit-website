@@ -62,7 +62,7 @@ export default class FootballTool {
           ) : (
             <FootballBlockEdit blockId={this.id} savedblockData={this.data} />
           )}
-          {this.readOnly || this.blockAdded || this.data.added ? null : (
+          {this.readOnly || this.blockAdded || this.data.isReady ? null : (
             <SearchModal
               blockId={this.id}
               saveData={(data) => this.saveData(data)}
