@@ -284,6 +284,16 @@ export type TeamType = {
   logo: string
 }
 
+export type TeamBlockDataType = {
+  tab: string
+  teamData:
+    | {
+        team: TeamStatisticType
+        data: any
+      }
+    | undefined
+}
+
 export type TeamStatType = {
   played: number
   win: number

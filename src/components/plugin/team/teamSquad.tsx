@@ -19,9 +19,10 @@ const Position = styled.div`
 
 interface PropsType {
   team: TeamType
+  setData?: any
 }
 
-const TeamSquad = ({ team }: PropsType) => {
+const TeamSquad = ({ team, setData }: PropsType) => {
   const dispatch = useDispatch()
   const axios = useAxios()
   const [squadData, setSquadData] = useState<PlayerType[]>([])

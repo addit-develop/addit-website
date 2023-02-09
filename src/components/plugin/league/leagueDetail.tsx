@@ -56,11 +56,12 @@ const LeagueDetail = ({ leagueId, blockId }: PropsType) => {
   const [selectedMenu, setSelectedMenu] = useState<string>('Table')
   const [season, setSeason] = useState<number>(today.year() - 1)
 
+  //리그 블록 데이터
   const [leagueBlockData, setLeagueBlockData] = useState<LeagueBlockDataType>({
     tab: selectedMenu,
     leagueData: undefined,
   })
-
+  //리그 블록 데이터 저장 함수. 하위 element에 props로 전달
   const setDataInLeagueBlockData = useCallback(
     (data: specificDataType) => {
       const newData = {
