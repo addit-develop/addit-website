@@ -2,7 +2,7 @@ import { OutputData } from '@editorjs/editorjs'
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import loadable from '@loadable/component'
 import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from '@/styles/write.module.css'
 import { Comment, Post, PostSummary } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,16 +37,21 @@ const WritePage: NextPage = () => {
         }
   )
 
-  const saveTitle = useCallback(
-    (e: React.FormEvent<HTMLDivElement>) => {
-      setTitle(e.currentTarget.textContent || exPost.title || '')
-    },
-    [exPost]
-  )
-
   const [title, setTitle] = useState<string>(exPost ? exPost.title : '')
   const dispatch = useDispatch()
   const router = useRouter()
+  const titleRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (titleRef.current) titleRef.current.innerText = exPost ? exPost.title : ''
+  }, [exPost])
+
+  const saveTitle = useCallback(
+    (e: React.FormEvent<HTMLDivElement>) => {
+      setTitle(e.currentTarget.innerText)
+    },
+    [exPost]
+  )
 
   useEffect(() => {
     // redirect to main if not logged in or other post is yet saving.

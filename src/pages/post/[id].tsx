@@ -100,7 +100,7 @@ const PostPage: NextPage = () => {
             <>
               <button className={styles.edit} onClick={editPost}>
                 <PenIcon width={24} height={24} fill={COLORS.white} />
-                Edits
+                Edit
               </button>
               <button className={styles.delete} onClick={deletePost}>
                 <TrashBinIcon width={24} height={24} fill={COLORS.white} />
