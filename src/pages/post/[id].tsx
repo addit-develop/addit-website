@@ -79,9 +79,7 @@ const PostPage: NextPage = () => {
       <main>
         <div
           className={
-            !loadPostLoading && loadPost && me === loadPost.email
-              ? (styles.page, styles.pageEdit)
-              : styles.page
+            !loadPostLoading && loadPost && me === loadPost.email ? styles.pageEdit : styles.page
           }
         >
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
