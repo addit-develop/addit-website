@@ -8,6 +8,8 @@ import MatchDetailBlock from './matchDetailBlock'
 import MatchPredictionBlock from './matchPredictionBlock'
 import LeagueDetailBlock from './leagueDetailBlock'
 import PlayerDetailBlock from './playerDetailBlock'
+import PlayerMatchDetailBlock from './playerMatchDetailBlock'
+import TeamDetailBlock from './teamDetailBlock'
 
 const BlockContainer = styled.div`
   width: 100%;
@@ -33,6 +35,10 @@ const FootballBlockRead = ({ blockData }: Props) => {
           return <LeagueDetailBlock data={blockData?.data} />
         case 'Player_Detail':
           return <PlayerDetailBlock data={blockData?.data} />
+        case 'Player_Match_Detail':
+          return <PlayerMatchDetailBlock data={blockData?.data} />
+        case 'Team_Detail':
+          return <TeamDetailBlock data={blockData?.data} />
       }
     },
     [blockData]

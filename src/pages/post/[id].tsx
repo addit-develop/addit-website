@@ -77,7 +77,13 @@ const PostPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className={styles.page}>
+        <div
+          className={
+            !loadPostLoading && loadPost && me === loadPost.email
+              ? (styles.page, styles.pageEdit)
+              : styles.page
+          }
+        >
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
           {!loadPostLoading && loadPost ? (
             <div className={styles.postContainer} id="postContainer">

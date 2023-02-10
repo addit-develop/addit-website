@@ -6,13 +6,18 @@ import {
   PlayerDataType,
   PlayerType,
   MatchDetailDataType,
+  FixtureStatsType,
 } from '@/types'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import PlayerInfoBox from '../common/playerInfoBox'
 import FixtureTable from '../common/fixtureTable'
 import PlayerMatchStats from './playerMatchStats'
 import useAxios from '@/hooks/useAxios'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/store/reducers'
+import SelectBox, { ElementContainer } from '../common/selectBox'
+import { setBlockData } from '@/store/actions/postAction'
 
 const Container = styled.div`
   width: 100%;
@@ -49,31 +54,39 @@ interface PropsType {
   matchStatData?: PlayerMatchStatsType
   playerData: PlayerDataType
   fixtureData: MatchDetailDataType | FixtureType
-  selectMode: boolean
   blockId: string
 }
 
-const PlayerMatchDetail = ({
-  matchStatData,
-  playerData,
-  fixtureData,
-  selectMode,
-  blockId,
-}: PropsType) => {
+const PlayerMatchDetail = ({ matchStatData, playerData, fixtureData, blockId }: PropsType) => {
   const axios = useAxios()
   const [statData, setStatData] = useState<PlayerMatchStatsType | undefined>(matchStatData)
 
+  const dispatch = useDispatch()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
+  const [playerMatchBlockData, setPlayerMatchBlockData] = useState<{
+    stats: boolean
+    playerData: PlayerDataType
+    fixtureData: MatchDetailDataType | FixtureType
+    statsData: FixtureStatsType | undefined
+  }>({
+    stats: false,
+    playerData: playerData,
+    fixtureData: fixtureData,
+    statsData: statData?.statistics[0],
+  })
+
   const getStatData = async () => {
-    console.log('===getStatData===')
     const res = await axios.get('/fixtures/players', {
       params: {
         fixture: fixtureData?.fixture.id,
       },
     })
-    // console.log(res.data)
     res.data.response.forEach((team: any) => {
       const temp = team.players.find((player: any) => player.player.id === playerData.player.id)
-      if (temp) setStatData(temp)
+      if (temp) {
+        setStatData(temp)
+        setPlayerMatchBlockData({ ...playerMatchBlockData, statsData: temp.statistics[0] })
+      }
     })
   }
 
@@ -82,6 +95,14 @@ const PlayerMatchDetail = ({
       getStatData()
     }
   }, [])
+
+  useEffect(() => {
+    if (playerMatchBlockData) dispatch(setBlockData(blockId, playerMatchBlockData))
+  }, [playerMatchBlockData])
+
+  const selectStats = useCallback(() => {
+    setPlayerMatchBlockData({ ...playerMatchBlockData, stats: !playerMatchBlockData.stats })
+  }, [playerMatchBlockData])
 
   if (!statData) return null
   return (
@@ -94,7 +115,14 @@ const PlayerMatchDetail = ({
           </Round>
           <FixtureTable fixture={fixtureData} />
         </MatchContainer>
-        <PlayerMatchStats data={statData?.statistics[0]} />
+        <ElementContainer>
+          <SelectBox
+            selectMode={selectMode}
+            selected={playerMatchBlockData.stats}
+            onClick={selectStats}
+          />
+          <PlayerMatchStats data={statData?.statistics[0]} />
+        </ElementContainer>
       </Container>
     </React.Fragment>
   )
