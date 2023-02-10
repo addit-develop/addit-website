@@ -35,7 +35,7 @@ const Header: NextComponentType = () => {
 
   const logout = useCallback(() => {
     dispatch(logoutRequestAction())
-    if (logOutDone) router.replace(router.asPath)
+    if (logOutDone) router.reload()
   }, [logOutDone])
 
   return (
