@@ -3,6 +3,7 @@
   width: 100vw;
   height: calc(100vh - 80px);
   height: -webkit-fill-available;
+  height: fill-available;
   flex-direction: column;
   align-items: center;
   padding: 24px;
@@ -14,6 +15,7 @@
   width: 100vw;
   height: calc(100vh - 148px);
   height: -webkit-fill-available;
+  height: fill-available;
   flex-direction: column;
   align-items: center;
   padding: 24px;
