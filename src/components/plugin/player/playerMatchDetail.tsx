@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import SelectBox, { ElementContainer } from '../common/selectBox'
 import { setBlockData } from '@/store/actions/postAction'
+import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 
 const Container = styled.div`
   width: 100%;
@@ -76,6 +77,7 @@ const PlayerMatchDetail = ({ matchStatData, playerData, fixtureData, blockId }: 
   })
 
   const getStatData = async () => {
+    dispatch(loadDataStart())
     const res = await axios.get('/fixtures/players', {
       params: {
         fixture: fixtureData?.fixture.id,
@@ -88,6 +90,7 @@ const PlayerMatchDetail = ({ matchStatData, playerData, fixtureData, blockId }: 
         setPlayerMatchBlockData({ ...playerMatchBlockData, statsData: temp.statistics[0] })
       }
     })
+    dispatch(loadDataFinish())
   }
 
   useEffect(() => {

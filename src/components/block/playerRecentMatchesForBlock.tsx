@@ -1,7 +1,9 @@
 import { ChevronRightIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
-import { FixtureType } from '@/types'
+import { changeModalPage } from '@/store/actions/pageAction'
+import { FixtureType, PlayerDataType } from '@/types'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import BoldTitleBox from '../plugin/common/boldTitleBox'
 import FixtureTable from '../plugin/common/fixtureTable'
@@ -56,9 +58,11 @@ const ViewLabel = styled.div`
 
 interface PropsType {
   data: FixtureType[]
+  playerData: PlayerDataType
 }
 
-const PlayerRecentMatches = ({ data }: PropsType) => {
+const PlayerRecentMatches = ({ data, playerData }: PropsType) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -74,21 +78,14 @@ const PlayerRecentMatches = ({ data }: PropsType) => {
               </DateContainer>
               <FixtureTable key={f.fixture.id} fixture={f} />
               <MoreButton
-              // onClick={() =>
-              //   dispatch(
-              //     changeModalPage('playerMatchDetail', 'Players', {
-              //       playerData: playerData,
-              //       fixtureData: {
-              //         fixture: f.fixture,
-              //         league: f?.league,
-              //         teams: f?.teams,
-              //         goals: f?.goals,
-              //         score: f?.score,
-              //       },
-              //       teamData: playerData.statistics[0].team,
-              //     })
-              //   )
-              // }
+                onClick={() =>
+                  dispatch(
+                    changeModalPage('playerMatchDetail', 'Players', {
+                      playerData: playerData,
+                      fixtureData: f,
+                    })
+                  )
+                }
               >
                 Player Stats
                 <ChevronRightIcon width={20} height={20} fill={COLORS.darkgray} />
