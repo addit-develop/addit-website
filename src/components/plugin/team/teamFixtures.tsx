@@ -1,10 +1,8 @@
 import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
-import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
 import { RootState } from '@/store/reducers'
 import { FixtureType, TeamStatisticType, TeamType } from '@/types'
-import dayjs from 'dayjs'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -21,6 +19,7 @@ const Container = styled.div`
 `
 
 const BoxContainer = styled.div`
+  width: 100%;
   border-bottom: 1px ${COLORS.lightgray} solid;
 `
 
@@ -52,12 +51,11 @@ interface PropsType {
 }
 const TeamFixtures = ({ team, setData }: PropsType) => {
   const dispatch = useDispatch()
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
   const axios = useAxios()
   const [fixtures, setFixtures] = useState<FixtureType[]>([])
+  const [selectedList, setSelectedList] = useState<boolean[]>([])
   const [page, setPage] = useState<number>(1)
-
-  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
-  const [selectedBoolean, setSelectedBoolean] = useState<boolean[]>([])
 
   const getFixturesData = async () => {
     dispatch(loadDataStart())
@@ -69,7 +67,6 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
       },
     })
     setFixtures(res.data.response)
-    setSelectedBoolean(res.data.response.map((x: any) => false))
     dispatch(loadDataFinish())
   }
 
@@ -77,14 +74,18 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
     getFixturesData()
   }, [team, page])
 
+  useEffect(() => {
+    setSelectedList(new Array(fixtures.length))
+  }, [fixtures])
+
   const onSelect = useCallback(
     (index: number) => {
-      const temp = selectedBoolean.slice()
-      temp[index] = !temp[index]
-      setSelectedBoolean(temp)
-      setData(fixtures.filter((x, i) => temp[i]))
+      let temp = selectedList.slice() //깊은 복사
+      temp[index] = !selectedList[index]
+      setData(fixtures.filter((_, i) => temp[i]))
+      setSelectedList(temp)
     },
-    [selectedBoolean, fixtures]
+    [selectedList]
   )
 
   return (
@@ -92,13 +93,13 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
       <Container>
         {fixtures.map((f, i) => {
           return (
-            <ElementContainer>
+            <ElementContainer key={f.fixture.id}>
               <SelectBox
                 selectMode={selectMode}
-                selected={selectedBoolean[i]}
+                selected={selectedList[i]}
                 onClick={() => onSelect(i)}
               />
-              <BoxContainer key={f.fixture.id}>
+              <BoxContainer>
                 <DateContainer>
                   <DateLabel>{f.fixture.date.substring(0, 10)}</DateLabel>
                   <LeagueLabel>{f.league.name}</LeagueLabel>

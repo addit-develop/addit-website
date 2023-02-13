@@ -3,7 +3,6 @@ import { useCountryFlag } from '@/hooks/useCountryFlag'
 import { changeModalPage } from '@/store/actions/pageAction'
 import { RootState } from '@/store/reducers'
 import { PlayerDataType, PlayerDataShortedType } from '@/types'
-import Image from 'next/image'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -67,9 +66,10 @@ interface PropsType {
   playerData: PlayerDataType | PlayerDataShortedType
   stat?: number
   size: string
+  disabled?: boolean
 }
 
-const PlayerInfoBox = ({ playerData, stat, size = 'large' }: PropsType) => {
+const PlayerInfoBox = ({ playerData, stat, size = 'large', disabled }: PropsType) => {
   const dispatch = useDispatch()
   const player = playerData.player
   const club = playerData.statistics[0].team || null
@@ -78,7 +78,7 @@ const PlayerInfoBox = ({ playerData, stat, size = 'large' }: PropsType) => {
     <React.Fragment>
       <Container
         onClick={() => {
-          dispatch(changeModalPage('playerDetail', 'Players', player.id))
+          if (!disabled) dispatch(changeModalPage('playerDetail', 'Players', player.id))
         }}
       >
         <PlayerImage src={player.photo} alt={player.name} size={size} />

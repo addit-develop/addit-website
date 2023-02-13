@@ -1,14 +1,9 @@
 import { COLORS } from '@/constants/constants'
-import useAxios from '@/hooks/useAxios'
-import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
-import { RootState } from '@/store/reducers'
-import { TeamStatisticType, TeamType, TransferType } from '@/types'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { TeamStatisticType, TransferType } from '@/types'
+import React from 'react'
 import styled from 'styled-components'
-import BoldTitleBox from '../common/boldTitleBox'
-import CircledImage from '../common/circledImage'
-import SelectBox, { ElementContainer } from '../common/selectBox'
+import BoldTitleBox from '../plugin/common/boldTitleBox'
+import CircledImage from '../plugin/common/circledImage'
 
 const Container = styled.div`
   width: 100%;
@@ -38,67 +33,21 @@ const BlackLabel = styled.div`
 `
 
 interface PropsType {
-  team: TeamStatisticType
-  setData?: any
-}
-
-const TeamTransfer = ({ team, setData }: PropsType) => {
-  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
-  const dispatch = useDispatch()
-  const axios = useAxios()
-  // const { currentSeason } = useCurrentSeason()
-  const [transfers, setTransfers] = useState<TransferType[]>([])
-  const [transferBlockData, setTransferBlockData] = useState<{
+  data: {
     in: boolean
     out: boolean
-    transferData: TransferType[] | undefined
-  }>({
-    in: false,
-    out: false,
-    transferData: transfers,
-  })
-
-  const getTransfersData = async () => {
-    dispatch(loadDataStart())
-    const res = await axios.get('/transfers', {
-      params: {
-        team: team.team.id,
-      },
-    })
-    let temp: TransferType[] = res.data.response
-    temp = temp
-      .filter((t) => t.transfers[0].date.length === 10)
-      .sort((a, b) => (a.transfers[0].date > b.transfers[0].date ? -1 : 1))
-    setTransfers(temp)
-    setTransferBlockData({ ...transferBlockData, transferData: temp })
-    dispatch(loadDataFinish())
+    transferData: TransferType[]
   }
+  team: TeamStatisticType
+}
 
-  useEffect(() => {
-    getTransfersData()
-  }, [team])
-
-  const onSelect = useCallback(
-    (type: string) => {
-      const temp = JSON.parse(JSON.stringify(transferBlockData))
-      temp[type] = !temp[type]
-      setTransferBlockData(temp)
-      setData(temp)
-    },
-    [transferBlockData]
-  )
-
+const TeamTransfer = ({ data, team }: PropsType) => {
   return (
     <React.Fragment>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={transferBlockData.in}
-          onClick={() => onSelect('in')}
-        />
+      {data.in && (
         <Container>
           <BoldTitleBox>Player In</BoldTitleBox>
-          {transfers
+          {data.transferData
             .filter((t) => t.transfers[0].teams.in.id === team.team.id)
             .slice(0, 5)
             .map((t, i) => {
@@ -120,16 +69,11 @@ const TeamTransfer = ({ team, setData }: PropsType) => {
               )
             })}
         </Container>
-      </ElementContainer>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={transferBlockData.out}
-          onClick={() => onSelect('out')}
-        />
+      )}
+      {data.out && (
         <Container>
           <BoldTitleBox>Player Out</BoldTitleBox>
-          {transfers
+          {data.transferData
             .filter((t) => t.transfers[0].teams.out.id === team.team.id)
             .slice(0, 5)
             .map((t, i) => {
@@ -153,7 +97,7 @@ const TeamTransfer = ({ team, setData }: PropsType) => {
               )
             })}
         </Container>
-      </ElementContainer>
+      )}
     </React.Fragment>
   )
 }

@@ -1,6 +1,7 @@
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { setBlockData } from '@/store/actions/postAction'
 import {
   FixtureType,
   PlayerDataType,
@@ -74,6 +75,10 @@ const TeamDetail = ({ teamId, leagueId, blockId }: PropsType) => {
     },
     [teamBlockData, team, selectedMenu]
   )
+  // 팀 블록 데이터를 redux store에 바녕
+  useEffect(() => {
+    if (teamBlockData) dispatch(setBlockData(blockId, teamBlockData))
+  }, [teamBlockData])
 
   const getTeamData = async () => {
     dispatch(loadDataStart())

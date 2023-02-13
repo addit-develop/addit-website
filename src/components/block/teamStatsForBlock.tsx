@@ -1,12 +1,9 @@
 import { COLORS } from '@/constants/constants'
-import { RootState } from '@/store/reducers'
 import { TeamStatisticType } from '@/types'
-import React, { useCallback, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import styled from 'styled-components'
-import BoldTitleBox from '../common/boldTitleBox'
-import PercentageBar from '../common/percentageBar'
-import SelectBox, { ElementContainer } from '../common/selectBox'
+import BoldTitleBox from '../plugin/common/boldTitleBox'
+import PercentageBar from '../plugin/common/percentageBar'
 
 const Container = styled.div`
   width: 100%;
@@ -35,46 +32,20 @@ const StatNumber = styled.div`
   font-weight: 500;
 `
 interface PropsType {
-  team: TeamStatisticType
-  setData?: any
-}
-
-const TeamStats = ({ team, setData }: PropsType) => {
-  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
-  const [teamStatsBlockData, setTeamStatsBlockData] = useState<{
+  data: {
     fixtures: boolean
     formation: boolean
     cleanSheets: boolean
     failedToScore: boolean
     averageGoals: boolean
     teamData: TeamStatisticType
-  }>({
-    fixtures: false,
-    formation: false,
-    cleanSheets: false,
-    failedToScore: false,
-    averageGoals: false,
-    teamData: team,
-  })
+  }
+}
 
-  const onSelect = useCallback(
-    (type: string) => {
-      const temp = JSON.parse(JSON.stringify(teamStatsBlockData))
-      temp[type] = !temp[type]
-      setTeamStatsBlockData(temp)
-      setData(temp)
-    },
-    [teamStatsBlockData]
-  )
-
+const TeamStats = ({ data }: PropsType) => {
   return (
     <React.Fragment>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={teamStatsBlockData.fixtures}
-          onClick={() => onSelect('fixtures')}
-        />
+      {data?.fixtures && (
         <Container>
           <BoldTitleBox style={{ padding: '8px' }}>
             Fixtures
@@ -89,26 +60,29 @@ const TeamStats = ({ team, setData }: PropsType) => {
           <Row>
             <StatTitle>Home</StatTitle>
             <PercentageBar
-              data={[team.fixtures.wins.home, team.fixtures.draws.home, team.fixtures.loses.home]}
+              data={[
+                data.teamData.fixtures.wins.home,
+                data.teamData.fixtures.draws.home,
+                data.teamData.fixtures.loses.home,
+              ]}
             />
           </Row>
           <Row>
             <StatTitle>Away</StatTitle>
             <PercentageBar
-              data={[team.fixtures.wins.away, team.fixtures.draws.away, team.fixtures.loses.away]}
+              data={[
+                data.teamData.fixtures.wins.away,
+                data.teamData.fixtures.draws.away,
+                data.teamData.fixtures.loses.away,
+              ]}
             />
           </Row>
         </Container>
-      </ElementContainer>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={teamStatsBlockData.formation}
-          onClick={() => onSelect('formation')}
-        />
+      )}
+      {data?.formation && (
         <Container>
           <BoldTitleBox style={{ padding: '8px' }}>Formation</BoldTitleBox>
-          {team.lineups.map((l) => {
+          {data.teamData.lineups.map((l) => {
             return (
               <Row key={l.formation}>
                 <StatTitle>{l.formation}</StatTitle>
@@ -117,49 +91,34 @@ const TeamStats = ({ team, setData }: PropsType) => {
             )
           })}
         </Container>
-      </ElementContainer>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={teamStatsBlockData.cleanSheets}
-          onClick={() => onSelect('cleanSheets')}
-        />
+      )}
+      {data?.cleanSheets && (
         <Container>
           <BoldTitleBox style={{ padding: '8px' }}>Clean Sheets</BoldTitleBox>
           <Row>
             <StatTitle>Home</StatTitle>
-            <StatNumber>{team.clean_sheet.home}</StatNumber>
+            <StatNumber>{data.teamData.clean_sheet.home}</StatNumber>
           </Row>
           <Row>
             <StatTitle>Away</StatTitle>
-            <StatNumber>{team.clean_sheet.away}</StatNumber>
+            <StatNumber>{data.teamData.clean_sheet.away}</StatNumber>
           </Row>
         </Container>
-      </ElementContainer>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={teamStatsBlockData.failedToScore}
-          onClick={() => onSelect('failedToScore')}
-        />
+      )}
+      {data?.failedToScore && (
         <Container>
           <BoldTitleBox style={{ padding: '8px' }}>Failed to score</BoldTitleBox>
           <Row>
             <StatTitle>Home</StatTitle>
-            <StatNumber>{team.failed_to_score.home}</StatNumber>
+            <StatNumber>{data.teamData.failed_to_score.home}</StatNumber>
           </Row>
           <Row>
             <StatTitle>Away</StatTitle>
-            <StatNumber>{team.failed_to_score.away}</StatNumber>
+            <StatNumber>{data.teamData.failed_to_score.away}</StatNumber>
           </Row>
         </Container>
-      </ElementContainer>
-      <ElementContainer>
-        <SelectBox
-          selectMode={selectMode}
-          selected={teamStatsBlockData.averageGoals}
-          onClick={() => onSelect('averageGoals')}
-        />
+      )}
+      {data?.averageGoals && (
         <Container>
           <BoldTitleBox style={{ padding: '8px' }}>
             Average Goals
@@ -172,21 +131,21 @@ const TeamStats = ({ team, setData }: PropsType) => {
           <Row>
             <StatTitle>Home</StatTitle>
             <StatNumber>
-              <span style={{ color: COLORS.blue }}>{team.goals.for.average.home}</span>
+              <span style={{ color: COLORS.blue }}>{data.teamData.goals.for.average.home}</span>
               {' / '}
-              <span style={{ color: COLORS.red }}>{team.goals.against.average.home}</span>
+              <span style={{ color: COLORS.red }}>{data.teamData.goals.against.average.home}</span>
             </StatNumber>
           </Row>
           <Row>
             <StatTitle>Away</StatTitle>
             <StatNumber>
-              <span style={{ color: COLORS.blue }}>{team.goals.for.average.away}</span>
+              <span style={{ color: COLORS.blue }}>{data.teamData.goals.for.average.away}</span>
               {' / '}
-              <span style={{ color: COLORS.red }}>{team.goals.against.average.away}</span>
+              <span style={{ color: COLORS.red }}>{data.teamData.goals.against.average.away}</span>
             </StatNumber>
           </Row>
         </Container>
-      </ElementContainer>
+      )}
     </React.Fragment>
   )
 }
