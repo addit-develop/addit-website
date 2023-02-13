@@ -19,6 +19,7 @@ const Container = styled.div`
 interface PropsType {
   // searchRef: any
 }
+
 const TeamHome = ({}: PropsType) => {
   return (
     <React.Fragment>
