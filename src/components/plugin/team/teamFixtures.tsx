@@ -2,12 +2,14 @@ import { COLORS } from '@/constants/constants'
 import useAxios from '@/hooks/useAxios'
 import useCurrentSeason from '@/hooks/useCurrentSeason'
 import { loadDataFinish, loadDataStart } from '@/store/actions/pageAction'
+import { RootState } from '@/store/reducers'
 import { FixtureType, TeamStatisticType, TeamType } from '@/types'
 import dayjs from 'dayjs'
-import React, { useEffect, useMemo, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import FixtureTable from '../common/fixtureTable'
+import SelectBox, { ElementContainer } from '../common/selectBox'
 
 const Container = styled.div`
   width: 100%;
@@ -54,6 +56,9 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
   const [fixtures, setFixtures] = useState<FixtureType[]>([])
   const [page, setPage] = useState<number>(1)
 
+  const { selectMode } = useSelector((state: RootState) => state.pageReducer)
+  const [selectedBoolean, setSelectedBoolean] = useState<boolean[]>([])
+
   const getFixturesData = async () => {
     dispatch(loadDataStart())
     const res = await axios.get('/fixtures', {
@@ -64,6 +69,7 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
       },
     })
     setFixtures(res.data.response)
+    setSelectedBoolean(res.data.response.map((x: any) => false))
     dispatch(loadDataFinish())
   }
 
@@ -71,18 +77,35 @@ const TeamFixtures = ({ team, setData }: PropsType) => {
     getFixturesData()
   }, [team, page])
 
+  const onSelect = useCallback(
+    (index: number) => {
+      const temp = selectedBoolean.slice()
+      temp[index] = !temp[index]
+      setSelectedBoolean(temp)
+      setData(fixtures.filter((x, i) => temp[i]))
+    },
+    [selectedBoolean, fixtures]
+  )
+
   return (
     <React.Fragment>
       <Container>
-        {fixtures.map((f) => {
+        {fixtures.map((f, i) => {
           return (
-            <BoxContainer key={f.fixture.id}>
-              <DateContainer>
-                <DateLabel>{f.fixture.date.substring(0, 10)}</DateLabel>
-                <LeagueLabel>{f.league.name}</LeagueLabel>
-              </DateContainer>
-              <FixtureTable key={f.fixture.id} fixture={f} />
-            </BoxContainer>
+            <ElementContainer>
+              <SelectBox
+                selectMode={selectMode}
+                selected={selectedBoolean[i]}
+                onClick={() => onSelect(i)}
+              />
+              <BoxContainer key={f.fixture.id}>
+                <DateContainer>
+                  <DateLabel>{f.fixture.date.substring(0, 10)}</DateLabel>
+                  <LeagueLabel>{f.league.name}</LeagueLabel>
+                </DateContainer>
+                <FixtureTable key={f.fixture.id} fixture={f} />
+              </BoxContainer>
+            </ElementContainer>
           )
         })}
         <ViewLabel onClick={() => setPage(page + 1)}>View prev matches</ViewLabel>
