@@ -7,7 +7,7 @@ export type BlockDataType = {
   data: any
 }
 
-export type Comment = {
+export type CommentType = {
   content: string
   email: string
   time: number
@@ -221,7 +221,7 @@ export type PlayerMatchStatsType = {
   statistics: FixtureStatsType[]
 }
 
-export type Post = {
+export type PostType = {
   id: number
   title: string
   email: string
@@ -229,12 +229,12 @@ export type Post = {
   data: OutputData
   snippet: string
   mainImage: string | null
-  comments: Comment[]
+  comments: CommentType[]
   likes: number
   views: number
 }
 
-export type PostSummary = {
+export type PostSummaryType = {
   id: number
   title: string
   email: string

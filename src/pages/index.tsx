@@ -1,12 +1,10 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next/types'
-import styles from '@/styles/home.module.css'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadMainPostRequestAction } from '@/store/actions/postAction'
 import { loadMyPostRequestAction } from '@/store/actions/userAction'
-import { PostSummary } from '@/types'
+import { PostSummaryType } from '@/types'
 import { RootState } from '@/store/reducers'
 import { useState } from 'react'
 import dayjs from 'dayjs'
@@ -16,30 +14,82 @@ import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
-import { PenIcon } from '@/assets/icons'
+import WriteButton from '@/components/home/WriteButton'
+import PostCard from '@/components/home/PostCard'
+import styled from 'styled-components'
+import { COLORS } from '@/constants/constants'
+import PaginationBar from '@/components/home/PaginationBar'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
+
+const PostContainer = styled.div`
+  width: 100%;
+  max-width: 1812px;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  padding: 24px 48px 48px;
+  margin: 0 auto;
+  @media only screen and (max-width: 1500px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media only screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media only screen and (max-width: 810px) {
+    padding: 24px 24px 48px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media only screen and (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`
+
+const MyPostCheckBox = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 12px 24px;
+  gap: 4px;
+  justify-content: flex-end;
+  align-items: center;
+  font-family: 'Manrope';
+  font-weight: 500;
+  color: ${COLORS.lightblack};
+  margin: 0 auto;
+  input {
+    width: 16px;
+    height: 16px;
+  }
+`
 
 const HomePage: NextPage = () => {
   const dispatch = useDispatch()
   const { mainPosts, loadMainPostLoading } = useSelector((state: RootState) => state.postReducer)
   const { me, myPosts, loadMyPostLoading } = useSelector((state: RootState) => state.userReducer)
-  const [toExposePosts, setToExposePosts] = useState<PostSummary[]>(mainPosts ? mainPosts : [])
+  const [postList, setPostList] = useState<PostSummaryType[]>(mainPosts ? mainPosts : [])
   const [loadToExpostPosts, setLoadToExpostPosts] = useState<boolean>(false)
+  const [showMyPost, setShowMyPost] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(1)
+
   useEffect(() => {
-    dispatch(loadMyPostRequestAction({ summary: true, amount: 16, writers: [me] }))
+    dispatch(loadMyPostRequestAction({ summary: true, amount: 10 * page, writers: [me] }))
   }, [me])
-  useEffect(() => {
-    const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (me && box && box.checked) {
+
+  const exposeMine = useCallback(() => {
+    if (me) {
       setLoadToExpostPosts(loadMyPostLoading)
-      setToExposePosts(myPosts ? myPosts : [])
+      setPostList(myPosts)
     } else {
       setLoadToExpostPosts(loadMainPostLoading)
-      setToExposePosts(mainPosts ? mainPosts : [])
+      setPostList(mainPosts ? mainPosts : [])
     }
-  }, [me, mainPosts, myPosts, loadMainPostLoading, loadMyPostLoading])
+  }, [me, myPosts, mainPosts])
+
+  useEffect(() => {
+    exposeMine()
+  }, [showMyPost])
 
   // useEffect(() => { // infinite scroll
   //   function onScroll() {
@@ -58,23 +108,6 @@ const HomePage: NextPage = () => {
   //   }
   // }, [])
 
-  const timeConverter = useCallback((UNIX_timestamp: number) => {
-    return dayjs(new Date(UNIX_timestamp))
-      .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
-      .format('D MMM YYYY | HH:mm')
-      .toString()
-  }, [])
-
-  const exposeMine = useCallback(() => {
-    const box = document.getElementById('showMineCheckBox') as HTMLInputElement
-    if (me && box && box.checked) {
-      setLoadToExpostPosts(loadMyPostLoading)
-      setToExposePosts(myPosts ? myPosts : [])
-    } else {
-      setLoadToExpostPosts(loadMainPostLoading)
-      setToExposePosts(mainPosts ? mainPosts : [])
-    }
-  }, [me, myPosts, mainPosts])
   return (
     <>
       <Head>
@@ -82,51 +115,31 @@ const HomePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {me ? (
-          <div className={styles.myPostCheckBox}>
+        {me && (
+          <MyPostCheckBox>
             <div>hello {me}</div>
             <input
               type="checkbox"
-              id="showMineCheckBox"
-              onClick={exposeMine}
-              defaultChecked={false}
+              onClick={() => setShowMyPost(!showMyPost)}
+              defaultChecked={showMyPost}
             />
             My posts
-          </div>
-        ) : (
-          <></>
+          </MyPostCheckBox>
         )}
-        {toExposePosts.length === 0 ? (
-          <div>No Post.</div>
-        ) : (
-          <div className={styles.postsContainer}>
-            {toExposePosts.map((x) => (
-              <Link key={x.id} className={styles.postCard} href={`/post/${x.id}`}>
-                {x.mainImage ? (
-                  <div className={styles.postImage}>
-                    <img src={x.mainImage} />
-                  </div>
-                ) : null}
-                <div className={styles.postDetails} style={x.mainImage ? {} : { height: '100%' }}>
-                  <div className={styles.postTitle}>{x.title}</div>
-                  <div className={styles.postSnippet}>{x.snippet}</div>
-                  <div className={styles.postUploadInfo}>
-                    {x.email}
-                    <span>{`${timeConverter(x.time)}`}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-            <br />
-            {loadToExpostPosts ? <div>Loading more Posts</div> : <></>}
-          </div>
-        )}
-        {me && (
-          <Link className={styles.write} href={'/write'}>
-            <PenIcon width={24} height={24} fill="#fff" />
-            <div>Write</div>
-          </Link>
-        )}
+        <PostContainer>
+          {postList.length === 0 ? (
+            <div>No Post.</div>
+          ) : (
+            <>
+              {postList.map((post) => (
+                <PostCard post={post} key={post.id} />
+              ))}
+              {loadToExpostPosts && <div>Loading more Posts</div>}
+            </>
+          )}
+        </PostContainer>
+        <PaginationBar page={page} setPage={setPage} />
+        {me && <WriteButton />}
       </main>
     </>
   )

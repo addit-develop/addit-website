@@ -4,7 +4,7 @@ import loadable from '@loadable/component'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import styles from '@/styles/write.module.css'
-import { Comment, Post, PostSummary } from '@/types'
+import { CommentType, PostType } from '@/types'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store/reducers'
 import { editPostRequestAction, savePostRequestAction } from '@/store/actions/postAction'
@@ -96,7 +96,7 @@ const WritePage: NextPage = () => {
           mainImage = 'https://addit-football-s3.s3.ap-northeast-2.amazonaws.com/thumb/' + fileName
         }
       }
-      const post: Post = {
+      const post: PostType = {
         id: exPost ? exPost.id : 0,
         title: title,
         hashtags: hashtags,
@@ -162,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     await store.sagaTask?.toPromise()
 
     const meSsr: string = store.getState().userReducer.me
-    const exPostSsr: Post = store.getState().postReducer.exPost
+    const exPostSsr: PostType = store.getState().postReducer.exPost
     if (exPostSsr && exPostSsr.email !== meSsr) {
       return {
         redirect: {

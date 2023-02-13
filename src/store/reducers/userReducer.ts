@@ -1,4 +1,4 @@
-import { PostSummary } from '@/types'
+import { PostSummaryType } from '@/types'
 import produce from 'immer'
 import { HYDRATE } from 'next-redux-wrapper'
 
@@ -34,7 +34,7 @@ type StateType = {
   loadMyPostLoading: boolean
   loadMyPostSuccess: boolean
   loadMyPostError: any | null
-  myPosts: PostSummary[]
+  myPosts: PostSummaryType[]
 }
 
 export const initialState: StateType = {

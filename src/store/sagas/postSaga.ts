@@ -1,5 +1,5 @@
 import { all, fork, call, put, takeLatest } from 'redux-saga/effects'
-import { Post, PostSummary } from '@/types'
+import { PostType, PostSummaryType } from '@/types'
 import backAxios from '../configureBackAxios'
 import {
   LOAD_MAIN_POST_ERROR,
@@ -29,7 +29,7 @@ function loadExPostAPI(constraint: {}) {
 
 function* loadExPost(action: any) {
   try {
-    const result: { data: PostSummary[] } = yield call(loadExPostAPI, action.constraint)
+    const result: { data: PostSummaryType[] } = yield call(loadExPostAPI, action.constraint)
     yield put({
       type: LOAD_EXPOST_SUCCESS,
       data: result.data,
@@ -45,7 +45,7 @@ function* watchLoadExPostRequestAction() {
   yield takeLatest(LOAD_EXPOST_REQUEST, loadExPost)
 }
 
-function savePostAPI(post: Post) {
+function savePostAPI(post: PostType) {
   return backAxios.post('/post/save', post)
 }
 
@@ -78,7 +78,7 @@ function loadPostAPI(constraint: {}) {
 
 function* loadPost(action: any) {
   try {
-    const result: { data: Post[] } = yield call(loadPostAPI, action.constraint)
+    const result: { data: PostType[] } = yield call(loadPostAPI, action.constraint)
     yield put({
       type: CHANGE_SELECT_MODE,
       data: false,
@@ -104,7 +104,7 @@ function loadMainPostAPI(constraint: {}) {
 
 function* loadMainPost(action: any) {
   try {
-    const result: { data: PostSummary[] } = yield call(loadMainPostAPI, action.constraint)
+    const result: { data: PostSummaryType[] } = yield call(loadMainPostAPI, action.constraint)
     yield put({
       type: LOAD_MAIN_POST_SUCCESS,
       data: result.data,
@@ -120,16 +120,16 @@ function* watchLoadMainPostRequestAction() {
   yield takeLatest(LOAD_MAIN_POST_REQUEST, loadMainPost)
 }
 
-function deletePostAPI(postId : number) {
-  return backAxios.post('/post/delete', {postId:postId})
+function deletePostAPI(postId: number) {
+  return backAxios.post('/post/delete', { postId: postId })
 }
-function* deletePost(action : any) {
-  try{
+function* deletePost(action: any) {
+  try {
     yield call(deletePostAPI, action.postId)
     yield put({
       type: DELETE_POST_SUCCESS,
     })
-  }catch(err : any){
+  } catch (err: any) {
     yield put({
       type: DELETE_POST_ERROR,
       data: err.response.data,

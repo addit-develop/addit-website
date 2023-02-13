@@ -1,5 +1,5 @@
-import { PostSummary } from '@/types'
-import { all, fork, call, put, takeLatest, throttle} from 'redux-saga/effects'
+import { PostSummaryType } from '@/types'
+import { all, fork, call, put, takeLatest, throttle } from 'redux-saga/effects'
 import backAxios from '../configureBackAxios'
 
 import {
@@ -72,23 +72,22 @@ function* logOut() {
   }
 }
 
-
-function loadPostAPI(constraint : {}){
-  return backAxios.post("/post/load", constraint)
+function loadPostAPI(constraint: {}) {
+  return backAxios.post('/post/load', constraint)
 }
 
-function* loadPost(action : any){
-  try{
-      const result : {data:PostSummary[]} = yield call(loadPostAPI, action.constraint)
-      yield put({
-          type:LOAD_MY_POST_SUCCESS,
-          data:result.data,
-      })
-  }catch(err : any){
-      yield put({
-          type:LOAD_MY_POST_ERROR,
-          error:err.response.data,
-      })
+function* loadPost(action: any) {
+  try {
+    const result: { data: PostSummaryType[] } = yield call(loadPostAPI, action.constraint)
+    yield put({
+      type: LOAD_MY_POST_SUCCESS,
+      data: result.data,
+    })
+  } catch (err: any) {
+    yield put({
+      type: LOAD_MY_POST_ERROR,
+      error: err.response.data,
+    })
   }
 }
 
@@ -109,12 +108,17 @@ function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut)
 }
 
-function* watchLoadPostRequestActrion(){
+function* watchLoadPostRequestActrion() {
   yield throttle(3000, LOAD_MY_POST_REQUEST, loadPost)
 }
 
 // all은 배열 안에 있는 것들을 모두 동시에 실행
 // fork는 비동기 함수 호출
 export default function* userSaga() {
-  yield all([fork(watchLoadUser), fork(watchOauth2Response), fork(watchLogOut), fork(watchLoadPostRequestActrion)])
+  yield all([
+    fork(watchLoadUser),
+    fork(watchOauth2Response),
+    fork(watchLogOut),
+    fork(watchLoadPostRequestActrion),
+  ])
 }
