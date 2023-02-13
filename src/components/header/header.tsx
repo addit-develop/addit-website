@@ -11,7 +11,7 @@ import { COLORS } from '@/constants/constants'
 
 const Header: NextComponentType = () => {
   const dispatch = useDispatch()
-  const { me } = useSelector((state: RootState) => state.userReducer)
+  const { me, logOutDone } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()
 
   const [menuState, setMenuState] = useState(false)
@@ -35,7 +35,8 @@ const Header: NextComponentType = () => {
 
   const logout = useCallback(() => {
     dispatch(logoutRequestAction())
-  }, [])
+    if (logOutDone) router.reload()
+  }, [logOutDone])
 
   return (
     <div className={styles.header}>

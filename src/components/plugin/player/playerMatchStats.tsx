@@ -23,24 +23,56 @@ const SubTitle = styled.div`
   border-top: 1px solid ${COLORS.lightgray};
 `
 
-const Stat = styled.div`
+const StatRow = styled.div<{ forBlock: boolean }>`
+  padding: 8px;
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: start;
+  @media only screen and (min-width: 810px) {
+    flex-direction: ${(props) => (props.forBlock ? 'row' : 'column')};
+  }
+`
+
+const Stat = styled.div<{ forBlock: boolean }>`
+  flex-shrink: 0;
   width: 100%;
   height: 40px;
+  font-size: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px;
-  font-size: 14px;
+  border-radius: 10px;
   & #name {
     color: ${COLORS.darkgray};
+  }
+  & #value {
+    color: ${COLORS.black};
+  }
+  & #rating {
+    color: ${COLORS.blue};
+  }
+  @media only screen and (min-width: 810px) {
+    ${(props) =>
+      props.forBlock
+        ? `gap: 16px;
+    width: 25%;
+    height: 80px;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid ${COLORS.lightgray};`
+        : null}
   }
 `
 
 interface PropsType {
   data: FixtureStatsType
+  forBlock?: boolean
 }
 
-const PlayerMatchStats = ({ data }: PropsType) => {
+const PlayerMatchStats = ({ data, forBlock = false }: PropsType) => {
   const processedData = useMemo(
     () => [
       {
@@ -138,12 +170,18 @@ const PlayerMatchStats = ({ data }: PropsType) => {
     <React.Fragment>
       <StatsContainer>
         <SubTitle>Match Stats</SubTitle>
-        {processedData.map((x) => (
-          <Stat key={x.name}>
-            <div id="name">{x.name}</div>
-            <div id="value">{x.value ? x.value : 0}</div>
-          </Stat>
-        ))}
+        <StatRow forBlock={forBlock}>
+          {processedData.map((x) => (
+            <Stat key={x.name} forBlock={forBlock}>
+              <div id="name">{x.name}</div>
+              {x.name === 'Rating' && x.value ? (
+                <div id="rating">{x.value}</div>
+              ) : (
+                <div id="value">{x.value ? x.value : 0}</div>
+              )}
+            </Stat>
+          ))}
+        </StatRow>
       </StatsContainer>
     </React.Fragment>
   )

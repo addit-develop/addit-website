@@ -20,6 +20,7 @@ import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
 import { PenIcon, TrashBinIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
+import useWindowDimensions from '@/hooks/useWindowDimensions'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -27,6 +28,7 @@ dayjs.extend(timezone)
 const Editor = loadable(() => import('../../components/editor/editor'))
 
 const PostPage: NextPage = () => {
+  const { height } = useWindowDimensions()
   const [data, setData] = useState<OutputData>({
     time: 0,
     blocks: [],
@@ -77,7 +79,16 @@ const PostPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className={styles.page}>
+        <div
+          className={
+            !loadPostLoading && loadPost && me === loadPost.email ? styles.pageEdit : styles.page
+          }
+          style={
+            !loadPostLoading && loadPost && me === loadPost.email
+              ? { height: `${height - 148}px` }
+              : { height: `${height - 80}px` }
+          }
+        >
           {loadPostLoading ? <div> Loading Post... </div> : <></>}
           {!loadPostLoading && loadPost ? (
             <div className={styles.postContainer} id="postContainer">

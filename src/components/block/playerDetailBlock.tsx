@@ -45,7 +45,9 @@ const PlayerDetailBlock = ({ data }: PropsType) => {
         {data.statBox ? (
           <PlayerStatBox playerData={data.playerData} playerTeam={data.playerTeam} />
         ) : null}
-        {data.recentMatches ? <PlayerRecentMatches data={data.matchData} /> : null}
+        {data.recentMatches ? (
+          <PlayerRecentMatches data={data.matchData} playerData={data.playerData} />
+        ) : null}
         {data.careerStats ? (
           <PlayerCareerStats data={data.playerData} season={data.season} forBlock />
         ) : null}

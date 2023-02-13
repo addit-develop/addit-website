@@ -107,7 +107,7 @@ const HomePage: NextPage = () => {
                     <img src={x.mainImage} />
                   </div>
                 ) : null}
-                <div className={styles.postDetails}>
+                <div className={styles.postDetails} style={x.mainImage ? {} : { height: '100%' }}>
                   <div className={styles.postTitle}>{x.title}</div>
                   <div className={styles.postSnippet}>{x.snippet}</div>
                   <div className={styles.postUploadInfo}>

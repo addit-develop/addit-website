@@ -117,12 +117,12 @@ const SearchModal = ({ blockId, saveData, savedblockData, deleteBlock }: Props) 
           )
         else break
       case 'playerMatchDetail':
+        dispatch(setBlockType(blockId, 'Player_Match_Detail'))
         return (
           <PlayerMatchDetail
             matchStatData={pageProps.matchStatData}
             playerData={pageProps.playerData}
             fixtureData={pageProps.fixtureData}
-            selectMode={selectMode}
             blockId={blockId}
           />
         )
@@ -135,6 +135,7 @@ const SearchModal = ({ blockId, saveData, savedblockData, deleteBlock }: Props) 
       case 'teamHome':
         return <TeamHome />
       case 'teamDetail':
+        dispatch(setBlockType(blockId, 'Team_Detail'))
         if (pageProps)
           return (
             <TeamDetail blockId={blockId} teamId={pageProps.teamId} leagueId={pageProps.leagueId} />

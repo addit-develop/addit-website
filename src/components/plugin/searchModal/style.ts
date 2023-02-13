@@ -30,6 +30,35 @@ export const Modal = styled.div<{ closed: boolean }>`
   }
 `
 
+export const InfoModal = styled.div<{ closed: boolean }>`
+  z-index: 9999999;
+  width: 49vh;
+  height: 98vh;
+  min-width: 360px;
+  position: fixed;
+  right: 1vh;
+  bottom: 1vh;
+  display: ${(props) => (props.closed ? 'none' : 'flex')};
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: start;
+  background: ${COLORS.white};
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05),
+    0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    height: 85%;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px 20px 0 0;
+    border-top: 1px solid ${COLORS.gray};
+    background: ${COLORS.white};
+    overflow: hidden;
+  }
+`
+
 export const DragLine = styled.div`
   order: 0;
   display: none;
@@ -199,4 +228,25 @@ export const CloseButton = styled.button`
   justify-content: center;
   width: 36px;
   height: 36px;
+`
+
+export const CloseInfoButton = styled.button`
+  z-index: 9;
+  position: absolute;
+  right: calc(50% - 48px);
+  bottom: 12px;
+  display: flex;
+  width: 96px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 18px;
+  background-color: ${COLORS.lightgray};
+  line-height: 36px;
+  font-size: 16px;
+  color: ${COLORS.darkgray};
+  box-shadow: 0px 0.8px 2.4px -0.63px rgba(15, 41, 107, 0.1),
+    0px 2.4px 7.24px -1.3px rgba(15, 41, 107, 0.1), 0px 6.4px 19.1px -1.9px rgba(15, 41, 107, 0.1),
+    0px 20px 60px -2.5px rgba(15, 41, 107, 0.1);
 `

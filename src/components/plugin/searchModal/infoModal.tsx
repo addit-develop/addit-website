@@ -1,5 +1,5 @@
 import * as Styles from './style'
-import { default as React, useCallback, useEffect, useState } from 'react'
+import { default as React, useCallback, useEffect, useMemo, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
@@ -25,13 +25,13 @@ const InfoModal = () => {
     (state: RootState) => state.pageReducer
   )
 
-  const closeModal = useCallback(() => {
+  useMemo(() => {
     dispatch(closeInfoModal())
   }, [])
 
-  useEffect(() => {
-    console.log(openInfoModal)
-  }, [openInfoModal])
+  const closeModal = useCallback(() => {
+    dispatch(closeInfoModal())
+  }, [])
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
@@ -55,7 +55,6 @@ const InfoModal = () => {
             matchStatData={pageProps.matchStatData}
             playerData={pageProps.playerData}
             fixtureData={pageProps.fixtureData}
-            selectMode={false}
             blockId={blockId}
           />
         )
@@ -82,18 +81,17 @@ const InfoModal = () => {
 
   return (
     <React.Fragment>
-      <Styles.Modal closed={!openInfoModal} id="addit-modal">
+      <Styles.InfoModal closed={!openInfoModal} id="addit-modal">
         <Styles.DragLine />
         <Styles.ContentContainer>
           {loadingData ? <Loading /> : null}
           {showCurrentModalPage()}
         </Styles.ContentContainer>
-        <Styles.ModalMenuContainer>
-          <Styles.CloseButton onClick={closeModal}>
-            <CrossIcon width={24} height={24} fill={COLORS.darkgray} />
-          </Styles.CloseButton>
-        </Styles.ModalMenuContainer>
-      </Styles.Modal>
+        <Styles.CloseInfoButton onClick={closeModal}>
+          <CrossIcon width={24} height={24} fill={COLORS.darkgray} />
+          Close
+        </Styles.CloseInfoButton>
+      </Styles.InfoModal>
     </React.Fragment>
   )
 }

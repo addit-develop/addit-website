@@ -1,8 +1,21 @@
 .page {
   display: flex;
+  width: 100vw;
+  height: calc(100vh - 80px);
   flex-direction: column;
   align-items: center;
   padding: 24px;
+  overflow-y: scroll;
+}
+
+.pageEdit {
+  display: flex;
+  width: 100vw;
+  height: calc(100vh - 148px);
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  overflow-y: scroll;
 }
 
 .postContainer {
@@ -36,7 +49,6 @@
 }
 
 .edit {
-  z-index: 9;
   position: absolute;
   bottom: 24px;
   left: calc(50% - 108px);
@@ -60,7 +72,6 @@
 }
 
 .delete {
-  z-index: 9;
   position: absolute;
   bottom: 24px;
   left: calc(50% + 64px);
