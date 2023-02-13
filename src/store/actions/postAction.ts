@@ -9,7 +9,7 @@ import {
   DELETE_POST_REQUEST,
   LOAD_EXPOST_REQUEST,
 } from '../types'
-import { Post } from '@/types'
+import { PostType } from '@/types'
 
 export const makeBlockData = (id: string, blockType: string, blockData?: any) => {
   return {
@@ -43,7 +43,7 @@ export const setBlockReady = (id: string) => {
   }
 }
 
-export const savePostRequestAction = (post: Post) => {
+export const savePostRequestAction = (post: PostType) => {
   return {
     type: SAVE_POST_REQUEST,
     post: post,
