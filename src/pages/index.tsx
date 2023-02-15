@@ -138,7 +138,7 @@ const HomePage: NextPage = () => {
             </>
           )}
         </PostContainer>
-        <PaginationBar page={page} setPage={setPage} />
+        <PaginationBar page={page} setPage={setPage} total={Number(postList.length / 10)} />
         {me && <WriteButton />}
       </main>
     </>

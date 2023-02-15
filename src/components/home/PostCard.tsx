@@ -78,7 +78,7 @@ const PostCard = ({ post }: Props) => {
       <PostBox>
         {post.mainImage && (
           <PostImage>
-            <img src={post.mainImage} alt={post.title} />
+            <Image src={post.mainImage} alt={post.title} fill />
           </PostImage>
         )}
         <PostDetails>

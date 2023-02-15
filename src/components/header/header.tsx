@@ -37,10 +37,6 @@ const Header: NextComponentType = () => {
     dispatch(logoutRequestAction())
   }, [])
 
-  useEffect(()=>{
-    router.reload()
-  }, [me])
-
   return (
     <div className={styles.header}>
       <div className={styles.header__container}>
