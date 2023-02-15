@@ -1,4 +1,4 @@
-import { BlockDataType, Post, PostSummary } from '@/types'
+import { BlockDataType, PostType, PostSummaryType } from '@/types'
 import produce from 'immer'
 import { HYDRATE } from 'next-redux-wrapper'
 import configureStore from '../configureStore'
@@ -28,10 +28,10 @@ type StateType = {
   blockDataList: BlockDataType[]
   modalPage: string
 
-  loadExPostLoading : boolean
-  loadExPostSuccess : boolean
-  loadExPostError : any | null
-  exPost: Post | null
+  loadExPostLoading: boolean
+  loadExPostSuccess: boolean
+  loadExPostError: any | null
+  exPost: PostType | null
   savePostLoading: boolean
   savePostSuccess: boolean
   savePostError: any | null
@@ -40,7 +40,7 @@ type StateType = {
   loadPostLoading: boolean
   loadPostSuccess: boolean
   loadPostError: any | null
-  loadPost: Post | null
+  loadPost: PostType | null
   deletePostLoading: boolean
   deletePostSuccess: boolean
   deletePostError: any | null
@@ -48,16 +48,16 @@ type StateType = {
   loadMainPostLoading: boolean
   loadMainPostSuccess: boolean
   loadMainPostError: any | null
-  mainPosts: PostSummary[]
+  mainPosts: PostSummaryType[]
 }
 
 export const initialState: StateType = {
   blockDataList: [],
   modalPage: '',
 
-  loadExPostLoading : false,
-  loadExPostSuccess : false,
-  loadExPostError : null,
+  loadExPostLoading: false,
+  loadExPostSuccess: false,
+  loadExPostError: null,
   exPost: null,
   savePostLoading: false,
   savePostSuccess: false,
@@ -178,17 +178,17 @@ const postReducer = (state: StateType = initialState, action: any) =>
         draft.deletePostLoading = false
         draft.deletePostSuccess = true
         draft.loadPost = null
-      break
+        break
       case DELETE_POST_ERROR:
         draft.deletePostLoading = false
         draft.deletePostError = action.error
-      break
+        break
       default:
         break
     }
   })
 
-  export default postReducer
+export default postReducer
 
 // type persistStateType = {
 //   exPost: Post | null

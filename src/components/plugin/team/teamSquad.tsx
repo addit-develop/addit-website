@@ -164,7 +164,7 @@ const TeamSquad = ({ team, setData }: PropsType) => {
               .filter((player) => player.data.position === p)
               .map((player) => {
                 return (
-                  <ElementContainer>
+                  <ElementContainer key={player.data.id}>
                     <SelectBox
                       selectMode={selectMode}
                       selected={player.selected}

@@ -65,7 +65,7 @@ interface Props {
   post: PostSummaryType
 }
 
-const PostCard: React.FC = ({ post }: Props) => {
+const PostCard = ({ post }: Props) => {
   const timeConverter = useCallback((UNIX_timestamp: number) => {
     return dayjs(new Date(UNIX_timestamp))
       .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
