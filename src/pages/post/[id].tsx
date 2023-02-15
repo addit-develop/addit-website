@@ -72,6 +72,9 @@ const PostPage: NextPage = () => {
     }
   }, [deletePostLoading, deletePostSuccess, loadPost])
 
+  useEffect(()=>{
+  }, [me])
+
   return (
     <>
       <Head>

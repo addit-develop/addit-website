@@ -75,7 +75,7 @@ const HomePage: NextPage = () => {
 
   useEffect(() => {
     dispatch(loadMyPostRequestAction({ summary: true, amount: 10 * page, writers: [me] }))
-  }, [me])
+  }, [me, page])
 
   const exposeMine = useCallback(() => {
     if (me) {

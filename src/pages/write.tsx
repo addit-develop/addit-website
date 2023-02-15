@@ -23,7 +23,7 @@ const Editor = loadable(() => import('../components/editor/editor'), { ssr: fals
 
 const WritePage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { savePostSuccess, savePostLoading, savedPostId, exPost } = useSelector(
+  const { savePostSuccess, savePostLoading, savedPostId, exPost, logOutDone } = useSelector(
     (state: RootState) => state.postReducer
   )
   //state to hold output data. we'll use this for rendering later
@@ -66,7 +66,13 @@ const WritePage: NextPage = () => {
     } else if (!me) {
       redirectToLoginPageOrResetReducer()
     }
-  }, [me, exPost])
+  }, [])
+
+  useEffect(() => {
+    if(logOutDone){
+      router.replace('/')
+    }
+  }, [logOutDone])
 
   const savePost = useCallback(() => {
     if (me) {
@@ -171,7 +177,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
         },
       }
     }
-    return { props: { exPostSsr: exPostSsr } }
+    return { props: {} }
   }
 )
 
