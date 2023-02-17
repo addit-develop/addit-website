@@ -56,8 +56,12 @@ const Header: NextComponentType = () => {
         className={styles.header__navigation}
         style={menuState ? { display: 'flex' } : { display: 'none' }}
       >
-        <div className={styles.header__navigation__menu}>Contact</div>
-        <div className={styles.header__navigation__menu}>About</div>
+        <Link href="/Contact" className={styles.header__navigation__menu}>
+          Contact
+        </Link>
+        <Link href="/About" className={styles.header__navigation__menu}>
+          About
+        </Link>
         {me ? (
           <div className={styles.header__navigation__menu} onClick={logout}>
             LogOut
