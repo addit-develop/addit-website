@@ -25,6 +25,11 @@ const PostImage = styled.div`
   height: 100%;
   background-color: ${COLORS.lightgray};
   overflow: hidden;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `
 
 const PostDetails = styled.div`
@@ -78,7 +83,7 @@ const PostCard = ({ post }: Props) => {
       <PostBox>
         {post.mainImage && (
           <PostImage>
-            <Image src={post.mainImage} alt={post.title} fill />
+            <img src={post.mainImage} alt={post.title} />
           </PostImage>
         )}
         <PostDetails>
