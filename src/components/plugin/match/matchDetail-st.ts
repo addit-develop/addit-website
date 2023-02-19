@@ -218,7 +218,7 @@ export const startingXI = styled.div<{ reverse?: boolean; forBlock?: boolean }>`
       : null};
 `
 
-export const startingXIRow = styled.div<{ forBlock?: boolean }>`
+export const startingXIRow = styled.div<{ forBlock?: boolean; home?: boolean }>`
   width: 100%;
   height: 100%;
   display: flex;
@@ -227,7 +227,7 @@ export const startingXIRow = styled.div<{ forBlock?: boolean }>`
   ${(props) =>
     props.forBlock
       ? `@media only screen and (min-width: 810px) {
-        flex-direction: column;
+        flex-direction: ${props.home ? 'column-reverse' : 'column'};
       }`
       : null};
 `

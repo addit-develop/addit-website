@@ -113,7 +113,7 @@ const MatchLineup = ({ matchData, forBlock = false }: PropsType) => {
         <Styles.Lineup forBlock={forBlock}>
           <Styles.startingXI forBlock={forBlock}>
             {startXIData[0].map((x, i) => (
-              <Styles.startingXIRow forBlock={forBlock} key={i}>
+              <Styles.startingXIRow forBlock={forBlock} key={i} home>
                 {x.map((y) => getPlayerElement(0, y))}
               </Styles.startingXIRow>
             ))}
