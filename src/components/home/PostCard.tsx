@@ -1,7 +1,6 @@
 import { COLORS } from '@/constants/constants'
 import { PostSummaryType } from '@/types'
 import dayjs from 'dayjs'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback } from 'react'
 import styled from 'styled-components'

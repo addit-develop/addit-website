@@ -78,14 +78,14 @@ const HomePage: NextPage = () => {
   }, [me, page])
 
   const exposeMine = useCallback(() => {
-    if (me) {
+    if (me && showMyPost) {
       setLoadToExpostPosts(loadMyPostLoading)
       setPostList(myPosts)
     } else {
       setLoadToExpostPosts(loadMainPostLoading)
       setPostList(mainPosts ? mainPosts : [])
     }
-  }, [me, myPosts, mainPosts])
+  }, [me, myPosts, mainPosts, showMyPost])
 
   useEffect(() => {
     exposeMine()
