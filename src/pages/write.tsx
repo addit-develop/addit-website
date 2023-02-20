@@ -48,9 +48,12 @@ const WritePage: NextPage = () => {
 
   const saveTitle = useCallback(
     (e: React.FormEvent<HTMLDivElement>) => {
-      setTitle(e.currentTarget.innerText)
+      if (e.currentTarget.innerText.length > 100) {
+        alert('제목은 최대 100자 입니다.')
+        if (titleRef.current) titleRef.current.innerText = title
+      } else setTitle(e.currentTarget.innerText)
     },
-    [exPost]
+    [exPost, title, titleRef]
   )
 
   useEffect(() => {
@@ -69,7 +72,7 @@ const WritePage: NextPage = () => {
   }, [])
 
   useEffect(() => {
-    if(logOutDone){
+    if (logOutDone) {
       router.replace('/')
     }
   }, [logOutDone])
