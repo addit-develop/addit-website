@@ -118,7 +118,7 @@ const PostPage: NextPage = () => {
         <meta property="og:title" content={loadPost.title + ' : Addit for Football'} />
         <meta property="og:description" content="Addit for Football에서 작성된 글입니다." />
         <meta property="og:url" content={'http://addit-football.com/post/' + id} />
-        <meta property="og:image" content={loadPost.mainImage} />
+        <meta property="og:image" content={loadPost?.mainImage} />
       </Head>
       <main>
         <Container>
