@@ -135,6 +135,10 @@ const HomePage: NextPage = () => {
       <Head>
         <title>Addit for Football : main</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content="Addit for Football : main" />
+        <meta property="og:description" content="축구 전문 에디터 플랫폼 Addit for Football" />
+        <meta property="og:url" content="http://addit-football.com" />
+        {/* <meta property="og:image" content="https://ia.media-imdb.com/images/rock.jpg" /> */}
       </Head>
       <main>
         {me && (
