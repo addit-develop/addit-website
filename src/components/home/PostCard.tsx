@@ -1,8 +1,7 @@
-import { COLORS } from '@/constants/constants'
+import { COLORS, SHADOWS } from '@/constants/constants'
+import useTimeConverter from '@/hooks/useTimeConverter'
 import { PostSummaryType } from '@/types'
-import dayjs from 'dayjs'
 import Link from 'next/link'
-import { useCallback } from 'react'
 import styled from 'styled-components'
 
 const PostBox = styled.div`
@@ -13,9 +12,7 @@ const PostBox = styled.div`
   font-family: 'Manrope';
   overflow: hidden;
   border-radius: 20px;
-  box-shadow: 0px 0.8px 2.4px -0.63px rgba(15, 41, 107, 0.1),
-    0px 2.4px 7.24px -1.3px rgba(15, 41, 107, 0.1), 0px 6.4px 19.1px -1.9px rgba(15, 41, 107, 0.1),
-    0px 20px 60px -2.5px rgba(15, 41, 107, 0.1);
+  box-shadow: ${SHADOWS.default};
 `
 
 const PostImage = styled.div`
@@ -70,12 +67,7 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
-  const timeConverter = useCallback((UNIX_timestamp: number) => {
-    return dayjs(new Date(UNIX_timestamp))
-      .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
-      .format('D MMM YYYY | HH:mm')
-      .toString()
-  }, [])
+  const { UNIXtimeConverter } = useTimeConverter()
 
   return (
     <Link href={`/post/${post.id}`}>
@@ -90,7 +82,7 @@ const PostCard = ({ post }: Props) => {
           <PostSnippet>{post.snippet}</PostSnippet>
           <PostUploadInfo>
             {post.email}
-            <PostTime>{`${timeConverter(post.time)}`}</PostTime>
+            <PostTime>{`${UNIXtimeConverter(post.time)}`}</PostTime>
           </PostUploadInfo>
         </PostDetails>
       </PostBox>
