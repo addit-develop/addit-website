@@ -16,6 +16,10 @@ const App = ({ Component }: AppProps) => {
       <Head>
         <meta charSet="utf-8" />
         <meta name="description" content="축구 전문 에디터" />
+        <meta
+          name="google-site-verification"
+          content="M0Ecq8WUxpkRQTXp4LDyvt-_-0Qr6wnYECJodk2FXTM"
+        />
         <title>ADDIT for Football</title>
       </Head>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
