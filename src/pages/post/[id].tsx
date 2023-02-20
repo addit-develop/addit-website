@@ -52,6 +52,10 @@ const Title = styled.div`
   height: fit-content;
   font-size: 48px;
   font-weight: 700;
+  word-break: break-all;
+  @media only screen and (max-width: 810px) {
+    font-size: 28px;
+  }
 `
 const Meta = styled.div`
   flex-shrink: 0;

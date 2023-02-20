@@ -3,7 +3,7 @@ import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAct
 import { RootState } from '@/store/reducers'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -70,6 +70,10 @@ const HeaderNavigation = ({ menuOpen }: Props) => {
   const dispatch = useDispatch()
   const { me, logOutDone } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()
+
+  useEffect(() => {
+    if (logOutDone) router.reload()
+  }, [logOutDone])
 
   const logIn = useCallback(async () => {
     const loginUrl = await loginRequestAction()

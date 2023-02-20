@@ -47,21 +47,42 @@ const PostContainer = styled.div`
   }
 `
 
-const MyPostCheckBox = styled.div`
-  width: 100%;
+const MyPostContainer = styled.div`
   display: flex;
-  padding: 12px 24px;
+  width: 100%;
+  max-width: 1812px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0 48px;
+  margin: 0 auto;
+  @media only screen and (max-width: 810px) {
+    padding: 0 24px;
+  }
+`
+
+const MyPostCheckBox = styled.div`
+  width: fit-content;
+  display: flex;
+  padding: 12px 0;
   gap: 4px;
   justify-content: flex-end;
   align-items: center;
   font-family: 'Manrope';
   font-weight: 500;
   color: ${COLORS.lightblack};
-  margin: 0 auto;
   input {
     width: 16px;
     height: 16px;
   }
+`
+const UserInfo = styled.div`
+  display: flex;
+  padding: 12px 0;
+  font-family: 'Manrope';
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
 `
 
 const HomePage: NextPage = () => {
@@ -116,14 +137,17 @@ const HomePage: NextPage = () => {
       </Head>
       <main>
         {me && (
-          <MyPostCheckBox>
-            <input
-              type="checkbox"
-              onClick={() => setShowMyPost(!showMyPost)}
-              defaultChecked={showMyPost}
-            />
-            My posts
-          </MyPostCheckBox>
+          <MyPostContainer>
+            <UserInfo>Logged In as {me}</UserInfo>
+            <MyPostCheckBox>
+              <input
+                type="checkbox"
+                onClick={() => setShowMyPost(!showMyPost)}
+                defaultChecked={showMyPost}
+              />
+              My posts
+            </MyPostCheckBox>
+          </MyPostContainer>
         )}
         <PostContainer>
           {postList.length === 0 ? (
