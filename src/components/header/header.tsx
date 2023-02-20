@@ -56,7 +56,6 @@ const Header: NextComponentType = () => {
         className={styles.header__navigation}
         style={menuState ? { display: 'flex' } : { display: 'none' }}
       >
-        {me && <div className={styles.header__navigation__menu}>Logged In as {me}</div>}
         <Link href="/Contact" className={styles.header__navigation__menu}>
           Contact
         </Link>
