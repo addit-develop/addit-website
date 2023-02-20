@@ -52,6 +52,7 @@ const MyPostContainer = styled.div`
   width: 100%;
   max-width: 1812px;
   justify-content: space-between;
+  align-items: center;
   padding: 0 48px;
   margin: 0 auto;
   @media only screen and (max-width: 810px) {
