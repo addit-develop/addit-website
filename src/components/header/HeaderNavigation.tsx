@@ -91,7 +91,6 @@ const HeaderNavigation = ({ menuOpen }: Props) => {
 
   return (
     <NavigationContainer menuOpen={menuOpen}>
-      {me && <UserName>{`Logged in as ${me}`}</UserName>}
       <NavigationMenu>
         <Link href="/Contact">Contact</Link>
       </NavigationMenu>

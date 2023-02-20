@@ -62,6 +62,7 @@ const MyPostContainer = styled.div`
 `
 
 const MyPostCheckBox = styled.div`
+  flex-shrink: 0;
   width: fit-content;
   display: flex;
   padding: 12px 0;
@@ -138,7 +139,7 @@ const HomePage: NextPage = () => {
       <main>
         {me && (
           <MyPostContainer>
-            <UserInfo>Logged In as {me}</UserInfo>
+            <UserInfo>{me}</UserInfo>
             <MyPostCheckBox>
               <input
                 type="checkbox"
