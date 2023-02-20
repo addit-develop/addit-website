@@ -56,7 +56,7 @@ const Header: NextComponentType = () => {
         className={styles.header__navigation}
         style={menuState ? { display: 'flex' } : { display: 'none' }}
       >
-        {me && <div>Logged In as {me}</div>}
+        {me && <div className={styles.header__navigation__menu}>Logged In as {me}</div>}
         <Link href="/Contact" className={styles.header__navigation__menu}>
           Contact
         </Link>
@@ -64,7 +64,7 @@ const Header: NextComponentType = () => {
           About
         </Link>
         {me ? (
-          <div className={styles.header__navigation_signup} onClick={logout}>
+          <div className={styles.header__navigation__signup} onClick={logout}>
             LogOut
           </div>
         ) : (
