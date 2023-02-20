@@ -117,7 +117,6 @@ const HomePage: NextPage = () => {
       <main>
         {me && (
           <MyPostCheckBox>
-            <div>hello {me}</div>
             <input
               type="checkbox"
               onClick={() => setShowMyPost(!showMyPost)}
