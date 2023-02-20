@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "cross-env ANALYZE=true NODE_ENV=production next build",
     "start": "cross-env NODE_ENV=production next start -p 80",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "main && next build && next export"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.26.4",
