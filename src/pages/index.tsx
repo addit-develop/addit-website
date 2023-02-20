@@ -50,7 +50,13 @@ const PostContainer = styled.div`
 const MyPostContainer = styled.div`
   display: flex;
   width: 100%;
+  max-width: 1812px;
   justify-content: space-between;
+  padding: 0 48px;
+  margin: 0 auto;
+  @media only screen and (max-width: 810px) {
+    padding: 0 24px;
+  }
 `
 
 const MyPostCheckBox = styled.div`
@@ -63,7 +69,6 @@ const MyPostCheckBox = styled.div`
   font-family: 'Manrope';
   font-weight: 500;
   color: ${COLORS.lightblack};
-  margin: 0 auto;
   input {
     width: 16px;
     height: 16px;
