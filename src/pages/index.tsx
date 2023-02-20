@@ -47,8 +47,14 @@ const PostContainer = styled.div`
   }
 `
 
-const MyPostCheckBox = styled.div`
+const MyPostContainer = styled.div`
+  display: flex;
   width: 100%;
+  justify-content: space-between;
+`
+
+const MyPostCheckBox = styled.div`
+  width: fit-content;
   display: flex;
   padding: 12px 24px;
   gap: 4px;
@@ -62,6 +68,12 @@ const MyPostCheckBox = styled.div`
     width: 16px;
     height: 16px;
   }
+`
+const UserInfo = styled.div`
+  font-family: 'Manrope';
+  font-size: 16px;
+  font-weight: 600;
+  color: #666666;
 `
 
 const HomePage: NextPage = () => {
@@ -116,14 +128,17 @@ const HomePage: NextPage = () => {
       </Head>
       <main>
         {me && (
-          <MyPostCheckBox>
-            <input
-              type="checkbox"
-              onClick={() => setShowMyPost(!showMyPost)}
-              defaultChecked={showMyPost}
-            />
-            My posts
-          </MyPostCheckBox>
+          <MyPostContainer>
+            <UserInfo>Logged In as {me}</UserInfo>
+            <MyPostCheckBox>
+              <input
+                type="checkbox"
+                onClick={() => setShowMyPost(!showMyPost)}
+                defaultChecked={showMyPost}
+              />
+              My posts
+            </MyPostCheckBox>
+          </MyPostContainer>
         )}
         <PostContainer>
           {postList.length === 0 ? (
