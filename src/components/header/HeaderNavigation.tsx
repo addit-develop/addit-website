@@ -30,11 +30,8 @@ const NavigationContainer = styled.div<{ menuOpen: boolean }>`
   }
 `
 
-const UserName = styled.div`
-  white-space: nowrap;
-`
-
 const NavigationMenu = styled.div`
+  font-family: 'Manrope';
   height: 20px;
   font-weight: 600;
   font-size: 16px;
@@ -91,12 +88,14 @@ const HeaderNavigation = ({ menuOpen }: Props) => {
 
   return (
     <NavigationContainer menuOpen={menuOpen}>
-      <NavigationMenu>
-        <Link href="/Contact">Contact</Link>
-      </NavigationMenu>
-      <NavigationMenu>
-        <Link href="/About">About</Link>
-      </NavigationMenu>
+      <Link href="/Contact">
+        <NavigationMenu>Contact</NavigationMenu>
+      </Link>
+
+      <Link href="/About">
+        <NavigationMenu>About</NavigationMenu>
+      </Link>
+
       {me ? (
         <LogInOutButton onClick={logout}>Log Out</LogInOutButton>
       ) : (
