@@ -53,6 +53,7 @@ const MyPostContainer = styled.div`
   max-width: 1812px;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   padding: 0 48px;
   margin: 0 auto;
   @media only screen and (max-width: 810px) {
@@ -63,7 +64,7 @@ const MyPostContainer = styled.div`
 const MyPostCheckBox = styled.div`
   width: fit-content;
   display: flex;
-  padding: 12px 24px;
+  padding: 12px 0;
   gap: 4px;
   justify-content: flex-end;
   align-items: center;
@@ -76,8 +77,10 @@ const MyPostCheckBox = styled.div`
   }
 `
 const UserInfo = styled.div`
+  display: flex;
+  padding: 12px 0;
   font-family: 'Manrope';
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #666666;
 `
