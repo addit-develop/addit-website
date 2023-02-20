@@ -33,6 +33,7 @@
   height: fit-content;
   font-size: 48px;
   font-weight: 700;
+  word-break: break-all;
 }
 
 .detail {
@@ -95,5 +96,8 @@
 @media only screen and (max-width: 810px) {
   .page {
     padding: 24px 16px;
+  }
+  .title {
+    font-size: 28px;
   }
 }

@@ -206,15 +206,18 @@ export const Lineup = styled.div<{ forBlock?: boolean }>`
 `
 
 export const startingXI = styled.div<{ reverse?: boolean; forBlock?: boolean }>`
+  flex-shrink: 0;
   width: 100%;
-  height: 100%;
+  height: 50%;
   display: flex;
   flex-direction: ${(props) => (props.reverse ? 'column-reverse' : 'column')};
   ${(props) =>
     props.forBlock
       ? `@media only screen and (min-width: 810px) {
-    flex-direction: ${props.reverse ? 'row-reverse' : 'row'};
-  }`
+        width: 50%;
+        height: 100%;
+        flex-direction: ${props.reverse ? 'row-reverse' : 'row'};
+      }`
       : null};
 `
 
@@ -245,16 +248,23 @@ export const playerStarting = styled.div`
   overflow: visible;
   white-space: nowrap;
   cursor: pointer;
+  @media only screen and (max-width: 400px) {
+    height: 54px;
+  }
 `
 
 export const playerImage = styled.img`
   width: 40px;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 100%;
+  @media only screen and (max-width: 400px) {
+    width: 36px;
+    height: 36px;
+  }
 `
 
 export const playerRating = styled.div<{ starting?: boolean }>`
-  ${(props) => (props.starting ? 'position: absolute;top: -3px;right: -10px;' : '')}
+  ${(props) => (props.starting ? 'position: absolute;top: -2px;right: -10px;' : '')}
   width: 32px;
   height: 18px;
   background-color: #f08022;
@@ -263,6 +273,13 @@ export const playerRating = styled.div<{ starting?: boolean }>`
   text-align: center;
   color: #fff;
   font-size: 13px;
+  @media only screen and (max-width: 400px) {
+    width: 30px;
+    height: 16px;
+    border-radius: 8px;
+    line-height: 16px;
+    font-size: 12px;
+  }
 `
 
 export const playerOutIcon = styled.div`
