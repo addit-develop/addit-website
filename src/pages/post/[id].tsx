@@ -1,13 +1,11 @@
 import Head from 'next/head'
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next/types'
-import styles from '@/styles/post.module.css'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadPostRequestAction, deletePostRequestAction } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
 import { OutputData } from '@editorjs/editorjs'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -18,12 +16,50 @@ import loadable from '@loadable/component'
 import InfoModal from '@/components/plugin/searchModal/infoModal'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
-import { PenIcon, TrashBinIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
 import useWindowDimensions from '@/hooks/useWindowDimensions'
+import styled from 'styled-components'
+import PostEditButton from '@/components/post/PostEditButton'
+import useTimeConverter from '@/hooks/useTimeConverter'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
+
+const Container = styled.div`
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  @media only screen and (max-width: 810px) {
+    .page {
+      padding: 24px 16px;
+    }
+  }
+`
+
+const PostContainer = styled.div`
+  width: 100%;
+  max-width: 762px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const Title = styled.div`
+  flex-shrink: 0;
+  width: 100%;
+  height: fit-content;
+  font-size: 48px;
+  font-weight: 700;
+`
+const Meta = styled.div`
+  flex-shrink: 0;
+  width: 100%;
+  height: 24px;
+  font-size: 16px;
+  color: ${COLORS.lightblack};
+`
 
 const Editor = loadable(() => import('../../components/editor/editor'))
 
@@ -49,12 +85,7 @@ const PostPage: NextPage = () => {
   //   }
   // }, [id])
 
-  const timeConverter = useCallback((UNIX_timestamp: number) => {
-    return dayjs(new Date(UNIX_timestamp))
-      .tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
-      .format('D MMM YYYY | HH:mm')
-      .toString()
-  }, [])
+  const { UNIXtimeConverter } = useTimeConverter()
 
   const editPost = useCallback(() => {
     router.push({ pathname: '/write', query: { postId: loadPost.id } }, '/write')
@@ -72,8 +103,7 @@ const PostPage: NextPage = () => {
     }
   }, [deletePostLoading, deletePostSuccess, loadPost])
 
-  useEffect(()=>{
-  }, [me])
+  useEffect(() => {}, [me])
 
   return (
     <>
@@ -82,47 +112,27 @@ const PostPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div
-          className={
-            !loadPostLoading && loadPost && me === loadPost.email ? styles.pageEdit : styles.page
-          }
-          style={
-            !loadPostLoading && loadPost && me === loadPost.email
-              ? { height: `${height - 148}px` }
-              : { height: `${height - 80}px` }
-          }
-        >
-          {loadPostLoading ? <div> Loading Post... </div> : <></>}
-          {!loadPostLoading && loadPost ? (
-            <div className={styles.postContainer} id="postContainer">
-              <div className={styles.title}>{loadPost.title}</div>
-              <div className={styles.detail}>{`${
-                loadPost.email
-              }${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${timeConverter(loadPost.data.time || 0)}`}</div>
+        <Container>
+          {loadPostLoading ? (
+            <div> Loading Post... </div>
+          ) : !loadPost ? (
+            <div>This post does not exist or has been deleted.</div>
+          ) : (
+            <PostContainer id="postContainer">
+              <Title>{loadPost.title}</Title>
+              <Meta>{`${loadPost.email}${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${UNIXtimeConverter(
+                loadPost.data.time || 0
+              )}`}</Meta>
               <Editor
                 data={loadPost.data}
                 onChange={setData}
                 holder="editorjs-container"
                 readonly={true}
               />
-            </div>
-          ) : (
-            <div>This post does not exist or has been deleted.</div>
+            </PostContainer>
           )}
-          {!loadPostLoading && loadPost && me === loadPost.email ? (
-            <>
-              <button className={styles.edit} onClick={editPost}>
-                <PenIcon width={24} height={24} fill={COLORS.white} />
-                Edit
-              </button>
-              <button className={styles.delete} onClick={deletePost}>
-                <TrashBinIcon width={24} height={24} fill={COLORS.white} />
-              </button>
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
+          {me === loadPost?.email && <PostEditButton editPost={editPost} deletePost={deletePost} />}
+        </Container>
       </main>
     </>
   )
@@ -133,20 +143,15 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     const cookie = context.req ? context.req.headers.cookie : ''
     backAxios.defaults.headers.Cookie = ''
     if (context.req && cookie) backAxios.defaults.headers.Cookie = cookie
-
     store.dispatch({
       type: LOAD_USER_REQUEST,
     })
-
     const { id } = context.query
-
     if (id) {
       store.dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
     }
-
     store.dispatch(END)
     await store.sagaTask?.toPromise()
-
     return { props: {} }
   }
 )
