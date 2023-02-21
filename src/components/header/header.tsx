@@ -1,78 +1,78 @@
 import { NextComponentType } from 'next'
-import styles from './header.module.css'
 import { useCallback, useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
-import { RootState } from '@/store/reducers'
-import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAction'
-import { useRouter } from 'next/router'
 import { AdditLongLogo, CrossIcon, MenuIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
+import HeaderNavigation from './HeaderNavigation'
+import styled from 'styled-components'
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding: 24px;
+  box-sizing: border-box;
+  border-bottom: 1px solid ${COLORS.lightgray};
+  @media only screen and (max-width: 810px) {
+    padding: 16px;
+  }
+`
+
+const HeaderTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 10px;
+  font-family: 'Manrope';
+  font-size: 20px;
+  font-weight: 800;
+  color: #666666;
+  line-height: 1em;
+  cursor: pointer;
+  @media only screen and (max-width: 810px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 18px;
+  }
+`
+
+const OpenMenuButton = styled.div`
+  display: none;
+  @media only screen and (max-width: 810px) {
+    display: flex;
+    height: 32px;
+    width: 32px;
+  }
+`
 
 const Header: NextComponentType = () => {
-  const dispatch = useDispatch()
-  const { me, logOutDone } = useSelector((state: RootState) => state.userReducer)
-  const router = useRouter()
-
-  const [menuState, setMenuState] = useState(false)
-
-  // useEffect(() => {
-  //   dispatch({
-  //     type: LOAD_USER_REQUEST,
-  //   })
-  // }, [])
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const openMenu = useCallback(() => {
-    setMenuState(!menuState)
-  }, [menuState])
-
-  const logIn = useCallback(async () => {
-    const loginUrl = await loginRequestAction()
-    if (loginUrl) {
-      router.push(loginUrl)
-    }
-  }, [])
-
-  const logout = useCallback(() => {
-    dispatch(logoutRequestAction())
-  }, [])
+    setMenuOpen(!menuOpen)
+  }, [menuOpen])
 
   return (
-    <div className={styles.header}>
-      <div className={styles.header__container}>
-        <Link href="/" className={styles.header__title}>
+    <HeaderContainer>
+      <Link href="/">
+        <HeaderTitle>
           <AdditLongLogo width={105} height={28} />
           <div>for Football</div>
-        </Link>
-        <div className={styles.header__navigation__button} id="menu" onClick={openMenu}>
-          {menuState ? (
-            <CrossIcon width="32" height="32" fill={COLORS.darkgray} viewBox="0 0 40 40" />
-          ) : (
-            <MenuIcon width="32" height="32" fill={COLORS.darkgray} viewBox="0 0 40 40" />
-          )}
-        </div>
-      </div>
-      <div
-        className={styles.header__navigation}
-        style={menuState ? { display: 'flex' } : { display: 'none' }}
-      >
-        <Link href="/Contact" className={styles.header__navigation__menu}>
-          Contact
-        </Link>
-        <Link href="/About" className={styles.header__navigation__menu}>
-          About
-        </Link>
-        {me ? (
-          <div className={styles.header__navigation__menu} onClick={logout}>
-            LogOut
-          </div>
+        </HeaderTitle>
+      </Link>
+      <OpenMenuButton id="menu" onClick={openMenu}>
+        {menuOpen ? (
+          <CrossIcon width="32" height="32" fill={COLORS.darkgray} viewBox="0 0 40 40" />
         ) : (
-          <div className={styles.header__navigation__signup} onClick={logIn}>
-            LogIn
-          </div>
+          <MenuIcon width="32" height="32" fill={COLORS.darkgray} viewBox="0 0 40 40" />
         )}
-      </div>
-    </div>
+      </OpenMenuButton>
+      <HeaderNavigation menuOpen={menuOpen} />
+    </HeaderContainer>
   )
 }
 

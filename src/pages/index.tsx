@@ -47,21 +47,43 @@ const PostContainer = styled.div`
   }
 `
 
-const MyPostCheckBox = styled.div`
-  width: 100%;
+const MyPostContainer = styled.div`
   display: flex;
-  padding: 12px 24px;
+  width: 100%;
+  max-width: 1812px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0 48px;
+  margin: 0 auto;
+  @media only screen and (max-width: 810px) {
+    padding: 0 24px;
+  }
+`
+
+const MyPostCheckBox = styled.div`
+  flex-shrink: 0;
+  width: fit-content;
+  display: flex;
+  padding: 12px 0;
   gap: 4px;
   justify-content: flex-end;
   align-items: center;
   font-family: 'Manrope';
   font-weight: 500;
   color: ${COLORS.lightblack};
-  margin: 0 auto;
   input {
     width: 16px;
     height: 16px;
   }
+`
+const UserInfo = styled.div`
+  display: flex;
+  padding: 12px 0;
+  font-family: 'Manrope';
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
 `
 
 const HomePage: NextPage = () => {
@@ -113,18 +135,27 @@ const HomePage: NextPage = () => {
       <Head>
         <title>Addit for Football : main</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content="Addit for Football : main" />
+        <meta property="og:description" content="축구 전문 에디터 플랫폼 Addit for Football" />
+        <meta property="og:url" content="http://addit-football.com" />
+        <meta
+          property="og:image"
+          content="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+        />
       </Head>
       <main>
         {me && (
-          <MyPostCheckBox>
-            <div>hello {me}</div>
-            <input
-              type="checkbox"
-              onClick={() => setShowMyPost(!showMyPost)}
-              defaultChecked={showMyPost}
-            />
-            My posts
-          </MyPostCheckBox>
+          <MyPostContainer>
+            <UserInfo>{me}</UserInfo>
+            <MyPostCheckBox>
+              <input
+                type="checkbox"
+                onClick={() => setShowMyPost(!showMyPost)}
+                defaultChecked={showMyPost}
+              />
+              My posts
+            </MyPostCheckBox>
+          </MyPostContainer>
         )}
         <PostContainer>
           {postList.length === 0 ? (
