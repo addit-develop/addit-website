@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 const Container = styled.div`
   width: 100%;
-  padding: 60px 100px 30px 100px;
-  @media only screen and (max-width: 810px;) {
-    padding: 60px 24px 30px 24px;
+  padding: 0 100px 30px 100px;
+  @media only screen and (max-width: 810px) {
+    padding: 0 16px 24px;
   }
 `
 
@@ -21,9 +21,11 @@ const InnerContainer = styled.div`
   border-top: 1px ${COLORS.lightgray} solid;
 `
 const Title = styled.div`
+  font-family: 'Manrope';
   font-weight: 900;
 `
 const Email = styled.span`
+  font-family: 'Manrope';
   margin-left: 10px;
   font-weight: 400;
 `

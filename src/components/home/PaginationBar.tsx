@@ -3,11 +3,14 @@ import styled from 'styled-components'
 
 const Bar = styled.div`
   width: 100%;
-
   display: flex;
   justify-content: center;
   flex-direction: row;
   gap: 20px;
+  padding: 32px 0;
+  @media only screen and (max-width: 810px) {
+    padding: 8px 0;
+  }
 `
 
 const PageNumber = styled.div<{ selected: boolean }>`

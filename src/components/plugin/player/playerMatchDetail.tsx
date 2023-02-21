@@ -96,8 +96,10 @@ const PlayerMatchDetail = ({ matchStatData, playerData, fixtureData, blockId }: 
   useEffect(() => {
     if (!matchStatData) {
       getStatData()
+    } else {
+      setStatData(matchStatData)
     }
-  }, [])
+  }, [matchStatData])
 
   useEffect(() => {
     if (playerMatchBlockData) dispatch(setBlockData(blockId, playerMatchBlockData))
