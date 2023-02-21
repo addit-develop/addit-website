@@ -64,20 +64,19 @@ const Meta = styled.div`
 const Editor = loadable(() => import('../../components/editor/editor'))
 
 const PostPage: NextPage = () => {
+  const router = useRouter()
+  const { id } = router.query
   const { height } = useWindowDimensions()
   const [data, setData] = useState<OutputData>({
     time: 0,
     blocks: [],
     version: '2.26.4',
   })
-  const router = useRouter()
   const dispatch = useDispatch()
   const { loadPost, loadPostLoading, deletePostLoading, deletePostSuccess } = useSelector(
     (state: RootState) => state.postReducer
   )
   const { me } = useSelector((state: RootState) => state.userReducer)
-
-  // const { id } = router.query
 
   // useEffect(() => {
   //   if (id) {
@@ -102,8 +101,6 @@ const PostPage: NextPage = () => {
       router.push('/')
     }
   }, [deletePostLoading, deletePostSuccess, loadPost])
-
-  useEffect(() => {}, [me])
 
   return (
     <>
