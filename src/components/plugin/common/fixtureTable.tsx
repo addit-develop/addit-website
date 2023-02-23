@@ -94,7 +94,7 @@ const FixtureTable = ({ fixture }: PropsType) => {
     dayjs().isBefore(FixtureDayjs)
       ? dispatch(changeModalPage('matchPrediction', 'Matches', fixture))
       : dispatch(changeModalPage('matchDetail', 'Matches', fixture.fixture.id))
-  }, [fixture])
+  }, [fixture, FixtureDayjs])
 
   return (
     <React.Fragment>

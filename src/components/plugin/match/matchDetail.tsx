@@ -104,7 +104,7 @@ const MatchDetail = ({ fixtureId, selectMode, blockId }: PropsType) => {
 
   useEffect(() => {
     getMatchData()
-  }, [])
+  }, [fixtureId])
 
   if (fixtureId === undefined) {
     return (
