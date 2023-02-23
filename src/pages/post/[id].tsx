@@ -80,8 +80,7 @@ const PostPage: NextPage = () => {
     (state: RootState) => state.postReducer
   )
   const { me } = useSelector((state: RootState) => state.userReducer)
-
-  // const { id } = router.query
+  const { id } = router.query
 
   // useEffect(() => {
   //   if (id) {
@@ -112,8 +111,14 @@ const PostPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Addit for Football : post</title>
+        <title>
+          {loadPost ? `${loadPost.title} : Addit for Football` : `Addit for Football : Post`}
+        </title>
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content={loadPost.title + ' : Addit for Football'} />
+        <meta property="og:description" content="Addit for Football에서 작성된 글입니다." />
+        <meta property="og:url" content={'http://addit-football.com/post/' + id} />
+        <meta property="og:image" content={loadPost?.mainImage} />
       </Head>
       <main>
         <Container>
