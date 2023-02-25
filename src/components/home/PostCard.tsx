@@ -89,30 +89,34 @@ const PostCard = ({ post }: Props) => {
   const { UNIXtimeConverter } = useTimeConverter()
 
   return (
-    <Link href={`/post/${post.id}`}>
-      <PostBox>
-        {post.mainImage ? (
-          <PostImage>
+    <PostBox>
+      {post.mainImage ? (
+        <PostImage>
+          <Link href={`/post/${post.id}`}>
             <img src={post.mainImage} alt={post.title} />
-          </PostImage>
-        ) : (
-          <PostImage noImage>
+          </Link>
+        </PostImage>
+      ) : (
+        <PostImage noImage>
+          <Link href={`/post/${post.id}`}>
             <img
               src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
               alt={post.title}
             />
-          </PostImage>
-        )}
-        <PostDetails>
+          </Link>
+        </PostImage>
+      )}
+      <PostDetails>
+        <Link href={`/post/${post.id}`}>
           <PostTitle>{post.title}</PostTitle>
           <PostSnippet>{post.snippet.replace(/&nbsp;/g, ' ')}</PostSnippet>
-          <PostUploadInfo>
-            {post.email}
-            <PostTime>{`${UNIXtimeConverter(post.time)}`}</PostTime>
-          </PostUploadInfo>
-        </PostDetails>
-      </PostBox>
-    </Link>
+        </Link>
+        <PostUploadInfo>
+          <Link href={`/blog/${post.email}`}>{post.email}</Link>
+          <PostTime>{`${UNIXtimeConverter(post.time)}`}</PostTime>
+        </PostUploadInfo>
+      </PostDetails>
+    </PostBox>
   )
 }
 
