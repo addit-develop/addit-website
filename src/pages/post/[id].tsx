@@ -21,6 +21,7 @@ import useWindowDimensions from '@/hooks/useWindowDimensions'
 import styled from 'styled-components'
 import PostEditButton from '@/components/post/PostEditButton'
 import useTimeConverter from '@/hooks/useTimeConverter'
+import Link from 'next/link'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -68,19 +69,19 @@ const Meta = styled.div`
 const Editor = loadable(() => import('../../components/editor/editor'))
 
 const PostPage: NextPage = () => {
+  const router = useRouter()
+  const { id } = router.query
   const { height } = useWindowDimensions()
   const [data, setData] = useState<OutputData>({
     time: 0,
     blocks: [],
     version: '2.26.4',
   })
-  const router = useRouter()
   const dispatch = useDispatch()
   const { loadPost, loadPostLoading, deletePostLoading, deletePostSuccess } = useSelector(
     (state: RootState) => state.postReducer
   )
   const { me } = useSelector((state: RootState) => state.userReducer)
-  const { id } = router.query
 
   // useEffect(() => {
   //   if (id) {
@@ -106,8 +107,6 @@ const PostPage: NextPage = () => {
     }
   }, [deletePostLoading, deletePostSuccess, loadPost])
 
-  useEffect(() => {}, [me])
-
   return (
     <>
       <Head>
@@ -115,7 +114,7 @@ const PostPage: NextPage = () => {
           {loadPost ? `${loadPost.title} : Addit for Football` : `Addit for Football : Post`}
         </title>
         <link rel="icon" href="/favicon.ico" />
-        <meta property="og:title" content={loadPost.title + ' : Addit for Football'} />
+        <meta property="og:title" content={loadPost?.title + ' : Addit for Football'} />
         <meta property="og:description" content="Addit for Football에서 작성된 글입니다." />
         <meta property="og:url" content={'http://addit-football.com/post/' + id} />
         <meta property="og:image" content={loadPost?.mainImage} />
@@ -129,9 +128,10 @@ const PostPage: NextPage = () => {
           ) : (
             <PostContainer id="postContainer">
               <Title>{loadPost.title}</Title>
-              <Meta>{`${loadPost.email}${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${UNIXtimeConverter(
-                loadPost.data.time || 0
-              )}`}</Meta>
+              <Meta>
+                <Link href={`/blog/${loadPost.email}`}>{loadPost.email}</Link>
+                {`${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${UNIXtimeConverter(loadPost.data.time || 0)}`}
+              </Meta>
               <Editor
                 data={loadPost.data}
                 onChange={setData}

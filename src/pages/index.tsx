@@ -96,7 +96,7 @@ const HomePage: NextPage = () => {
   const [page, setPage] = useState<number>(1)
 
   useEffect(() => {
-    dispatch(loadMyPostRequestAction({ summary: true, amount: 10 * page, writers: [me] }))
+    dispatch(loadMyPostRequestAction({ summary: true, amount: 16 * page, writers: [me] }))
   }, [me, page])
 
   const exposeMine = useCallback(() => {
@@ -118,9 +118,9 @@ const HomePage: NextPage = () => {
   //     if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
   //       const box = document.getElementById('showMineCheckBox') as HTMLInputElement;
   //       if(box && box.checked && !loadMyPostLoading){
-  //         dispatch(loadMyPostRequestAction({summary : true, amount : 10, writers : [me]}))
+  //         dispatch(loadMyPostRequestAction({summary : true, amount : 16, writers : [me]}))
   //       }else if(!loadMainPostLoading){
-  //         dispatch(loadMainPostRequestAction({summary : true, amount : 10}))
+  //         dispatch(loadMainPostRequestAction({summary : true, amount : 16}))
   //       }
   //     }
   //   }
@@ -169,7 +169,7 @@ const HomePage: NextPage = () => {
             </>
           )}
         </PostContainer>
-        <PaginationBar page={page} setPage={setPage} total={Number(postList.length / 10)} />
+        <PaginationBar page={page} setPage={setPage} total={Number(postList.length / 16)} />
         {me && <WriteButton />}
       </main>
     </>
