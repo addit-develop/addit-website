@@ -41,7 +41,7 @@ const PostDetails = styled.div`
   flex-shrink: 0;
   width: 100%;
   height: fit-content;
-  min-height: 175px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -66,6 +66,7 @@ const PostSnippet = styled.div`
   height: 100%;
   font-size: 15px;
   color: ${COLORS.lightblack};
+  padding-top: 6px;
 `
 
 const PostUploadInfo = styled.div`
@@ -109,7 +110,7 @@ const PostCard = ({ post }: Props) => {
       <PostDetails>
         <Link href={`/post/${post.id}`}>
           <PostTitle>{post.title}</PostTitle>
-          <PostSnippet>{post.snippet.replace(/&nbsp;/g, ' ')}</PostSnippet>
+          <PostSnippet>{post.snippet.replace(/(<[^>]*>)|(&nbsp;)/g, ' ')}</PostSnippet>
         </Link>
         <PostUploadInfo>
           <Link href={`/blog/${post.email}`}>{post.email}</Link>

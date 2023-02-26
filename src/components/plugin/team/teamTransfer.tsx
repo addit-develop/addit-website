@@ -17,6 +17,7 @@ const Container = styled.div`
   flex-direction: column;
   padding: 8px;
   border-radius: 10px;
+  gap: 8px;
 `
 
 const Row = styled.div`
@@ -24,7 +25,7 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
+  padding: 4px 8px;
   font-size: 14px;
 `
 const GrayLabel = styled.div`
