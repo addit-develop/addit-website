@@ -97,7 +97,7 @@ export type FixtureStatsType = {
   passes: {
     total: number
     key: number
-    accuracy: string
+    accuracy: any
   }
   tackles: {
     total: number
