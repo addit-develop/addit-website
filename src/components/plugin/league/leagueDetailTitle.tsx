@@ -64,6 +64,7 @@ const LeagueDetailTitle = ({ league, seasonList, season, setSeason }: PropsType)
               season={season}
               seasonList={seasonList.map((s) => s.year).reverse()}
               setSeason={setSeason}
+              shorten
             />
           ) : (
             <Season>

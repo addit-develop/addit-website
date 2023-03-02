@@ -23,7 +23,7 @@ import { setBlockData } from '@/store/actions/postAction'
 import { RootState } from '@/store/reducers'
 
 const Container = styled.div`
-  overflow-y: visible;
+  overflow-y: scroll;
   width: 100%;
   &::-webkit-scrollbar {
     display: none;
