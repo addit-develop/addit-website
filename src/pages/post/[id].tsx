@@ -13,7 +13,6 @@ import timezone from 'dayjs/plugin/timezone'
 import wrapper from '@/store/configureStore'
 import { END } from 'redux-saga'
 import loadable from '@loadable/component'
-import InfoModal from '@/components/plugin/searchModal/infoModal'
 import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
 import { COLORS } from '@/constants/constants'
@@ -22,6 +21,9 @@ import styled from 'styled-components'
 import PostEditButton from '@/components/post/PostEditButton'
 import useTimeConverter from '@/hooks/useTimeConverter'
 import Link from 'next/link'
+import html2canvas from 'html2canvas'
+import PostShareModal from '@/components/post/PostShareModal'
+import { MenuIcon } from '@/assets/icons'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -60,11 +62,16 @@ const Title = styled.div`
 `
 const Meta = styled.div`
   flex-shrink: 0;
+  position: relative;
   width: 100%;
   height: 24px;
   font-size: 16px;
   color: ${COLORS.lightblack};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `
+const ShareButton = styled.button``
 
 const Editor = loadable(() => import('../../components/editor/editor'))
 
@@ -82,15 +89,8 @@ const PostPage: NextPage = () => {
     (state: RootState) => state.postReducer
   )
   const { me } = useSelector((state: RootState) => state.userReducer)
-
-  // useEffect(() => {
-  //   if (id) {
-  //     dispatch(loadPostRequestAction({ ids: [id], amount: 1 }))
-  //   }
-  // }, [id])
-
   const { UNIXtimeConverter } = useTimeConverter()
-
+  const [shareModalVisible, setShareModalVisible] = useState(false)
   const editPost = useCallback(() => {
     router.push({ pathname: '/write', query: { postId: loadPost.id } }, '/write')
   }, [loadPost])
@@ -100,6 +100,40 @@ const PostPage: NextPage = () => {
       dispatch(deletePostRequestAction(loadPost.id))
     }
   }, [loadPost])
+
+  const onClickShareUrl = () => {
+    navigator.clipboard.writeText(`http://addit-football.com/post/${id}`).then(() => {
+      alert('본문 링크가 클립보드에 복사되었습니다!')
+    })
+  }
+
+  const onClickShareContent = () => {
+    console.log('본문 복사 시작')
+    const postContainer = document.getElementById('postContainer')
+    if (!postContainer) return null
+    const blockList = Array.from(postContainer.getElementsByClassName('ce-block__content'))
+    const shareContent: ClipboardItem[] = []
+    const promises = []
+
+    for (const block of blockList) {
+      promises.push(
+        html2canvas(block as HTMLElement).then((canvas) => {
+          canvas.toBlob((blob) => {
+            if (blob) {
+              let item = new ClipboardItem({ 'image/png': blob })
+              console.log(item)
+              shareContent.push(item)
+            }
+          })
+        })
+      )
+    }
+    Promise.all(promises).then(() => {
+      console.log(shareContent)
+      navigator.clipboard.write(shareContent)
+      alert('본문 복사 완료')
+    })
+  }
 
   useEffect(() => {
     if (!deletePostLoading && deletePostSuccess && !loadPost) {
@@ -129,8 +163,28 @@ const PostPage: NextPage = () => {
             <PostContainer id="postContainer">
               <Title>{loadPost.title}</Title>
               <Meta>
-                <Link href={`/blog/${loadPost.email}`}>{loadPost.email}</Link>
-                {`${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${UNIXtimeConverter(loadPost.data.time || 0)}`}
+                <div>
+                  <Link href={`/blog/${loadPost.email}`}>{loadPost.email}</Link>
+                  {`${'\u00A0\u00A0'}|${'\u00A0\u00A0'}${UNIXtimeConverter(
+                    loadPost.data.time || 0
+                  )}`}
+                </div>
+                <ShareButton onClick={() => setShareModalVisible(!shareModalVisible)}>
+                  공유하기
+                </ShareButton>
+                {shareModalVisible && (
+                  <PostShareModal
+                    onClickShareContent={() => {
+                      onClickShareContent()
+                      setShareModalVisible(!shareModalVisible)
+                    }}
+                    onClickShareUrl={() => {
+                      // onClickShareUrl()
+                      alert('준비중입니다.')
+                      setShareModalVisible(!shareModalVisible)
+                    }}
+                  />
+                )}
               </Meta>
               <Editor
                 data={loadPost.data}
