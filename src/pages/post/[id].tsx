@@ -23,7 +23,7 @@ import useTimeConverter from '@/hooks/useTimeConverter'
 import Link from 'next/link'
 import html2canvas from 'html2canvas'
 import PostShareModal from '@/components/post/PostShareModal'
-import { MenuIcon } from '@/assets/icons'
+import { MenuIcon, ShareNodeIcon } from '@/assets/icons'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -71,7 +71,12 @@ const Meta = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `
-const ShareButton = styled.button``
+const ShareButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  color: ${COLORS.darkgray};
+  gap: 5px;
+`
 
 const Editor = loadable(() => import('../../components/editor/editor'))
 
@@ -91,6 +96,7 @@ const PostPage: NextPage = () => {
   const { me } = useSelector((state: RootState) => state.userReducer)
   const { UNIXtimeConverter } = useTimeConverter()
   const [shareModalVisible, setShareModalVisible] = useState(false)
+  const [copyLoading, setCopyLoading] = useState(false)
   const editPost = useCallback(() => {
     router.push({ pathname: '/write', query: { postId: loadPost.id } }, '/write')
   }, [loadPost])
@@ -107,32 +113,30 @@ const PostPage: NextPage = () => {
     })
   }
 
+  const copyElementsToClipboard = async (elements: Element[]) => {
+    const promises = elements.map(async (element) => {
+      const canvas = await html2canvas(element as HTMLElement)
+      const imageBlob = canvas.toDataURL('image/png').split(',')[1]
+      const decodedImage = new TextDecoder().decode(
+        Uint8Array.from(atob(imageBlob), (c) => c.charCodeAt(0))
+      )
+      return new Blob([decodedImage], { type: 'image/png' })
+    })
+    const blobs = await Promise.all(promises)
+    const clipboardItems = blobs.map((blob) => new ClipboardItem({ 'image/png': blob }))
+    await navigator.clipboard.write(clipboardItems)
+    setCopyLoading(false)
+    alert('본문 복사 완료')
+  }
+
   const onClickShareContent = () => {
     console.log('본문 복사 시작')
+    setCopyLoading(true)
     const postContainer = document.getElementById('postContainer')
     if (!postContainer) return null
     const blockList = Array.from(postContainer.getElementsByClassName('ce-block__content'))
-    const shareContent: ClipboardItem[] = []
-    const promises = []
 
-    for (const block of blockList) {
-      promises.push(
-        html2canvas(block as HTMLElement).then((canvas) => {
-          canvas.toBlob((blob) => {
-            if (blob) {
-              let item = new ClipboardItem({ 'image/png': blob })
-              console.log(item)
-              shareContent.push(item)
-            }
-          })
-        })
-      )
-    }
-    Promise.all(promises).then(() => {
-      console.log(shareContent)
-      navigator.clipboard.write(shareContent)
-      alert('본문 복사 완료')
-    })
+    copyElementsToClipboard(blockList)
   }
 
   useEffect(() => {
@@ -170,17 +174,18 @@ const PostPage: NextPage = () => {
                   )}`}
                 </div>
                 <ShareButton onClick={() => setShareModalVisible(!shareModalVisible)}>
-                  공유하기
+                  <ShareNodeIcon fill={COLORS.darkgray} />
+                  <div style={{ whiteSpace: 'nowrap' }}>공유하기</div>
                 </ShareButton>
                 {shareModalVisible && (
                   <PostShareModal
                     onClickShareContent={() => {
-                      onClickShareContent()
+                      alert('준비중입니다.')
+                      // onClickShareContent()
                       setShareModalVisible(!shareModalVisible)
                     }}
                     onClickShareUrl={() => {
-                      // onClickShareUrl()
-                      alert('준비중입니다.')
+                      onClickShareUrl()
                       setShareModalVisible(!shareModalVisible)
                     }}
                   />

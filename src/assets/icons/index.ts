@@ -17,6 +17,7 @@ import SearchIcon from './search.svg'
 import CircleCrossIcon from './circle_cross.svg'
 import MenuIcon from './menu.svg'
 import TrashBinIcon from './trash_bin.svg'
+import ShareNodeIcon from './share_node.svg'
 
 export {
   PenIcon,
@@ -38,4 +39,5 @@ export {
   MenuIcon,
   SoccerBallLineIcon,
   TrashBinIcon,
+  ShareNodeIcon,
 }
