@@ -48,8 +48,6 @@ interface PropsType {
 }
 
 const PlayerStatBox = ({ playerData, playerTeam }: PropsType) => {
-  const axios = useAxios()
-
   return (
     <React.Fragment>
       <Container>

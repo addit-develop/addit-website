@@ -70,7 +70,7 @@ const PlayerCareerStats = ({ data, setSeason, season, forBlock = false }: PropsT
   useEffect(() => {
     if (season === currentSeason) setPlayerData(data)
     else getPlayerDetail()
-  }, [season])
+  }, [season, data])
 
   if (!data) return null
   return (

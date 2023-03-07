@@ -1,4 +1,4 @@
-export const COLORS = {
+const LIGHTCOLORS = {
   lightgray: '#f2f2f2',
   gray: '#c4c4c4',
   darkgray: '#8a8a8a',
@@ -8,6 +8,25 @@ export const COLORS = {
   black: '#000000',
   drakblack: '#333333',
   red: '#E55E5A',
+}
+
+const DARKCOLORS = {
+  lightgray: '#363636',
+  gray: '#8a8a8a',
+  darkgray: '#bfbfbf',
+  white: '#000',
+  blue: '#3981BF',
+  lightblack: '#c4c4c4',
+  black: '#fff',
+  drakblack: '#f2f2f2',
+  red: '#E55E5A',
+}
+
+export let COLORS = LIGHTCOLORS
+
+export const changeColorMode = () => {
+  if (COLORS === LIGHTCOLORS) COLORS = DARKCOLORS
+  else COLORS = LIGHTCOLORS
 }
 
 export const SHADOWS = {

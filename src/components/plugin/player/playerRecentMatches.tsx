@@ -92,7 +92,7 @@ const PlayerRecentMatches = ({ playerData, sendData }: PropsType) => {
 
   useEffect(() => {
     getRecentFixtures()
-  }, [page])
+  }, [page, playerData])
 
   return (
     <React.Fragment>
