@@ -7,6 +7,8 @@ import dayjs, { Dayjs } from 'dayjs'
 import MatchLineup from './matchLineup'
 import MatchTimeline from './matchTimeline'
 import { SoccerBallIcon } from '@/assets/icons'
+import { useDispatch } from 'react-redux'
+import { changeModalPage } from '@/store/actions/pageAction'
 
 interface PropsType {
   matchData: MatchDetailDataType | FixtureType | undefined
@@ -18,6 +20,7 @@ const MatchHeader = ({ matchData, scorerList }: PropsType) => {
   const date: string = dayjs(matchData?.fixture.date, 'YYYY-MM-DDTHH:mmZ').format(
     'D MMM YYYY, HH:mm'
   )
+  const dispatch = useDispatch()
 
   return (
     <React.Fragment>
@@ -26,7 +29,16 @@ const MatchHeader = ({ matchData, scorerList }: PropsType) => {
           {matchData?.league.name} {matchData?.league.round}
         </Styles.Round>
         <Styles.ResultContainer>
-          <Styles.TeamContainer>
+          <Styles.TeamContainer
+            onClick={() => {
+              dispatch(
+                changeModalPage('teamDetail', 'Teams', {
+                  teamId: matchData?.teams.home.id,
+                  leagueId: matchData?.league.id,
+                })
+              )
+            }}
+          >
             <Styles.Flag src={matchData?.teams.home.logo} />
             {matchData?.teams.home.name}
           </Styles.TeamContainer>
@@ -38,7 +50,16 @@ const MatchHeader = ({ matchData, scorerList }: PropsType) => {
               <Styles.MatchTime>{matchData?.fixture.status.elapsed}</Styles.MatchTime>
             </Styles.Score>
           )}
-          <Styles.TeamContainer>
+          <Styles.TeamContainer
+            onClick={() => {
+              dispatch(
+                changeModalPage('teamDetail', 'Teams', {
+                  teamId: matchData?.teams.away.id,
+                  leagueId: matchData?.league.id,
+                })
+              )
+            }}
+          >
             <Styles.Flag src={matchData?.teams.away.logo} />
             {matchData?.teams.away.name}
           </Styles.TeamContainer>

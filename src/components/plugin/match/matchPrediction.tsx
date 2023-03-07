@@ -62,7 +62,7 @@ const MatchPrediction = ({ fixtureData, selectMode, blockId }: PropsType) => {
 
   useEffect(() => {
     getPredictionData()
-  }, [])
+  }, [fixtureData])
 
   const selectElement = (type: string) => {
     switch (type) {

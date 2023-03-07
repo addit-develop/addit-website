@@ -21,6 +21,7 @@ const LeagueName = styled.div`
   font-size: 14px;
   color: ${COLORS.gray};
   margin-left: auto;
+  text-align: end;
 `
 interface PropsType {
   team: TeamType

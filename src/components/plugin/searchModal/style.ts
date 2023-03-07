@@ -37,7 +37,7 @@ export const InfoModal = styled.div<{ closed: boolean }>`
   min-width: 360px;
   position: fixed;
   right: 1vh;
-  bottom: 1vh;
+  top: 1vh;
   display: ${(props) => (props.closed ? 'none' : 'flex')};
   flex-direction: column;
   align-items: stretch;
@@ -47,11 +47,12 @@ export const InfoModal = styled.div<{ closed: boolean }>`
   overflow: hidden;
   box-shadow: 0px 0.8px 2.4px -0.6px rgba(0, 0, 0, 0.05), 0px 2.4px 7.2px -1.2px rgba(0, 0, 0, 0.05),
     0px 6.4px 19px -1.9px rgba(0, 0, 0, 0.05), 0px 20px 60px -2.5px rgba(0, 0, 0, 0.05);
+  transition: transform 150ms ease-out;
   @media only screen and (max-width: 600px) {
     width: 100%;
     height: 85%;
     right: 0;
-    bottom: 0;
+    top: 15vh;
     border-radius: 20px 20px 0 0;
     border-top: 1px solid ${COLORS.gray};
     background: ${COLORS.white};
@@ -132,6 +133,7 @@ export const SearchMenu = styled.div<{ selected?: boolean }>`
 `
 
 export const ContentContainer = styled.div`
+  -webkit-overflow-scrolling: touch;
   order: 2;
   position: relative;
   display: flex;

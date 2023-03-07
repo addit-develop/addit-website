@@ -5,6 +5,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 const SeasonContainer = styled.div`
+  z-index: 9;
   margin-left: auto;
   font-size: 16px;
   color: ${COLORS.darkgray};

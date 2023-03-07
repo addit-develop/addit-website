@@ -1,5 +1,5 @@
 import * as Styles from './style'
-import { default as React, useCallback, useEffect, useMemo, useState } from 'react'
+import { default as React, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import MatchHome from '../match/matchHome'
 import PlayerDetail from '../player/playerDetail'
 import LeagueHome from '../league/leagueHome'
@@ -17,6 +17,18 @@ import Loading from '../common/loading'
 import { closeInfoModal } from '@/store/actions/pageAction'
 import { CrossIcon } from '@/assets/icons'
 import { COLORS } from '@/constants/constants'
+import { useBottomSheet } from '@/hooks/useBottomSheet'
+
+interface BottomSheetMetrics {
+  touchStart: {
+    sheetY: number // touchstart에서 BottomSheet의 최상단 모서리의 Y값
+    touchY: number // touchstart에서 터치 포인트의 Y값
+  }
+  touchMove: {
+    prevTouchY?: number // 다음 touchmove 이벤트 핸들러에서 필요한 터치 포인트 Y값을 저장
+    movingDirection: 'none' | 'down' | 'up' // 유저가 터치를 움직이고 있는 방향
+  }
+}
 
 const InfoModal = () => {
   const blockId = 'no block id'
@@ -30,8 +42,25 @@ const InfoModal = () => {
   }, [])
 
   const closeModal = useCallback(() => {
-    dispatch(closeInfoModal())
+    if (window.innerWidth > 600)
+      sheet.current?.style.setProperty(
+        'transform',
+        `translateX(${window.innerHeight - sheet.current.getBoundingClientRect().x}px)`
+      )
+    else sheet.current?.style.setProperty('transform', `translateY(${window.innerHeight * 0.85}px)`)
+    let closer = setTimeout(() => dispatch(closeInfoModal()), 150)
+    return () => {
+      clearTimeout(closer)
+    }
   }, [])
+
+  // 모달창 터치 이벤트
+  const { sheet, content } = useBottomSheet({
+    MIN_Y: window.innerHeight * 0.15,
+    MAX_Y: window.innerHeight,
+    CLOSE_Y: window.innerHeight * 0.6,
+    closeModal: closeModal,
+  })
 
   const showCurrentModalPage = useCallback(() => {
     switch (currentPage) {
@@ -81,7 +110,7 @@ const InfoModal = () => {
 
   return (
     <React.Fragment>
-      <Styles.InfoModal closed={!openInfoModal} id="addit-modal">
+      <Styles.InfoModal closed={!openInfoModal} id="addit-modal" ref={sheet}>
         <Styles.DragLine />
         <Styles.ContentContainer>
           {loadingData ? <Loading /> : null}

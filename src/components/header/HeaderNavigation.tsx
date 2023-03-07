@@ -3,7 +3,7 @@ import { loginRequestAction, logoutRequestAction } from '@/store/actions/userAct
 import { RootState } from '@/store/reducers'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect } from 'react'
+import { RefObject, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -61,9 +61,10 @@ const LogInOutButton = styled.div`
 
 interface Props {
   menuOpen: boolean
+  ref: RefObject<HTMLDivElement>
 }
 
-const HeaderNavigation = ({ menuOpen }: Props) => {
+const HeaderNavigation = ({ menuOpen, ref }: Props) => {
   const dispatch = useDispatch()
   const { me, logOutDone } = useSelector((state: RootState) => state.userReducer)
   const router = useRouter()

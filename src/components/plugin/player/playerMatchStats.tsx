@@ -113,9 +113,9 @@ const PlayerMatchStats = ({ data, forBlock = false }: PropsType) => {
       },
       {
         name: 'Accurate passes',
-        value: `${Math.round(
-          data?.passes.total * Number(data?.passes.accuracy?.replace(/^\D+/g, '')) * 0.01
-        )}/${data?.passes.total}(${data?.passes.accuracy})`,
+        value: `${data?.passes.accuracy}/${data?.passes.total}(${Math.round(
+          (100 * data?.passes.accuracy) / data?.passes.total
+        )}%)`,
       },
       {
         name: 'Key passes',

@@ -21,6 +21,7 @@ const Container = styled.div`
 `
 
 const PlayerImage = styled.img<{ size: string }>`
+  flex-shrink: 0;
   width: ${(props) => (props.size === 'large' ? '72px' : '54px')};
   height: ${(props) =>
     props.size === 'large' ? '72px' : props.size === 'medium' ? '54px' : '40px'};
@@ -29,18 +30,26 @@ const PlayerImage = styled.img<{ size: string }>`
 
 const PlayerInfo = styled.div`
   flex: 1;
-  flex-direction: column;
   display: flex;
+  width: 100%;
+  flex-direction: column;
   gap: 8px;
+  overflow: hidden;
 `
 
 const PlayerName = styled.div<{ size: string }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   font-size: ${(props) =>
     props.size === 'large' ? '20px' : props.size === 'medium' ? '18px' : '16px'};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: 4px;
+  & > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `
 const PlayerTeamRow = styled.div`
   display: flex;
@@ -83,7 +92,10 @@ const PlayerInfoBox = ({ playerData, stat, size = 'large', disabled }: PropsType
       >
         <PlayerImage src={player.photo} alt={player.name} size={size} />
         <PlayerInfo>
-          <PlayerName size={size}>{player.name}</PlayerName>
+          <PlayerName size={size}>
+            <p>{player.name}</p>
+            {stat && <Stat>{stat}</Stat>}
+          </PlayerName>
           <PlayerTeamRow>
             {player.nationality && (
               <PlayerTeam>
@@ -117,7 +129,6 @@ const PlayerInfoBox = ({ playerData, stat, size = 'large', disabled }: PropsType
             )}
           </PlayerTeamRow>
         </PlayerInfo>
-        {stat && <Stat>{stat}</Stat>}
       </Container>
     </React.Fragment>
   )
