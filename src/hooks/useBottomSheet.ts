@@ -53,6 +53,7 @@ export const useBottomSheet = ({ MIN_Y, MAX_Y, CLOSE_Y, closeModal }: Props) => 
 
     const handleTouchMove = (e: TouchEvent) => {
       if (scrollTop || window.innerWidth > 600 || !sheet.current) return null
+      e.preventDefault()
 
       const { touchStart, touchMove } = metrics.current
       const currentTouch = e.touches[0]

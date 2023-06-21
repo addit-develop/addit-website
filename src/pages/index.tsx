@@ -16,7 +16,7 @@ import backAxios from '@/store/configureBackAxios'
 import { LOAD_USER_REQUEST } from '@/store/types'
 import WriteButton from '@/components/home/WriteButton'
 import PostCard from '@/components/home/PostCard'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import { COLORS } from '@/constants/constants'
 import PaginationBar from '@/components/home/PaginationBar'
 
@@ -71,7 +71,7 @@ const MyPostCheckBox = styled.div`
   align-items: center;
   font-family: 'Manrope';
   font-weight: 500;
-  color: ${COLORS.lightblack};
+  color: ${(props) => props.theme.lightblack};
   input {
     width: 16px;
     height: 16px;
@@ -83,7 +83,7 @@ const UserInfo = styled.div`
   font-family: 'Manrope';
   font-size: 14px;
   font-weight: 600;
-  color: #666666;
+  color: ${(props) => props.theme.lightblack};
 `
 
 const HomePage: NextPage = () => {
@@ -131,7 +131,7 @@ const HomePage: NextPage = () => {
   // }, [])
 
   return (
-    <>
+    <ThemeProvider theme={COLORS}>
       <Head>
         <title>Addit for Football : main</title>
         <link rel="icon" href="/favicon.ico" />
@@ -172,7 +172,7 @@ const HomePage: NextPage = () => {
         <PaginationBar page={page} setPage={setPage} total={Number(postList.length / 16)} />
         {me && <WriteButton />}
       </main>
-    </>
+    </ThemeProvider>
   )
 }
 

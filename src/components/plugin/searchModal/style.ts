@@ -144,7 +144,7 @@ export const ContentContainer = styled.div`
   height: 100%;
   padding: 8px 0 0;
   background-color: ${COLORS.lightgray};
-  overflow: hidden;
+  overflow-y: scroll;
   @media only screen and (max-width: 600px) {
     padding: 0;
     margin-top: 10px;
